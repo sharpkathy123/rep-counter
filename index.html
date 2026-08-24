@@ -258,6 +258,20 @@ function pulseBig() {
   big.classList.add('pulse');
 }
 
+// The big number progresses from a cool color to a warm one as a rep or a
+// rest period runs out, so progress is visible at a glance, not just at the
+// instant of a flash. Reps start white, rest starts blue, both end at the
+// same warm red-orange "wrapping up" color.
+const WARM = [255, 91, 61];
+const REP_START = [255, 255, 255];
+const REST_START = [77, 163, 255];
+function lerpColor(start, t) {
+  const r = Math.round(start[0] + (WARM[0] - start[0]) * t);
+  const g = Math.round(start[1] + (WARM[1] - start[1]) * t);
+  const b = Math.round(start[2] + (WARM[2] - start[2]) * t);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
 const setupEl = document.getElementById('setup');
 
 function showSetupForm() {
@@ -292,6 +306,7 @@ async function run() {
       for (let sec = 1; sec <= seconds; sec++) {
         big.textContent = sec;
         big.className = 'go';
+        big.style.color = lerpColor(REP_START, seconds > 1 ? (sec - 1) / (seconds - 1) : 1);
         speak(String(sec));
         if (!wakeLock) requestWakeLock(); // heartbeat: recover a silently-dropped lock
         await sleep(1000);
@@ -312,6 +327,7 @@ async function run() {
           label.textContent = 'Rest';
           big.textContent = t;
           big.className = 'rest';
+          big.style.color = lerpColor(REST_START, rest > 1 ? (rest - t) / (rest - 1) : 1);
           sub.textContent = `next: set ${s + 1}`;
           if (t <= 3 || t % 5 === 0) speak(String(t));
           await sleep(1000);
@@ -322,6 +338,7 @@ async function run() {
   label.textContent = '';
   big.textContent = 'Done';
   big.className = 'done';
+  big.style.color = '';
   sub.textContent = '';
   flash('set');
   speak('Done! Great job.');
