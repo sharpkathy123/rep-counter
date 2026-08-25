@@ -857,9 +857,26 @@ function cancelCount() {
   runAllBarEl.classList.remove('hidden');
 }
 
+async function countdownStart(token, speakFn) {
+  const steps = ['3', '2', '1', 'Go!'];
+  for (const step of steps) {
+    if (token !== runToken) return;
+    cLabelEl.textContent = '';
+    cSubEl.textContent = '';
+    cBigEl.textContent = step;
+    cBigEl.className = step === 'Go!' ? 'c-done' : 'c-go';
+    cBigEl.style.color = '';
+    vibrate(step === 'Go!' ? [80, 40, 80] : 30);
+    speakFn(step === 'Go!' ? 'Go' : step);
+    await pausableWait(650, token);
+  }
+}
+
 async function runCount(sets, reps, seconds, rest, voiceOn, token) {
   const speakFn = voiceOn ? speakCount : () => {};
   cLabelEl.textContent = '';
+  await countdownStart(token, speakFn);
+  if (token !== runToken) return;
   for (let s = 1; s <= sets && token === runToken; s++) {
     cLabelEl.textContent = `Set ${s} of ${sets}`;
     speakFn(`Set ${s} of ${sets}`);

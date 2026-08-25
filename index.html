@@ -318,7 +318,22 @@ function startFromForm() {
 
 async function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 
+async function countdown() {
+  const steps = ['3', '2', '1', 'Go!'];
+  for (const step of steps) {
+    label.textContent = '';
+    sub.textContent = '';
+    big.textContent = step;
+    big.className = step === 'Go!' ? 'done' : 'go';
+    big.style.color = '';
+    vibrate(step === 'Go!' ? [80, 40, 80] : 30);
+    speak(step === 'Go!' ? 'Go' : step);
+    await sleep(650);
+  }
+}
+
 async function run() {
+  await countdown();
   label.textContent = '';
   for (let s = 1; s <= sets; s++) {
     label.textContent = `Set ${s} of ${sets}`;
