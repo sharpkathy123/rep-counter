@@ -91,6 +91,23 @@
     background: #2fa84f;
     color: #fff;
   }
+  #tapStart {
+    display: none;
+  }
+  #tapStart .msg {
+    font-size: 5.5vw;
+    color: #ccc;
+    margin-bottom: 3vh;
+  }
+  #tapStart button {
+    font-size: 8vw;
+    padding: 0.6em 1.4em;
+    border-radius: 16px;
+    border: none;
+    background: #2fa84f;
+    color: #fff;
+    font-weight: 700;
+  }
   #setup select {
     font-size: 4.2vw;
     max-width: 80vw;
@@ -155,6 +172,10 @@
     <button type="button" id="testVoiceBtn" onclick="previewVoice()">Test voice</button><br>
     <button onclick="startFromForm()">Start</button><br>
     <a id="backLink" href="exercises.html" style="display:inline-block;margin-top:1em;font-size:4vw;color:#888;">&larr; All exercises</a>
+  </div>
+  <div id="tapStart">
+    <div class="msg">iPhone needs one tap before it can play sound</div>
+    <button onclick="beginFromTap()">Tap to Begin</button>
   </div>
 </div>
 
@@ -349,9 +370,25 @@ async function run() {
   vibrate([100, 50, 100, 50, 200]);
 }
 
-// If URL params are present, auto-start. Otherwise show a manual setup form.
-if (sets && reps && seconds) {
+const tapStartEl = document.getElementById('tapStart');
+
+function beginFromTap() {
+  tapStartEl.style.display = 'none';
+  requestWakeLock(); // re-request from this tap, since it's a direct user gesture
   run();
+}
+
+// If URL params are present, auto-start - unless voice mode is on, in which
+// case iOS Safari silently blocks speech that isn't triggered by a direct
+// tap on this exact page (a link tapped on a *different* page, or a Siri
+// Shortcut opening this URL, doesn't count). So when voice is requested,
+// require one tap first to "unlock" audio, then run() continues unattended.
+if (sets && reps && seconds) {
+  if (voiceMode) {
+    tapStartEl.style.display = 'block';
+  } else {
+    run();
+  }
 } else {
   showSetupForm();
 }
