@@ -51,6 +51,25 @@
     color: #fff;
   }
   #dayTabs.hidden { display: none; }
+  #runAllBar {
+    margin-bottom: 4vh;
+  }
+  #runAllBar.hidden { display: none; }
+  #runAllBar .chk-row {
+    font-size: 4vw;
+    margin-bottom: 1.5vh;
+  }
+  #runAllBtn {
+    display: block;
+    width: 100%;
+    font-size: 5vw;
+    padding: 3vw;
+    border-radius: 12px;
+    border: none;
+    background: #4da3ff;
+    color: #fff;
+    font-weight: 700;
+  }
   #grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -205,7 +224,26 @@
     flex-direction: column;
   }
   #countWrap.active { display: flex; }
-  #countWrap .back { margin-bottom: 4vh; }
+  .countControls {
+    display: flex;
+    align-items: center;
+    gap: 4vw;
+    margin-bottom: 4vh;
+  }
+  .countControls .back { margin-bottom: 0; }
+  #pauseBtn {
+    font-size: 4vw;
+    padding: 0.5em 1em;
+    border-radius: 10px;
+    border: 1px solid #555;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+  #pauseBtn.paused {
+    background: #4da3ff;
+    border-color: #4da3ff;
+    color: #fff;
+  }
   #cLabel {
     font-size: 10vw;
     letter-spacing: 2px;
@@ -213,6 +251,7 @@
     text-transform: uppercase;
     margin-bottom: 2vh;
     font-weight: 600;
+    max-width: 92vw;
   }
   #cBig {
     font-size: min(58vw, 55vh);
@@ -235,6 +274,7 @@
     color: #ccc;
     margin-top: 3vh;
     font-weight: 500;
+    max-width: 92vw;
   }
   .c-rest { color: #4da3ff; }
   .c-go { color: #fff; }
@@ -259,11 +299,18 @@
   <button id="lowerTab" onclick="selectDay('lower')">Lower Body Day</button>
   <button id="upperTab" onclick="selectDay('upper')">Upper Body Day</button>
 </div>
+<div id="runAllBar">
+  <label class="chk-row" style="justify-content:center;"><input type="checkbox" id="runAllVoice"> Speak aloud</label>
+  <button id="runAllBtn" onclick="startRunAll()">&#9654; Run All Exercises</button>
+</div>
 <div id="grid"></div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
-  <a class="back" href="#" onclick="cancelCount(); return false;">&#10005; Cancel</a>
+  <div class="countControls">
+    <a class="back" href="#" onclick="cancelCount(); return false;">&#10005; Cancel</a>
+    <button id="pauseBtn" onclick="togglePause()">&#10074;&#10074; Pause</button>
+  </div>
   <div id="cLabel"></div>
   <div id="cBig"></div>
   <div id="cSub"></div>
@@ -554,6 +601,7 @@ const titleEl = document.getElementById('pageTitle');
 const dayTabsEl = document.getElementById('dayTabs');
 const lowerTabEl = document.getElementById('lowerTab');
 const upperTabEl = document.getElementById('upperTab');
+const runAllBarEl = document.getElementById('runAllBar');
 
 // A good order for each day: standing/banded work grouped together, floor
 // work grouped together, more coordination-demanding moves done first while
@@ -602,6 +650,7 @@ function showGrid() {
   gridEl.classList.remove('hidden');
   titleEl.classList.remove('hidden');
   dayTabsEl.classList.remove('hidden');
+  runAllBarEl.classList.remove('hidden');
   history.replaceState(null, '', 'exercises.html');
 }
 
@@ -650,6 +699,7 @@ function openDetail(slug) {
   gridEl.classList.add('hidden');
   titleEl.classList.add('hidden');
   dayTabsEl.classList.add('hidden');
+  runAllBarEl.classList.add('hidden');
   detailEl.classList.add('open');
 }
 
@@ -682,6 +732,7 @@ const cLabelEl = document.getElementById('cLabel');
 const cBigEl = document.getElementById('cBig');
 const cSubEl = document.getElementById('cSub');
 const cFlashEl = document.getElementById('cFlash');
+const pauseBtnEl = document.getElementById('pauseBtn');
 
 function cFlash(type) {
   cFlashEl.className = '';
@@ -704,6 +755,30 @@ function lerpColor(start, t) {
 }
 async function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 
+// Ticks time down in small chunks, freezing progress while runPaused is
+// true - this is what makes the Pause button work for both a single
+// exercise and a Run All sequence, without any complex resume bookkeeping.
+let runPaused = false;
+async function pausableWait(ms) {
+  let remaining = ms;
+  while (remaining > 0 && !countCancelled) {
+    if (runPaused) {
+      await sleep(150);
+      continue;
+    }
+    const chunk = Math.min(150, remaining);
+    await sleep(chunk);
+    remaining -= chunk;
+  }
+}
+
+function togglePause() {
+  runPaused = !runPaused;
+  if (runPaused) window.speechSynthesis.cancel();
+  pauseBtnEl.textContent = runPaused ? '▶ Resume' : '❙❙ Pause';
+  pauseBtnEl.classList.toggle('paused', runPaused);
+}
+
 function speakCount(text) {
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
@@ -713,11 +788,20 @@ function speakCount(text) {
 }
 
 let countCancelled = false;
+let cancelReturnsTo = 'detail'; // 'detail' for a single exercise, 'grid' for Run All
 function cancelCount() {
   countCancelled = true;
+  runPaused = false;
   window.speechSynthesis.cancel();
   countWrapEl.classList.remove('active');
-  detailEl.classList.add('open');
+  if (cancelReturnsTo === 'grid') {
+    gridEl.classList.remove('hidden');
+    titleEl.classList.remove('hidden');
+    dayTabsEl.classList.remove('hidden');
+    runAllBarEl.classList.remove('hidden');
+  } else {
+    detailEl.classList.add('open');
+  }
 }
 
 async function runCount(sets, reps, seconds, rest, voiceOn) {
@@ -736,7 +820,7 @@ async function runCount(sets, reps, seconds, rest, voiceOn) {
         cBigEl.style.color = lerpColor(REP_START, seconds > 1 ? (sec - 1) / (seconds - 1) : 1);
         speakFn(String(sec));
         if (!wakeLock) requestWakeLock();
-        await sleep(1000);
+        await pausableWait(1000);
       }
       if (countCancelled) return;
       cPulse();
@@ -757,7 +841,7 @@ async function runCount(sets, reps, seconds, rest, voiceOn) {
           cBigEl.style.color = lerpColor(REST_START, rest > 1 ? (rest - t) / (rest - 1) : 1);
           cSubEl.textContent = `next: set ${s + 1}`;
           if (t <= 3 || t % 5 === 0) speakFn(String(t));
-          await sleep(1000);
+          await pausableWait(1000);
         }
       }
     }
@@ -792,6 +876,10 @@ function startCounting() {
   // exactly the bug that was reported. Speaking the description here first
   // also gives time to get back into position before the counting starts.
   countCancelled = false;
+  runPaused = false;
+  cancelReturnsTo = 'detail';
+  pauseBtnEl.textContent = '❙❙ Pause';
+  pauseBtnEl.classList.remove('paused');
   window.speechSynthesis.cancel();
   detailEl.classList.remove('open');
   countWrapEl.classList.add('active');
@@ -814,6 +902,72 @@ function startCounting() {
   u.onend = beginCounting;
   u.onerror = beginCounting;
   window.speechSynthesis.speak(u);
+}
+
+function speakAndWait(text) {
+  return new Promise(resolve => {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    const v = getSavedVoice();
+    if (v) u.voice = v;
+    u.onend = resolve;
+    u.onerror = resolve;
+    window.speechSynthesis.speak(u);
+  });
+}
+
+async function runAllExercises(voiceOn) {
+  const list = DAY_ORDER[currentDay].map(slug => EXERCISES.find(e => e.slug === slug));
+  for (let i = 0; i < list.length && !countCancelled; i++) {
+    const ex = list[i];
+    cLabelEl.textContent = `Exercise ${i + 1} of ${list.length}`;
+    cBigEl.textContent = '';
+    cBigEl.className = '';
+    cBigEl.style.color = '';
+    cSubEl.textContent = ex.name;
+
+    if (voiceOn && 'speechSynthesis' in window) {
+      await speakAndWait(`${ex.name}. ${ex.description} ${ex.setup} ${ex.movement} Get in position now.`);
+    } else {
+      await pausableWait(4000);
+    }
+    if (countCancelled) return;
+
+    await runCount(ex.defaults.sets, ex.defaults.reps, ex.defaults.seconds, ex.defaults.rest, voiceOn);
+    if (countCancelled) return;
+  }
+
+  if (countCancelled) return;
+  cLabelEl.textContent = '';
+  cBigEl.textContent = 'All Done!';
+  cBigEl.className = 'c-done';
+  cBigEl.style.color = '';
+  cSubEl.textContent = '';
+  cFlash('set');
+  if (voiceOn) speakCount('Workout complete. Great job!');
+  vibrate([100, 50, 100, 50, 100, 50, 200]);
+}
+
+function startRunAll() {
+  const voiceOn = document.getElementById('runAllVoice').checked;
+
+  countCancelled = false;
+  runPaused = false;
+  cancelReturnsTo = 'grid';
+  pauseBtnEl.textContent = '❙❙ Pause';
+  pauseBtnEl.classList.remove('paused');
+  window.speechSynthesis.cancel();
+  gridEl.classList.add('hidden');
+  titleEl.classList.add('hidden');
+  dayTabsEl.classList.add('hidden');
+  runAllBarEl.classList.add('hidden');
+  countWrapEl.classList.add('active');
+  cLabelEl.textContent = 'Get ready...';
+  cBigEl.textContent = '';
+  cSubEl.textContent = '';
+  requestWakeLock();
+
+  runAllExercises(voiceOn);
 }
 
 // exercises.html?day=upper (or lower) jumps straight to that day's tab -
