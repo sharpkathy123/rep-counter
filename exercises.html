@@ -170,12 +170,78 @@
     background: #1a1a1a;
     color: #ccc;
   }
+
+  #countWrap {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0a0a0a;
+    z-index: 20;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+  }
+  #countWrap.active { display: flex; }
+  #countWrap .back { margin-bottom: 4vh; }
+  #cLabel {
+    font-size: 10vw;
+    letter-spacing: 2px;
+    color: #ccc;
+    text-transform: uppercase;
+    margin-bottom: 2vh;
+    font-weight: 600;
+  }
+  #cBig {
+    font-size: min(58vw, 55vh);
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: #ffffff;
+    text-shadow: 0 0 30px rgba(255,255,255,0.35);
+    transition: transform 0.1s ease-out;
+  }
+  #cBig.pulse { animation: pulseScale 0.35s ease-out; }
+  #cBig.c-done { font-size: min(22vw, 22vh); }
+  @keyframes pulseScale {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.22); }
+    100% { transform: scale(1); }
+  }
+  #cSub {
+    font-size: 9vw;
+    color: #ccc;
+    margin-top: 3vh;
+    font-weight: 500;
+  }
+  .c-rest { color: #4da3ff; }
+  .c-go { color: #fff; }
+  .c-done { color: #2fa84f; }
+  #cFlash {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 21;
+  }
+  #cFlash.rep-flash { background: #fff; animation: repFlash 0.25s ease-out; }
+  #cFlash.set-flash { background: #ffd23f; animation: setFlash 0.7s ease-out; }
+  @keyframes repFlash { 0% { opacity: 0.45; } 100% { opacity: 0; } }
+  @keyframes setFlash { 0% { opacity: 0.65; } 30% { opacity: 0; } 50% { opacity: 0.65; } 100% { opacity: 0; } }
 </style>
 </head>
 <body>
 
 <h1 id="pageTitle">Exercises</h1>
 <div id="grid"></div>
+
+<div id="cFlash"></div>
+<div id="countWrap">
+  <a class="back" href="#" onclick="cancelCount(); return false;">&#10005; Cancel</a>
+  <div id="cLabel"></div>
+  <div id="cBig"></div>
+  <div id="cSub"></div>
+</div>
 
 <div id="detail">
   <a class="back" href="#" onclick="showGrid(); return false;">&larr; All exercises</a>
@@ -219,8 +285,8 @@
 
 <script>
 // Simple original line-icon parts, reused across exercises.
-const DUMBBELL = (cx, cy, angle) => `<g transform="rotate(${angle} ${cx} ${cy})"><line x1="${cx-10}" y1="${cy}" x2="${cx+10}" y2="${cy}"/><circle cx="${cx-10}" cy="${cy}" r="5"/><circle cx="${cx+10}" cy="${cy}" r="5"/></g>`;
-const ARROW = '<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>';
+const DUMBBELL = (cx, cy, angle) => `<g transform="rotate(${angle} ${cx} ${cy})"><line x1="${cx-8}" y1="${cy}" x2="${cx+8}" y2="${cy}"/><circle cx="${cx-8}" cy="${cy}" r="4"/><circle cx="${cx+8}" cy="${cy}" r="4"/></g>`;
+const ARROW = '<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>';
 
 const EXERCISES = [
   {
@@ -291,11 +357,11 @@ const EXERCISES = [
       <line x1="55" y1="28" x2="55" y2="65"/>
       <line x1="55" y1="65" x2="48" y2="108"/>
       <line x1="55" y1="65" x2="63" y2="108"/>
-      <line x1="55" y1="35" x2="70" y2="55"/>
-      <line x1="70" y1="55" x2="60" y2="35"/>
-      ${DUMBBELL(60, 33, -30)}
-      <line x1="55" y1="35" x2="42" y2="65"/>
-      ${DUMBBELL(42, 68, 0)}`
+      <line x1="55" y1="33" x2="70" y2="50"/>
+      <line x1="70" y1="50" x2="50" y2="42"/>
+      ${DUMBBELL(46, 40, -25)}
+      <line x1="55" y1="33" x2="40" y2="60"/>
+      ${DUMBBELL(40, 66, 5)}`
   },
   {
     slug: 'bridge',
@@ -326,9 +392,9 @@ const EXERCISES = [
     icon: `${ARROW}
       <circle cx="15" cy="26" r="8"/>
       <line x1="23" y1="28" x2="55" y2="30"/>
-      <line x1="55" y1="30" x2="80" y2="48"/>
-      <line x1="80" y1="48" x2="58" y2="56"/>
-      <path d="M80 48 Q98 36 90 16" stroke-dasharray="3 4" marker-end="url(#__ARROWID__)"/>`
+      <line x1="55" y1="30" x2="78" y2="46"/>
+      <line x1="78" y1="46" x2="58" y2="54"/>
+      <path d="M90 30 A14 14 0 1 1 88 44" marker-end="url(#__ARROWID__)"/>`
   },
   {
     slug: 'abdominal-bracing-marches',
@@ -340,14 +406,14 @@ const EXERCISES = [
     tip: 'Keep your low back gently pressed to the floor the whole time - don’t let your pelvis rock side to side.',
     defaults: { sets: 2, reps: 10, seconds: 2, rest: 15 },
     icon: `${ARROW}
-      <line x1="8" y1="95" x2="115" y2="95" stroke-dasharray="4 5"/>
-      <circle cx="15" cy="83" r="8"/>
-      <line x1="23" y1="85" x2="55" y2="88"/>
-      <line x1="55" y1="88" x2="72" y2="70"/>
-      <line x1="72" y1="70" x2="85" y2="92"/>
-      <line x1="55" y1="88" x2="55" y2="58"/>
-      <line x1="55" y1="58" x2="30" y2="58"/>
-      <path d="M55 90 Q40 78 55 60" stroke-dasharray="3 4" marker-end="url(#__ARROWID__)"/>`
+      <line x1="8" y1="100" x2="115" y2="100" stroke-dasharray="4 5"/>
+      <circle cx="15" cy="88" r="8"/>
+      <line x1="23" y1="90" x2="58" y2="92"/>
+      <line x1="58" y1="92" x2="78" y2="76"/>
+      <line x1="78" y1="76" x2="92" y2="97"/>
+      <line x1="58" y1="92" x2="58" y2="58"/>
+      <line x1="58" y1="58" x2="33" y2="58"/>
+      <line x1="68" y1="88" x2="68" y2="64" marker-end="url(#__ARROWID__)"/>`
   },
   {
     slug: 'sit-to-stand',
@@ -364,9 +430,9 @@ const EXERCISES = [
       <line x1="60" y1="43" x2="60" y2="75"/>
       <line x1="60" y1="75" x2="50" y2="108"/>
       <line x1="60" y1="75" x2="70" y2="108"/>
-      <line x1="48" y1="48" x2="72" y2="55"/>
-      <line x1="72" y1="48" x2="48" y2="55"/>
-      <line x1="60" y1="90" x2="60" y2="70" marker-end="url(#__ARROWID__)"/>`
+      <line x1="50" y1="58" x2="70" y2="70"/>
+      <line x1="70" y1="58" x2="50" y2="70"/>
+      <line x1="60" y1="90" x2="60" y2="72" marker-end="url(#__ARROWID__)"/>`
   },
   {
     slug: 'no-money',
@@ -462,7 +528,7 @@ function buildIconSvg(inner) {
 
 function buildGrid() {
   gridEl.innerHTML = EXERCISES.map(ex => `
-    <div class="card ${ex.type}" onclick="openDetail('${ex.slug}', false)">
+    <div class="card ${ex.type}" onclick="openDetail('${ex.slug}')">
       ${buildIconSvg(resolvedIcon(ex, 'card'))}
       <div>${ex.name}</div>
     </div>
@@ -498,7 +564,7 @@ function speakDescription() {
   window.speechSynthesis.speak(u);
 }
 
-function openDetail(slug, fromUrl) {
+function openDetail(slug) {
   const ex = EXERCISES.find(e => e.slug === slug);
   if (!ex) return;
   currentExercise = ex;
@@ -524,24 +590,169 @@ function openDetail(slug, fromUrl) {
   gridEl.classList.add('hidden');
   titleEl.classList.add('hidden');
   detailEl.classList.add('open');
-
-  if (fromUrl && voiceMode) {
-    // give voices a moment to load on a cold launch before speaking
-    setTimeout(speakDescription, 300);
-  }
 }
 
 document.getElementById('myNotes').addEventListener('input', (e) => {
   if (currentExercise) localStorage.setItem('notes_' + currentExercise.slug, e.target.value);
 });
 
+// Keep the screen awake during a voice-guided workout run on this page.
+let wakeLock = null;
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator && document.visibilityState === 'visible') {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    }
+  } catch (e) {
+    // unsupported browser, Low Power Mode, etc. - fail silently
+  }
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && !wakeLock) requestWakeLock();
+});
+
+function vibrate(pattern) {
+  if (navigator.vibrate) navigator.vibrate(pattern);
+}
+
+const countWrapEl = document.getElementById('countWrap');
+const cLabelEl = document.getElementById('cLabel');
+const cBigEl = document.getElementById('cBig');
+const cSubEl = document.getElementById('cSub');
+const cFlashEl = document.getElementById('cFlash');
+
+function cFlash(type) {
+  cFlashEl.className = '';
+  void cFlashEl.offsetWidth;
+  cFlashEl.className = type === 'set' ? 'set-flash' : 'rep-flash';
+}
+function cPulse() {
+  cBigEl.classList.remove('pulse');
+  void cBigEl.offsetWidth;
+  cBigEl.classList.add('pulse');
+}
+const WARM = [255, 91, 61];
+const REP_START = [255, 255, 255];
+const REST_START = [77, 163, 255];
+function lerpColor(start, t) {
+  const r = Math.round(start[0] + (WARM[0] - start[0]) * t);
+  const g = Math.round(start[1] + (WARM[1] - start[1]) * t);
+  const b = Math.round(start[2] + (WARM[2] - start[2]) * t);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+async function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+
+function speakCount(text) {
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  const v = getSavedVoice();
+  if (v) u.voice = v;
+  window.speechSynthesis.speak(u);
+}
+
+let countCancelled = false;
+function cancelCount() {
+  countCancelled = true;
+  window.speechSynthesis.cancel();
+  countWrapEl.classList.remove('active');
+  detailEl.classList.add('open');
+}
+
+async function runCount(sets, reps, seconds, rest, voiceOn) {
+  const speakFn = voiceOn ? speakCount : () => {};
+  cLabelEl.textContent = '';
+  for (let s = 1; s <= sets && !countCancelled; s++) {
+    cLabelEl.textContent = `Set ${s} of ${sets}`;
+    speakFn(`Set ${s} of ${sets}`);
+    for (let r = 1; r <= reps && !countCancelled; r++) {
+      cSubEl.textContent = `rep ${r} of ${reps}`;
+      speakFn(`Rep ${r}`);
+      vibrate(40);
+      for (let sec = 1; sec <= seconds && !countCancelled; sec++) {
+        cBigEl.textContent = sec;
+        cBigEl.className = 'c-go';
+        cBigEl.style.color = lerpColor(REP_START, seconds > 1 ? (sec - 1) / (seconds - 1) : 1);
+        speakFn(String(sec));
+        if (!wakeLock) requestWakeLock();
+        await sleep(1000);
+      }
+      if (countCancelled) return;
+      cPulse();
+      cFlash('rep');
+      vibrate(60);
+    }
+    if (countCancelled) return;
+    cFlash('set');
+    vibrate([60, 40, 60]);
+    if (s < sets) {
+      speakFn('Set complete');
+      if (rest > 0) {
+        speakFn(`Rest, ${rest} seconds`);
+        for (let t = rest; t > 0 && !countCancelled; t--) {
+          cLabelEl.textContent = 'Rest';
+          cBigEl.textContent = t;
+          cBigEl.className = 'c-rest';
+          cBigEl.style.color = lerpColor(REST_START, rest > 1 ? (rest - t) / (rest - 1) : 1);
+          cSubEl.textContent = `next: set ${s + 1}`;
+          if (t <= 3 || t % 5 === 0) speakFn(String(t));
+          await sleep(1000);
+        }
+      }
+    }
+  }
+  if (countCancelled) return;
+  cLabelEl.textContent = '';
+  cBigEl.textContent = 'Done';
+  cBigEl.className = 'c-done';
+  cBigEl.style.color = '';
+  cSubEl.textContent = '';
+  cFlash('set');
+  speakFn('Done! Great job.');
+  vibrate([100, 50, 100, 50, 200]);
+}
+
 function startCounting() {
-  const sets = document.getElementById('f-sets').value;
-  const reps = document.getElementById('f-reps').value;
-  const seconds = document.getElementById('f-seconds').value;
-  const rest = document.getElementById('f-rest').value;
-  const voice = document.getElementById('f-voice').checked ? '1' : '0';
-  window.location.href = `index.html?sets=${sets}&reps=${reps}&seconds=${seconds}&rest=${rest}&voice=${voice}`;
+  const sets = parseInt(document.getElementById('f-sets').value);
+  const reps = parseInt(document.getElementById('f-reps').value);
+  const seconds = parseInt(document.getElementById('f-seconds').value);
+  const rest = parseInt(document.getElementById('f-rest').value) || 0;
+  const voiceOn = document.getElementById('f-voice').checked;
+
+  if (!voiceOn) {
+    // Silent flow: no speech involved, so handing off to the counter page works fine.
+    window.location.href = `index.html?sets=${sets}&reps=${reps}&seconds=${seconds}&rest=${rest}&voice=0`;
+    return;
+  }
+
+  // Voice flow: stay on THIS page instead of navigating to index.html.
+  // The tap on "Start Counting" is what unlocks iOS speech - a navigation
+  // to a new page loses that unlock and silently kills the audio, which is
+  // exactly the bug that was reported. Speaking the description here first
+  // also gives time to get back into position before the counting starts.
+  countCancelled = false;
+  window.speechSynthesis.cancel();
+  detailEl.classList.remove('open');
+  countWrapEl.classList.add('active');
+  cLabelEl.textContent = 'Get ready...';
+  cBigEl.textContent = '';
+  cSubEl.textContent = '';
+  requestWakeLock();
+
+  const beginCounting = () => runCount(sets, reps, seconds, rest, true);
+
+  if (!('speechSynthesis' in window)) {
+    beginCounting();
+    return;
+  }
+  const ex = currentExercise;
+  const text = `${ex.name}. ${ex.description} ${ex.setup} ${ex.movement} Get in position now.`;
+  const u = new SpeechSynthesisUtterance(text);
+  const v = getSavedVoice();
+  if (v) u.voice = v;
+  u.onend = beginCounting;
+  u.onerror = beginCounting;
+  window.speechSynthesis.speak(u);
 }
 
 // Deep link: exercises.html?ex=bridge&voice=1 opens straight to that
@@ -550,7 +761,7 @@ function startCounting() {
 const startParams = new URLSearchParams(window.location.search);
 const exParam = startParams.get('ex');
 if (exParam && EXERCISES.some(e => e.slug === exParam)) {
-  openDetail(exParam, true);
+  openDetail(exParam);
 }
 </script>
 </body>
