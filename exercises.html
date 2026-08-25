@@ -8,6 +8,9 @@
 <meta name="theme-color" content="#0a0a0a">
 <title>Exercises</title>
 <style>
+  * {
+    box-sizing: border-box;
+  }
   html, body {
     background: #0a0a0a;
     margin: 0; padding: 0;
@@ -26,6 +29,28 @@
     text-align: center;
     letter-spacing: 1px;
   }
+  #dayTabs {
+    display: flex;
+    gap: 2vw;
+    margin-bottom: 3vh;
+  }
+  #dayTabs button {
+    flex: 1;
+    min-width: 0;
+    font-size: 4.2vw;
+    font-weight: 600;
+    padding: 2.5vw;
+    border-radius: 10px;
+    border: 1px solid #333;
+    background: #1a1a1a;
+    color: #999;
+  }
+  #dayTabs button.active {
+    background: #2fa84f;
+    border-color: #2fa84f;
+    color: #fff;
+  }
+  #dayTabs.hidden { display: none; }
   #grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -43,6 +68,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: 0;
     gap: 1.5vw;
     cursor: pointer;
   }
@@ -229,6 +255,10 @@
 <body>
 
 <h1 id="pageTitle">Exercises</h1>
+<div id="dayTabs">
+  <button id="lowerTab" onclick="selectDay('lower')">Lower Body Day</button>
+  <button id="upperTab" onclick="selectDay('upper')">Upper Body Day</button>
+</div>
 <div id="grid"></div>
 
 <div id="cFlash"></div>
@@ -521,6 +551,19 @@ const EXERCISES = [
 const gridEl = document.getElementById('grid');
 const detailEl = document.getElementById('detail');
 const titleEl = document.getElementById('pageTitle');
+const dayTabsEl = document.getElementById('dayTabs');
+const lowerTabEl = document.getElementById('lowerTab');
+const upperTabEl = document.getElementById('upperTab');
+
+// A good order for each day: standing/banded work grouped together, floor
+// work grouped together, more coordination-demanding moves done first while
+// fresh, and exercises that share a band anchor kept adjacent.
+const DAY_ORDER = {
+  lower: ['hip-abduction', 'hip-extension', 'bridge', 'abdominal-bracing-marches', 'clamshell', 'sit-to-stand'],
+  upper: ['pnf-d2', 'no-money', 'shoulder-horizontal-abduction', 'rows', 'shoulder-extension', 'bicep-curl']
+};
+const DAY_LABEL = { lower: 'Lower Body Day', upper: 'Upper Body Day' };
+let currentDay = localStorage.getItem('repcounter_day') || 'lower';
 
 function resolvedIcon(ex, suffix) {
   // Each icon can define an arrowhead marker; give it a unique id per
@@ -534,20 +577,31 @@ function buildIconSvg(inner) {
 }
 
 function buildGrid() {
-  gridEl.innerHTML = EXERCISES.map(ex => `
+  const list = DAY_ORDER[currentDay].map(slug => EXERCISES.find(e => e.slug === slug));
+  gridEl.innerHTML = list.map(ex => `
     <div class="card ${ex.type}" onclick="openDetail('${ex.slug}')">
       ${buildIconSvg(resolvedIcon(ex, 'card'))}
       <div>${ex.name}</div>
     </div>
   `).join('');
 }
-buildGrid();
+
+function selectDay(day) {
+  currentDay = day;
+  localStorage.setItem('repcounter_day', day);
+  lowerTabEl.classList.toggle('active', day === 'lower');
+  upperTabEl.classList.toggle('active', day === 'upper');
+  titleEl.textContent = DAY_LABEL[day];
+  buildGrid();
+}
+selectDay(currentDay);
 
 function showGrid() {
   window.speechSynthesis.cancel();
   detailEl.classList.remove('open');
   gridEl.classList.remove('hidden');
   titleEl.classList.remove('hidden');
+  dayTabsEl.classList.remove('hidden');
   history.replaceState(null, '', 'exercises.html');
 }
 
@@ -595,6 +649,7 @@ function openDetail(slug) {
 
   gridEl.classList.add('hidden');
   titleEl.classList.add('hidden');
+  dayTabsEl.classList.add('hidden');
   detailEl.classList.add('open');
 }
 
@@ -761,10 +816,17 @@ function startCounting() {
   window.speechSynthesis.speak(u);
 }
 
+// exercises.html?day=upper (or lower) jumps straight to that day's tab -
+// handy for a dedicated bookmark or Siri Shortcut per workout day.
+const startParams = new URLSearchParams(window.location.search);
+const dayParam = startParams.get('day');
+if (dayParam === 'upper' || dayParam === 'lower') {
+  selectDay(dayParam);
+}
+
 // Deep link: exercises.html?ex=bridge&voice=1 opens straight to that
 // exercise's description (and speaks it if voice=1), skipping the grid -
 // this is what a Siri Shortcut for one specific exercise should point to.
-const startParams = new URLSearchParams(window.location.search);
 const exParam = startParams.get('ex');
 if (exParam && EXERCISES.some(e => e.slug === exParam)) {
   openDetail(exParam);
