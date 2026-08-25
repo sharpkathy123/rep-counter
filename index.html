@@ -66,6 +66,23 @@
   #setup {
     font-size: 7vw;
     display: none;
+    max-height: 94vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 2vw;
+    box-sizing: border-box;
+  }
+  #setupBackLink {
+    display: inline-block;
+    font-size: 5.5vw;
+    font-weight: 700;
+    color: #fff;
+    background: #2a2a2a;
+    border: 1px solid #555;
+    border-radius: 10px;
+    padding: 0.4em 1em;
+    margin-bottom: 1.2em;
+    text-decoration: none;
   }
   #setup input {
     font-size: 7vw;
@@ -163,6 +180,7 @@
   <div id="big"></div>
   <div id="sub"></div>
   <div id="setup">
+    <a id="setupBackLink" href="exercises.html">&larr; All exercises</a><br>
     Sets <input type="number" id="s" value="2"><br>
     Reps <input type="number" id="r" value="10"><br>
     Seconds/rep <input type="number" id="d" value="8"><br>
@@ -170,8 +188,7 @@
     <label class="chk"><input type="checkbox" id="v"> Speak aloud</label>
     <select id="vn"></select>
     <button type="button" id="testVoiceBtn" onclick="previewVoice()">Test voice</button><br>
-    <button onclick="startFromForm()">Start</button><br>
-    <a id="backLink" href="exercises.html" style="display:inline-block;margin-top:1em;font-size:4vw;color:#888;">&larr; All exercises</a>
+    <button onclick="startFromForm()">Start</button>
   </div>
   <div id="tapStart">
     <div class="msg">iPhone needs one tap before it can play sound</div>
