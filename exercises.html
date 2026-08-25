@@ -910,7 +910,9 @@ async function runCount(sets, reps, seconds, rest, voiceOn, token) {
           cBigEl.className = 'c-rest';
           cBigEl.style.color = lerpColor(REST_START, rest > 1 ? (rest - t) / (rest - 1) : 1);
           cSubEl.textContent = `next: set ${s + 1}`;
-          if (t <= 3 || t % 5 === 0) speakFn(String(t));
+          // skip the very first tick's own number - it would otherwise cancel
+          // the "Rest, N seconds" announcement before it's even heard
+          if (t !== rest && (t <= 3 || t % 5 === 0)) speakFn(String(t));
           await pausableWait(1000, token);
         }
       }

@@ -369,7 +369,9 @@ async function run() {
           big.className = 'rest';
           big.style.color = lerpColor(REST_START, rest > 1 ? (rest - t) / (rest - 1) : 1);
           sub.textContent = `next: set ${s + 1}`;
-          if (t <= 3 || t % 5 === 0) speak(String(t));
+          // skip the very first tick's own number - it would otherwise cancel
+          // the "Rest, N seconds" announcement before it's even heard
+          if (t !== rest && (t <= 3 || t % 5 === 0)) speak(String(t));
           await sleep(1000);
         }
       }
