@@ -347,7 +347,7 @@
     <div class="row"><span>Reps</span><input type="number" id="f-reps"></div>
     <div class="row"><span>Seconds / rep</span><input type="number" id="f-seconds"></div>
     <div class="row"><span>Rest (sec)</span><input type="number" id="f-rest"></div>
-    <div class="hint">Defaults are placeholders - edit to match what your PT prescribed.</div>
+    <div class="hint">Starting numbers are placeholders - edit to match what your PT prescribed. Changes are saved on this device, including for Run All.</div>
   </div>
 
   <label class="chk-row"><input type="checkbox" id="f-voice"> Speak aloud during counting</label>
@@ -661,6 +661,28 @@ function getSavedVoice() {
   return window.speechSynthesis.getVoices().find(v => v.voiceURI === saved) || null;
 }
 
+// Sets/reps/seconds/rest edited for an exercise are remembered on this
+// device, so Run All and future visits pick up the same numbers instead of
+// resetting to the generic placeholder defaults every time.
+function getExerciseParams(ex) {
+  const saved = localStorage.getItem('params_' + ex.slug);
+  if (saved) {
+    try { return JSON.parse(saved); } catch (e) {}
+  }
+  return ex.defaults;
+}
+
+function saveCurrentExerciseParams() {
+  if (!currentExercise) return;
+  const params = {
+    sets: parseInt(document.getElementById('f-sets').value) || currentExercise.defaults.sets,
+    reps: parseInt(document.getElementById('f-reps').value) || currentExercise.defaults.reps,
+    seconds: parseInt(document.getElementById('f-seconds').value) || currentExercise.defaults.seconds,
+    rest: parseInt(document.getElementById('f-rest').value) || 0
+  };
+  localStorage.setItem('params_' + currentExercise.slug, JSON.stringify(params));
+}
+
 let currentExercise = null;
 
 function speakDescription() {
@@ -687,10 +709,11 @@ function openDetail(slug) {
   document.getElementById('detailMovement').textContent = ex.movement;
   document.getElementById('detailTip').textContent = ex.tip;
   document.getElementById('myNotes').value = localStorage.getItem('notes_' + ex.slug) || '';
-  document.getElementById('f-sets').value = ex.defaults.sets;
-  document.getElementById('f-reps').value = ex.defaults.reps;
-  document.getElementById('f-seconds').value = ex.defaults.seconds;
-  document.getElementById('f-rest').value = ex.defaults.rest;
+  const savedParams = getExerciseParams(ex);
+  document.getElementById('f-sets').value = savedParams.sets;
+  document.getElementById('f-reps').value = savedParams.reps;
+  document.getElementById('f-seconds').value = savedParams.seconds;
+  document.getElementById('f-rest').value = savedParams.rest;
 
   const params = new URLSearchParams(window.location.search);
   const voiceMode = params.get('voice') === '1';
@@ -705,6 +728,10 @@ function openDetail(slug) {
 
 document.getElementById('myNotes').addEventListener('input', (e) => {
   if (currentExercise) localStorage.setItem('notes_' + currentExercise.slug, e.target.value);
+});
+
+['f-sets', 'f-reps', 'f-seconds', 'f-rest'].forEach(id => {
+  document.getElementById(id).addEventListener('input', saveCurrentExerciseParams);
 });
 
 // Keep the screen awake during a voice-guided workout run on this page.
@@ -933,7 +960,8 @@ async function runAllExercises(voiceOn) {
     }
     if (countCancelled) return;
 
-    await runCount(ex.defaults.sets, ex.defaults.reps, ex.defaults.seconds, ex.defaults.rest, voiceOn);
+    const p = getExerciseParams(ex);
+    await runCount(p.sets, p.reps, p.seconds, p.rest, voiceOn);
     if (countCancelled) return;
   }
 
