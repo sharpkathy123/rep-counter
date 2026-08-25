@@ -49,13 +49,11 @@
   .card svg {
     width: 15vw;
     height: 15vw;
+    color: #eee;
   }
   .card.band { border-color: #3d6f9e; }
-  .card.band svg { color: #4da3ff; }
   .card.bodyweight { border-color: #3d7a4a; }
-  .card.bodyweight svg { color: #4fd47a; }
   .card.dumbbell { border-color: #8a6a2f; }
-  .card.dumbbell svg { color: #ffd23f; }
 
   #detail {
     display: none;
@@ -76,10 +74,8 @@
     width: 40vw;
     height: 40vw;
     margin: 0 auto 2vh;
+    color: #eee;
   }
-  .detail-icon.band { color: #4da3ff; }
-  .detail-icon.bodyweight { color: #4fd47a; }
-  .detail-icon.dumbbell { color: #ffd23f; }
   .detail-name {
     font-size: 6.5vw;
     font-weight: 700;
@@ -285,11 +281,15 @@
 
 <script>
 // Simple original line-icon parts, reused across exercises.
-const DUMBBELL = (cx, cy, angle) => `<g transform="rotate(${angle} ${cx} ${cy})"><line x1="${cx-8}" y1="${cy}" x2="${cx+8}" y2="${cy}"/><circle cx="${cx-8}" cy="${cy}" r="4"/><circle cx="${cx+8}" cy="${cy}" r="4"/></g>`;
-const ARROW = '<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>';
-// Color-coding prototype (Bridge, Rows only): white arrowhead to pair with
-// an explicit white stroke on motion arrows, independent of body color.
-const WHITE_ARROW = '<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fff"/></marker></defs>';
+const DUMBBELL = (cx, cy, angle) => `<g transform="rotate(${angle} ${cx} ${cy})" stroke="#ffb347"><line x1="${cx-8}" y1="${cy}" x2="${cx+8}" y2="${cy}"/><circle cx="${cx-8}" cy="${cy}" r="4"/><circle cx="${cx+8}" cy="${cy}" r="4"/></g>`;
+// Consistent color coding across every icon: white = body, amber = equipment
+// (bands, anchors, dumbbells), gray = ground/furniture context, and this
+// accent = motion. The arrowhead is always this accent color and a slim,
+// pointed shape so it never reads as part of the body.
+const EQUIP = '#ffb347';
+const GROUND = '#5a5a5a';
+const MOTION = '#ff5b3d';
+const ARROW = `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="${MOTION}"/></marker></defs>`;
 
 const EXERCISES = [
   {
@@ -308,7 +308,7 @@ const EXERCISES = [
       <line x1="55" y1="65" x2="90" y2="80" marker-end="url(#__ARROWID__)"/>
       <line x1="55" y1="35" x2="42" y2="55"/>
       <line x1="55" y1="35" x2="68" y2="55"/>
-      <path d="M48 105 Q70 95 90 80" stroke-dasharray="4 5"/>`
+      <path d="M48 105 Q70 95 90 80" stroke="${EQUIP}" stroke-dasharray="4 5"/>`
   },
   {
     slug: 'hip-extension',
@@ -325,7 +325,7 @@ const EXERCISES = [
       <line x1="54" y1="62" x2="50" y2="105"/>
       <line x1="54" y1="62" x2="85" y2="95" marker-end="url(#__ARROWID__)"/>
       <line x1="56" y1="32" x2="42" y2="46"/>
-      <path d="M50 105 Q68 100 85 95" stroke-dasharray="4 5"/>`
+      <path d="M50 105 Q68 100 85 95" stroke="${EQUIP}" stroke-dasharray="4 5"/>`
   },
   {
     slug: 'pnf-d2',
@@ -342,8 +342,8 @@ const EXERCISES = [
       <line x1="55" y1="75" x2="45" y2="110"/>
       <line x1="55" y1="75" x2="65" y2="110"/>
       <path d="M40 75 Q60 60 95 20" marker-end="url(#__ARROWID__)"/>
-      <line x1="20" y1="103" x2="20" y2="116"/>
-      <path d="M20 106 Q30 92 40 76" stroke-dasharray="4 5"/>`
+      <line x1="20" y1="103" x2="20" y2="116" stroke="${EQUIP}"/>
+      <path d="M20 106 Q30 92 40 76" stroke="${EQUIP}" stroke-dasharray="4 5"/>`
   },
   {
     slug: 'bicep-curl',
@@ -374,13 +374,13 @@ const EXERCISES = [
     movement: 'Squeeze your glutes and lift your hips toward the ceiling until your body forms a straight line from knees to shoulders. Hold, then lower with control.',
     tip: 'Drive through your heels and avoid over-arching your lower back at the top.',
     defaults: { sets: 2, reps: 10, seconds: 3, rest: 15 },
-    icon: `${WHITE_ARROW}
-      <line x1="8" y1="100" x2="115" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
+    icon: `${ARROW}
+      <line x1="8" y1="100" x2="115" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
       <circle cx="13" cy="90" r="8"/>
       <line x1="20" y1="95" x2="55" y2="85"/>
       <line x1="55" y1="85" x2="90" y2="75"/>
       <line x1="90" y1="75" x2="90" y2="100"/>
-      <line x1="55" y1="82" x2="55" y2="62" stroke="#fff" marker-end="url(#__ARROWID__)"/>`
+      <line x1="55" y1="82" x2="55" y2="62" stroke="${MOTION}" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`
   },
   {
     slug: 'clamshell',
@@ -392,7 +392,7 @@ const EXERCISES = [
     tip: 'Keep your hips stacked and still - don’t let your top hip roll backward as you open your knee.',
     defaults: { sets: 2, reps: 12, seconds: 2, rest: 15 },
     icon: `${ARROW}
-      <line x1="5" y1="100" x2="100" y2="100" stroke-dasharray="4 5"/>
+      <line x1="5" y1="100" x2="100" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
       <circle cx="12" cy="88" r="8"/>
       <line x1="20" y1="89" x2="38" y2="90"/>
       <line x1="38" y1="90" x2="58" y2="98"/>
@@ -401,7 +401,7 @@ const EXERCISES = [
       <line x1="58" y1="95" x2="78" y2="92" stroke-dasharray="3 4"/>
       <line x1="38" y1="90" x2="58" y2="72"/>
       <line x1="58" y1="72" x2="78" y2="90"/>
-      <line x1="58" y1="93" x2="58" y2="76" marker-end="url(#__ARROWID__)"/>`
+      <line x1="58" y1="93" x2="58" y2="76" stroke="${MOTION}" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`
   },
   {
     slug: 'abdominal-bracing-marches',
@@ -413,14 +413,14 @@ const EXERCISES = [
     tip: 'Keep your low back gently pressed to the floor the whole time - don’t let your pelvis rock side to side.',
     defaults: { sets: 2, reps: 10, seconds: 2, rest: 15 },
     icon: `${ARROW}
-      <line x1="8" y1="100" x2="115" y2="100" stroke-dasharray="4 5"/>
+      <line x1="8" y1="100" x2="115" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
       <circle cx="15" cy="88" r="8"/>
       <line x1="23" y1="90" x2="55" y2="92"/>
       <line x1="55" y1="92" x2="72" y2="78" stroke-dasharray="3 4"/>
       <line x1="72" y1="78" x2="85" y2="98" stroke-dasharray="3 4"/>
       <line x1="55" y1="92" x2="38" y2="58"/>
       <line x1="38" y1="58" x2="65" y2="58"/>
-      <line x1="72" y1="76" x2="42" y2="60" marker-end="url(#__ARROWID__)"/>`
+      <line x1="72" y1="76" x2="42" y2="60" stroke="${MOTION}" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`
   },
   {
     slug: 'sit-to-stand',
@@ -432,16 +432,16 @@ const EXERCISES = [
     tip: 'Keep your chest up and avoid rocking or using your arms to help you up.',
     defaults: { sets: 2, reps: 10, seconds: 2, rest: 20 },
     icon: `${ARROW}
-      <line x1="18" y1="85" x2="82" y2="85" stroke-dasharray="3 4"/>
-      <line x1="25" y1="85" x2="25" y2="108" stroke-dasharray="3 4"/>
-      <line x1="75" y1="85" x2="75" y2="108" stroke-dasharray="3 4"/>
+      <line x1="18" y1="85" x2="82" y2="85" stroke="${GROUND}" stroke-dasharray="3 4"/>
+      <line x1="25" y1="85" x2="25" y2="108" stroke="${GROUND}" stroke-dasharray="3 4"/>
+      <line x1="75" y1="85" x2="75" y2="108" stroke="${GROUND}" stroke-dasharray="3 4"/>
       <circle cx="60" cy="35" r="8"/>
       <line x1="60" y1="43" x2="60" y2="75"/>
       <line x1="60" y1="75" x2="50" y2="108"/>
       <line x1="60" y1="75" x2="70" y2="108"/>
       <line x1="50" y1="58" x2="70" y2="70"/>
       <line x1="70" y1="58" x2="50" y2="70"/>
-      <line x1="60" y1="90" x2="60" y2="72" marker-end="url(#__ARROWID__)"/>`
+      <line x1="60" y1="90" x2="60" y2="72" stroke="${MOTION}" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`
   },
   {
     slug: 'no-money',
@@ -489,14 +489,16 @@ const EXERCISES = [
     movement: 'Pull your elbows straight back, squeezing your shoulder blades together and keeping elbows close to your body, then return with control.',
     tip: 'Keep your chest up and avoid shrugging your shoulders toward your ears as you pull.',
     defaults: { sets: 2, reps: 12, seconds: 2, rest: 15 },
-    icon: `${WHITE_ARROW}
+    icon: `${ARROW}
       <circle cx="70" cy="20" r="8"/>
       <line x1="70" y1="28" x2="70" y2="65"/>
       <line x1="70" y1="65" x2="62" y2="108"/>
       <line x1="70" y1="65" x2="78" y2="108"/>
-      <path d="M70 40 L22 42" stroke="#ffb347" stroke-dasharray="3 4"/>
-      <path d="M70 40 L58 48 L35 48" stroke="#fff" marker-end="url(#__ARROWID__)"/>
-      <line x1="15" y1="35" x2="15" y2="49" stroke="#ffb347"/>`
+      <line x1="70" y1="40" x2="55" y2="48"/>
+      <line x1="55" y1="48" x2="40" y2="50"/>
+      <path d="M40 50 L15 43" stroke="${EQUIP}" stroke-dasharray="3 4"/>
+      <line x1="15" y1="36" x2="15" y2="50" stroke="${EQUIP}"/>
+      <path d="M40 58 L56 54" stroke="${MOTION}" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`
   },
   {
     slug: 'shoulder-extension',
@@ -578,7 +580,6 @@ function openDetail(slug) {
 
   const detailIconEl = document.getElementById('detailIcon');
   detailIconEl.innerHTML = resolvedIcon(ex, 'detail');
-  detailIconEl.setAttribute('class', 'detail-icon ' + ex.type);
   document.getElementById('detailName').textContent = ex.name;
   document.getElementById('detailDescription').textContent = ex.description;
   document.getElementById('detailSetup').textContent = ex.setup;
