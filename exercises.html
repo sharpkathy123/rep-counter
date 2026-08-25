@@ -70,6 +70,14 @@
     color: #fff;
     font-weight: 700;
   }
+  #voiceSettingsLink {
+    display: block;
+    text-align: center;
+    margin-top: 2vh;
+    font-size: 3.8vw;
+    color: #888;
+    text-decoration: none;
+  }
   #grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -312,6 +320,7 @@
 <div id="runAllBar">
   <label class="chk-row" style="justify-content:center;"><input type="checkbox" id="runAllVoice"> Speak aloud</label>
   <button id="runAllBtn" onclick="startRunAll()">&#9654; Run All Exercises</button>
+  <a id="voiceSettingsLink" href="index.html">&#128264; Voice settings &amp; test</a>
 </div>
 <div id="grid"></div>
 
