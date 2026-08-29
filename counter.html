@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rep Counter">
 <meta name="theme-color" content="#0a0a0a">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
 <title>Rep Counter</title>
 <style>
   html {
@@ -183,6 +187,28 @@
     70% { opacity: 0.6; }
     100% { opacity: 0; }
   }
+
+  /* Everything above is tuned in vw/vh for a phone screen, where the full
+     viewport width is a reasonable proxy for "how big should this be." On
+     an iPad that assumption breaks - 58vw of a 1180pt landscape screen is a
+     giant, cartoonish digit - so past this width, cap sizes to fixed points
+     and constrain the layout to a centered column instead of stretching
+     edge to edge. */
+  @media (min-width: 700px) {
+    #wrap { width: 100%; max-width: 640px; }
+    #label { font-size: 40px; }
+    #big { font-size: min(260px, 42vh); }
+    #sub { font-size: 36px; }
+    #setup { font-size: 22px; max-width: 480px; margin: 0 auto; }
+    #setupBackLink { font-size: 20px; }
+    #setup input { font-size: 20px; }
+    #setup label.chk { font-size: 20px; }
+    #setup button { font-size: 22px; }
+    #setup select { font-size: 16px; }
+    #testVoiceBtn { font-size: 16px; }
+    #tapStart .msg { font-size: 20px; }
+    #tapStart button { font-size: 26px; }
+  }
 </style>
 </head>
 <body>
@@ -210,6 +236,13 @@
 </div>
 
 <script>
+// Registering here (and again on index.html) is what makes Airplane Mode
+// work after Add to Home Screen - the SW precaches both pages, the icons,
+// and the manifest on the first successful online load.
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
 document.documentElement.style.backgroundColor = '#0a0a0a';
 document.body.style.backgroundColor = '#0a0a0a';
 
