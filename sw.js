@@ -17,6 +17,7 @@ const APP_SHELL = [
   './',
   './index.html',
   './counter.html',
+  './exercises.txt',
   './manifest.json',
   './icon-180.png',
   './icon-192.png',
