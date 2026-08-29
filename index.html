@@ -151,6 +151,12 @@
     height: 15vw;
     color: #eee;
   }
+  .card img {
+    width: 15vw;
+    height: 15vw;
+    object-fit: cover;
+    border-radius: 8px;
+  }
   .card.band { border-color: #3d6f9e; }
   .card.bodyweight { border-color: #3d7a4a; }
   .card.dumbbell { border-color: #8a6a2f; }
@@ -190,6 +196,19 @@
     margin: 0 auto 2vh;
     color: #eee;
   }
+  .detail-photos {
+    display: none;
+    justify-content: center;
+    gap: 2vw;
+    margin: 0 auto 2vh;
+  }
+  .detail-photos img {
+    width: 40vw;
+    max-width: 220px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+  .detail-photos img[src=""] { display: none; }
   .detail-name {
     font-size: 6.5vw;
     font-weight: 700;
@@ -397,6 +416,7 @@
     #grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
     .card { font-size: 16px; padding: 20px 14px; gap: 8px; }
     .card svg { width: 90px; height: 90px; }
+    .card img { width: 90px; height: 90px; }
     .cardCheck { width: 26px; height: 26px; top: 10px; right: 10px; }
     .lastDone { font-size: 13px; }
     #selectCount { font-size: 18px; }
@@ -406,6 +426,7 @@
     #appUpdated { font-size: 12px; }
     .back { font-size: 17px; }
     .detail-icon { width: 220px; height: 220px; }
+    .detail-photos img { width: 220px; max-width: none; }
     .detail-name { font-size: 30px; }
     .detail-section h2 { font-size: 15px; }
     .detail-section p { font-size: 18px; }
@@ -449,7 +470,7 @@
   <button id="runAllBtn" onclick="startRunAll()" disabled>&#9654; Run Selected</button>
   <a id="voiceSettingsLink" href="counter.html">&#128264; Voice settings &amp; test</a>
 </div>
-<div id="appUpdated">Updated <span id="appUpdatedTime">2026-08-29T23:28:19Z</span></div>
+<div id="appUpdated">Updated <span id="appUpdatedTime">2026-08-29T23:51:09Z</span></div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
@@ -468,6 +489,10 @@
 <div id="detail">
   <a class="back" href="#" onclick="showGrid(); return false;">&larr; All exercises</a>
   <svg class="detail-icon" id="detailIcon" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></svg>
+  <div class="detail-photos" id="detailPhotos">
+    <img id="detailPhotoStart" alt="Start position">
+    <img id="detailPhotoFinish" alt="Finish position">
+  </div>
   <div class="detail-name" id="detailName"></div>
 
   <div class="detail-section">
@@ -526,124 +551,48 @@ if ('serviceWorker' in navigator) {
   el.textContent = stamped.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 })();
 
-// Simple original line-icon parts, reused across exercises.
-const DUMBBELL = (cx, cy, angle) => `<g transform="rotate(${angle} ${cx} ${cy})" stroke="#ffb347"><line x1="${cx-8}" y1="${cy}" x2="${cx+8}" y2="${cy}"/><circle cx="${cx-8}" cy="${cy}" r="4"/><circle cx="${cx+8}" cy="${cy}" r="4"/></g>`;
-// Consistent color coding across every icon: white = body, amber = equipment
-// (bands, anchors, dumbbells), gray = ground/furniture context, and this
-// accent = motion. The arrowhead is always this accent color and a slim,
-// pointed shape so it never reads as part of the body.
-const EQUIP = '#ffb347';
-const GROUND = '#5a5a5a';
-const MOTION = '#ff5b3d';
-const ARROW = `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="${MOTION}"/></marker></defs>`;
-
-const EXERCISES = [
-  {
-    slug: 'hip-abduction',
-    name: 'Hip Abduction - Standing',
-    type: 'band',
-    category: 'hip',
-    description: 'Strengthens the outer hip and glute muscles that stabilize your pelvis while standing and walking.',
-    setup: 'Loop the band around both ankles. Stand sideways next to a wall or chair and hold on for balance.',
-    movement: 'Keeping your leg straight and toes pointing forward, lift your working leg out to the side against the band, then return with control.',
-    tip: 'Keep your hips level - don’t let your body lean or your toes turn upward as you lift.',
-    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
-    icon: `${ARROW}
+const ICONS = {
+  'hip-abduction': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
       <circle cx="55" cy="20" r="8"/>
       <line x1="55" y1="28" x2="55" y2="65"/>
       <line x1="55" y1="65" x2="48" y2="105"/>
       <line x1="55" y1="65" x2="90" y2="80" marker-end="url(#__ARROWID__)"/>
       <line x1="55" y1="35" x2="42" y2="55"/>
       <line x1="55" y1="35" x2="68" y2="55"/>
-      <path d="M48 105 Q70 95 90 80" stroke="${EQUIP}" stroke-dasharray="4 5"/>`
-  },
-  {
-    slug: 'hip-extension',
-    name: 'Hip Extension - Standing',
-    type: 'band',
-    category: 'hip',
-    description: 'Strengthens the glutes and hamstrings used to push your leg backward, important for walking and stairs.',
-    setup: 'Anchor the band low in front of you (or loop around both ankles). Face the anchor and hold something stable for balance.',
-    movement: 'Keeping your knee straight, extend your working leg backward against the band, squeeze your glute, then return with control.',
-    tip: 'Keep your torso upright - avoid arching your lower back to get extra range.',
-    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
-    icon: `${ARROW}
+      <path d="M48 105 Q70 95 90 80" stroke="#ffb347" stroke-dasharray="4 5"/>`,
+  'hip-extension': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
       <circle cx="58" cy="18" r="7"/>
       <line x1="57" y1="25" x2="54" y2="62"/>
       <line x1="54" y1="62" x2="50" y2="105"/>
       <line x1="54" y1="62" x2="85" y2="95" marker-end="url(#__ARROWID__)"/>
       <line x1="56" y1="32" x2="42" y2="46"/>
-      <path d="M50 105 Q68 100 85 95" stroke="${EQUIP}" stroke-dasharray="4 5"/>`
-  },
-  {
-    slug: 'pnf-d2',
-    name: 'PNF D2 - Standing',
-    type: 'band',
-    category: 'back-shoulder',
-    description: 'A diagonal arm pattern that trains the shoulder and trunk to work together through a full range, mimicking reaching-and-rotating movements.',
-    setup: 'Anchor the band low, at your side opposite your working arm. Start with your working hand near your opposite hip, palm facing back.',
-    movement: 'Sweep your arm in one smooth diagonal, up and out, finishing overhead and out to the side with your palm turning to face away from you. Reverse slowly to return.',
-    tip: 'Move through the whole diagonal smoothly - don’t just raise your arm straight up.',
-    defaults: { sets: 2, reps: 10, seconds: 3, rest: 5 },
-    icon: `${ARROW}
+      <path d="M50 105 Q68 100 85 95" stroke="#ffb347" stroke-dasharray="4 5"/>`,
+  'pnf-d2': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
       <circle cx="55" cy="30" r="8"/>
       <line x1="55" y1="38" x2="55" y2="75"/>
       <line x1="55" y1="75" x2="45" y2="110"/>
       <line x1="55" y1="75" x2="65" y2="110"/>
       <path d="M40 75 Q60 60 95 20" marker-end="url(#__ARROWID__)"/>
-      <line x1="20" y1="103" x2="20" y2="116" stroke="${EQUIP}"/>
-      <path d="M20 106 Q30 92 40 76" stroke="${EQUIP}" stroke-dasharray="4 5"/>`
-  },
-  {
-    slug: 'bicep-curl',
-    name: 'Bicep Curls - Alternating',
-    type: 'dumbbell',
-    category: 'arms',
-    description: 'Strengthens the biceps at the front of the upper arm, used for lifting and carrying.',
-    setup: 'Stand or sit holding a dumbbell in each hand, arms at your sides, palms facing forward.',
-    movement: 'Curl one dumbbell up toward your shoulder while keeping your elbow tucked at your side, lower with control, then alternate arms.',
-    tip: 'Keep your elbow still and close to your body - don’t swing your back or shoulders to help lift.',
-    defaults: { sets: 2, reps: 12, seconds: 2, rest: 5 },
-    icon: `
+      <line x1="20" y1="103" x2="20" y2="116" stroke="#ffb347"/>
+      <path d="M20 106 Q30 92 40 76" stroke="#ffb347" stroke-dasharray="4 5"/>`,
+  'bicep-curl': `
       <circle cx="55" cy="20" r="8"/>
       <line x1="55" y1="28" x2="55" y2="65"/>
       <line x1="55" y1="65" x2="48" y2="108"/>
       <line x1="55" y1="65" x2="63" y2="108"/>
       <line x1="55" y1="33" x2="70" y2="50"/>
       <line x1="70" y1="50" x2="50" y2="42"/>
-      ${DUMBBELL(46, 40, -25)}
+      <g transform="rotate(-25 46 40)" stroke="#ffb347"><line x1="38" y1="40" x2="54" y2="40"/><circle cx="38" cy="40" r="4"/><circle cx="54" cy="40" r="4"/></g>
       <line x1="55" y1="33" x2="40" y2="60"/>
-      ${DUMBBELL(40, 66, 5)}`
-  },
-  {
-    slug: 'bridge',
-    name: 'Bridge',
-    type: 'bodyweight',
-    category: 'hip',
-    description: 'Strengthens the glutes and lower back while supporting the spine in a neutral, controlled position.',
-    setup: 'Lie on your back with your knees bent and feet flat on the floor, hip-width apart.',
-    movement: 'Squeeze your glutes and lift your hips toward the ceiling until your body forms a straight line from knees to shoulders. Hold, then lower with control.',
-    tip: 'Drive through your heels and avoid over-arching your lower back at the top.',
-    defaults: { sets: 2, reps: 10, seconds: 3, rest: 5 },
-    icon: `
-      <line x1="8" y1="100" x2="115" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
+      <g transform="rotate(5 40 66)" stroke="#ffb347"><line x1="32" y1="66" x2="48" y2="66"/><circle cx="32" cy="66" r="4"/><circle cx="48" cy="66" r="4"/></g>`,
+  'bridge': `
+      <line x1="8" y1="100" x2="115" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
       <circle cx="13" cy="90" r="8"/>
       <line x1="20" y1="95" x2="55" y2="85"/>
       <line x1="55" y1="85" x2="90" y2="75"/>
-      <line x1="90" y1="75" x2="90" y2="100"/>`
-  },
-  {
-    slug: 'clamshell',
-    name: 'Clamshell - Side Lying',
-    type: 'band',
-    category: 'hip',
-    description: 'Targets the outer hip (glute medius) to improve hip stability without straining the lower back.',
-    setup: 'Lie on your side with knees bent about 45 degrees, hips stacked, and the band looped around your thighs just above the knees.',
-    movement: 'Keeping your feet together, open your top knee upward like a clamshell, then lower it with control.',
-    tip: 'Keep your hips stacked and still - don’t let your top hip roll backward as you open your knee.',
-    defaults: { sets: 2, reps: 12, seconds: 2, rest: 5 },
-    icon: `${ARROW}
-      <line x1="5" y1="100" x2="100" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
+      <line x1="90" y1="75" x2="90" y2="100"/>`,
+  'clamshell': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="5" y1="100" x2="100" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
       <circle cx="12" cy="88" r="8"/>
       <line x1="20" y1="89" x2="38" y2="90"/>
       <line x1="38" y1="90" x2="58" y2="98"/>
@@ -652,60 +601,27 @@ const EXERCISES = [
       <line x1="58" y1="95" x2="78" y2="92" stroke-dasharray="3 4"/>
       <line x1="38" y1="90" x2="58" y2="72"/>
       <line x1="58" y1="72" x2="78" y2="90"/>
-      <line x1="58" y1="93" x2="58" y2="76" stroke="${MOTION}" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`
-  },
-  {
-    slug: 'abdominal-bracing-marches',
-    name: 'Abdominal Bracing - Marches',
-    type: 'bodyweight',
-    category: 'core',
-    description: 'Trains your core to stay braced and your spine to stay steady while your legs move - a foundation for safe lifting and walking.',
-    setup: 'Lie on your back, knees bent, feet flat on the floor. Gently brace your abdominals as if about to be poked in the stomach.',
-    movement: 'Keeping the brace and your low back still, lift one foot off the floor to a tabletop position, then lower with control and switch legs.',
-    tip: 'Keep your low back gently pressed to the floor the whole time - don’t let your pelvis rock side to side.',
-    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
-    icon: `${ARROW}
-      <line x1="8" y1="100" x2="115" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
+      <line x1="58" y1="93" x2="58" y2="76" stroke="#ff5b3d" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`,
+  'abdominal-bracing-marches': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="8" y1="100" x2="115" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
       <circle cx="15" cy="88" r="8"/>
       <line x1="23" y1="90" x2="55" y2="92"/>
       <line x1="55" y1="92" x2="72" y2="78" stroke-dasharray="3 4"/>
       <line x1="72" y1="78" x2="85" y2="98" stroke-dasharray="3 4"/>
       <line x1="55" y1="92" x2="38" y2="58"/>
       <line x1="38" y1="58" x2="65" y2="58"/>
-      <line x1="72" y1="76" x2="42" y2="60" stroke="${MOTION}" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`
-  },
-  {
-    slug: 'sit-to-stand',
-    name: 'Sit to Stand - Arms Crossed',
-    type: 'bodyweight',
-    category: 'balance-legs',
-    description: 'Builds functional leg and core strength for getting up from a chair without using your hands or momentum.',
-    setup: 'Sit toward the front edge of a sturdy chair, feet flat on the floor, arms crossed over your chest.',
-    movement: 'Lean slightly forward and push through your feet to stand up fully, then lower back down to the chair with control.',
-    tip: 'Keep your chest up and avoid rocking or using your arms to help you up.',
-    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
-    icon: `
-      <line x1="18" y1="85" x2="82" y2="85" stroke="${GROUND}" stroke-dasharray="3 4"/>
-      <line x1="25" y1="85" x2="25" y2="108" stroke="${GROUND}" stroke-dasharray="3 4"/>
-      <line x1="75" y1="85" x2="75" y2="108" stroke="${GROUND}" stroke-dasharray="3 4"/>
+      <line x1="72" y1="76" x2="42" y2="60" stroke="#ff5b3d" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`,
+  'sit-to-stand': `
+      <line x1="18" y1="85" x2="82" y2="85" stroke="#5a5a5a" stroke-dasharray="3 4"/>
+      <line x1="25" y1="85" x2="25" y2="108" stroke="#5a5a5a" stroke-dasharray="3 4"/>
+      <line x1="75" y1="85" x2="75" y2="108" stroke="#5a5a5a" stroke-dasharray="3 4"/>
       <circle cx="60" cy="35" r="8"/>
       <line x1="60" y1="43" x2="60" y2="75"/>
       <line x1="60" y1="75" x2="50" y2="108"/>
       <line x1="60" y1="75" x2="70" y2="108"/>
       <line x1="50" y1="58" x2="70" y2="70"/>
-      <line x1="70" y1="58" x2="50" y2="70"/>`
-  },
-  {
-    slug: 'no-money',
-    name: 'No Money - Scapular Retraction',
-    type: 'band',
-    category: 'back-shoulder',
-    description: 'Strengthens the mid-back and rotator cuff muscles that support good shoulder posture.',
-    setup: 'Hold the band with both hands, shoulder-width apart. Bend your elbows 90 degrees and tuck them at your sides, forearms pointing forward.',
-    movement: 'Keeping your elbows glued to your sides, rotate your forearms outward away from each other while squeezing your shoulder blades together, then return with control.',
-    tip: 'Keep your elbows pinned to your sides the whole time - the motion happens at the shoulder, not by flaring the elbows out.',
-    defaults: { sets: 2, reps: 12, seconds: 2, rest: 5 },
-    icon: `${ARROW}
+      <line x1="70" y1="58" x2="50" y2="70"/>`,
+  'no-money': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
       <circle cx="60" cy="15" r="7"/>
       <line x1="60" y1="22" x2="60" y2="55"/>
       <line x1="60" y1="55" x2="52" y2="95"/>
@@ -713,187 +629,101 @@ const EXERCISES = [
       <line x1="60" y1="25" x2="52" y2="45"/>
       <line x1="60" y1="25" x2="68" y2="45"/>
       <line x1="52" y1="45" x2="28" y2="45" marker-end="url(#__ARROWID__)"/>
-      <line x1="68" y1="45" x2="92" y2="45" marker-end="url(#__ARROWID__)"/>`
-  },
-  {
-    slug: 'shoulder-horizontal-abduction',
-    name: 'Shoulder Horizontal Abduction',
-    type: 'band',
-    category: 'back-shoulder',
-    description: 'Strengthens the mid-back and rear shoulder muscles that pull the shoulders into good posture.',
-    setup: 'Anchor the band in front of you at chest height. Hold a handle in each hand with arms extended forward at shoulder height.',
-    movement: 'Keeping your arms roughly straight and at shoulder height, pull both arms out to the sides, squeezing your shoulder blades together, then return with control.',
-    tip: 'Keep your shoulders down, away from your ears, throughout the movement.',
-    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
-    icon: `${ARROW}
+      <line x1="68" y1="45" x2="92" y2="45" marker-end="url(#__ARROWID__)"/>`,
+  'shoulder-horizontal-abduction': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
       <circle cx="60" cy="15" r="7"/>
       <line x1="60" y1="22" x2="60" y2="55"/>
       <line x1="60" y1="55" x2="52" y2="95"/>
       <line x1="60" y1="55" x2="68" y2="95"/>
       <path d="M45 32 L75 32" stroke-dasharray="3 4"/>
       <path d="M60 32 L15 30" marker-end="url(#__ARROWID__)"/>
-      <path d="M60 32 L105 30" marker-end="url(#__ARROWID__)"/>`
-  },
-  {
-    slug: 'rows',
-    name: 'Rows with Resistance Bands',
-    type: 'band',
-    category: 'back-shoulder',
-    description: 'Strengthens the mid-back muscles that pull your shoulder blades together, countering a forward-slumped posture.',
-    setup: 'Anchor the band in front of you at chest height and step back for tension. Start with arms extended forward.',
-    movement: 'Pull your elbows straight back, squeezing your shoulder blades together and keeping elbows close to your body, then return with control.',
-    tip: 'Keep your chest up and avoid shrugging your shoulders toward your ears as you pull.',
-    defaults: { sets: 2, reps: 12, seconds: 2, rest: 5 },
-    icon: `${ARROW}
+      <path d="M60 32 L105 30" marker-end="url(#__ARROWID__)"/>`,
+  'rows': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
       <circle cx="70" cy="20" r="8"/>
       <line x1="70" y1="28" x2="70" y2="65"/>
       <line x1="70" y1="65" x2="62" y2="108"/>
       <line x1="70" y1="65" x2="78" y2="108"/>
       <line x1="70" y1="40" x2="55" y2="48"/>
       <line x1="55" y1="48" x2="40" y2="50"/>
-      <path d="M40 50 L15 43" stroke="${EQUIP}" stroke-dasharray="3 4"/>
-      <line x1="15" y1="36" x2="15" y2="50" stroke="${EQUIP}"/>
-      <line x1="42" y1="58" x2="88" y2="58" stroke="${MOTION}" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`
-  },
-  {
-    slug: 'shoulder-extension',
-    name: 'Shoulder Extension',
-    type: 'band',
-    category: 'back-shoulder',
-    description: 'Strengthens the back of the shoulder and lat muscles used to pull your arm down and back.',
-    setup: 'Anchor the band in front of you at shoulder height. Hold the handle with your arm extended forward.',
-    movement: 'Keeping your elbow straight, pull your arm down and back past your hip against the band, then return with control.',
-    tip: 'Keep your torso still and upright - avoid leaning back to generate extra range.',
-    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
-    icon: `${ARROW}
+      <path d="M40 50 L15 43" stroke="#ffb347" stroke-dasharray="3 4"/>
+      <line x1="15" y1="36" x2="15" y2="50" stroke="#ffb347"/>
+      <line x1="42" y1="58" x2="88" y2="58" stroke="#ff5b3d" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`,
+  'shoulder-extension': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
       <circle cx="55" cy="20" r="8"/>
       <line x1="55" y1="28" x2="55" y2="65"/>
       <line x1="55" y1="65" x2="48" y2="108"/>
       <line x1="55" y1="65" x2="62" y2="108"/>
       <line x1="95" y1="20" x2="95" y2="42"/>
       <line x1="55" y1="35" x2="95" y2="32" stroke-dasharray="3 4"/>
-      <path d="M95 32 Q90 65 68 92" marker-end="url(#__ARROWID__)"/>`
-  },
-  {
-    slug: 'scapular-retraction-prone-arms-side',
-    name: 'Scapular Retraction - Prone (Arms at Side)',
-    type: 'bodyweight',
-    category: 'back-shoulder',
-    description: 'Strengthens the mid-back and lower trapezius muscles that hold your shoulder blades down and back - the foundation for the other prone versions.',
-    setup: 'Lie face down on a bed, table, or the floor, forehead resting down, arms resting straight alongside your body, palms facing in.',
-    movement: 'Without lifting your arms, squeeze your shoulder blades down and together, hold, then release with control.',
-    tip: 'Keep your neck relaxed and avoid shrugging your shoulders up toward your ears.',
-    defaults: { sets: 2, reps: 12, seconds: 2, rest: 5 },
-    icon: `${ARROW}
-      <line x1="5" y1="100" x2="115" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
+      <path d="M95 32 Q90 65 68 92" marker-end="url(#__ARROWID__)"/>`,
+  'scapular-retraction-prone-arms-side': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="5" y1="100" x2="115" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
       <circle cx="15" cy="90" r="8"/>
       <line x1="23" y1="91" x2="95" y2="97"/>
       <line x1="30" y1="91" x2="26" y2="70"/>
-      <path d="M40 89 L52 92" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
-      <path d="M64 95 L52 92" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`
-  },
-  {
-    slug: 'scapular-retraction-prone-arms-side-lift',
-    name: 'Scapular Retraction - Prone (Arms at Side, Lift)',
-    type: 'bodyweight',
-    category: 'back-shoulder',
-    description: 'Builds on the arms-at-side version by adding a small arm lift, increasing the demand on the mid-back and rear shoulder muscles.',
-    setup: 'Lie face down, forehead resting down, arms resting straight alongside your body, palms facing in.',
-    movement: 'Squeeze your shoulder blades together and lift both arms a few inches off the surface, hold, then lower with control.',
-    tip: 'Lift from your shoulder blades, not by arching your lower back.',
-    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
-    icon: `${ARROW}
-      <line x1="5" y1="100" x2="115" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
+      <path d="M40 89 L52 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M64 95 L52 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`,
+  'scapular-retraction-prone-arms-side-lift': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="5" y1="100" x2="115" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
       <circle cx="15" cy="90" r="8"/>
       <line x1="23" y1="91" x2="95" y2="97"/>
       <line x1="30" y1="91" x2="26" y2="70"/>
-      <path d="M26 78 L26 62" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
-      <path d="M40 89 L52 92" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
-      <path d="M64 95 L52 92" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`
-  },
-  {
-    slug: 'scapular-retraction-prone-arms-overhead-lift',
-    name: 'Scapular Retraction - Prone (Arms Overhead, Lift)',
-    type: 'bodyweight',
-    category: 'back-shoulder',
-    description: 'The most demanding version, challenging the mid and lower trapezius through a full overhead range against gravity.',
-    setup: 'Lie face down, forehead resting down, arms extended straight overhead in a "Y" position, thumbs pointing up.',
-    movement: 'Squeeze your shoulder blades down and together and lift both arms up off the surface, hold, then lower with control.',
-    tip: 'Keep your arms in line with your ears rather than letting them drift out to the sides.',
-    defaults: { sets: 2, reps: 8, seconds: 2, rest: 5 },
-    icon: `${ARROW}
-      <line x1="5" y1="100" x2="115" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
+      <path d="M26 78 L26 62" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M40 89 L52 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M64 95 L52 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`,
+  'scapular-retraction-prone-arms-overhead-lift': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="5" y1="100" x2="115" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
       <circle cx="20" cy="90" r="8"/>
       <line x1="28" y1="91" x2="98" y2="97"/>
       <line x1="14" y1="85" x2="2" y2="60"/>
-      <path d="M2 68 L2 52" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
-      <path d="M45 89 L57 92" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
-      <path d="M69 95 L57 92" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`
-  },
-  {
-    slug: 'bent-over-rows-dumbbell',
-    name: 'Bent Over Rows - Dumbbell',
-    type: 'dumbbell',
-    category: 'back-shoulder',
-    description: 'Strengthens the mid-back and rear shoulder muscles used to pull your shoulder blades together and support good posture.',
-    setup: 'Holding a dumbbell in one hand, support yourself with your other hand on a chair or bench and hinge forward from your hips with a flat back. (Both arms can be done together, without support, if you prefer.)',
-    movement: 'Pull the dumbbell straight up toward your hip, leading with your elbow and squeezing your shoulder blade back, then lower with control.',
-    tip: 'Keep your back flat and avoid twisting your torso to help lift the weight.',
-    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
-    icon: `${ARROW}
-      <line x1="75" y1="100" x2="95" y2="100" stroke="${GROUND}"/>
-      <line x1="85" y1="100" x2="85" y2="70" stroke="${GROUND}"/>
+      <path d="M2 68 L2 52" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M45 89 L57 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M69 95 L57 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`,
+  'bent-over-rows-dumbbell': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="75" y1="100" x2="95" y2="100" stroke="#5a5a5a"/>
+      <line x1="85" y1="100" x2="85" y2="70" stroke="#5a5a5a"/>
       <circle cx="30" cy="35" r="8"/>
       <line x1="33" y1="42" x2="60" y2="70"/>
       <line x1="60" y1="70" x2="55" y2="105"/>
       <line x1="60" y1="70" x2="75" y2="100"/>
       <line x1="45" y1="55" x2="85" y2="75"/>
       <line x1="40" y1="50" x2="30" y2="90"/>
-      ${DUMBBELL(28, 96, 80)}
-      <path d="M28 88 L28 65" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`
-  },
-  {
-    slug: 'sit-to-stand-lower-extremity-bias',
-    name: 'Sit to Stand - Lower Extremity Bias',
-    type: 'bodyweight',
-    category: 'balance-legs',
-    description: 'A variation of Sit to Stand that removes the arms-crossed torso-control challenge, putting more of the demand on the legs alone.',
-    setup: 'Sit toward the front edge of a sturdy chair, feet flat on the floor, hands resting loosely on your thighs or at your sides.',
-    movement: 'Push through your feet to stand up fully using your legs, then lower back down to the chair with control.',
-    tip: 'Move slowly on the way down - control on the descent is what builds leg strength, not just standing up quickly.',
-    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
-    icon: `
-      <line x1="18" y1="85" x2="82" y2="85" stroke="${GROUND}" stroke-dasharray="3 4"/>
-      <line x1="25" y1="85" x2="25" y2="108" stroke="${GROUND}" stroke-dasharray="3 4"/>
-      <line x1="75" y1="85" x2="75" y2="108" stroke="${GROUND}" stroke-dasharray="3 4"/>
+      <g transform="rotate(80 28 96)" stroke="#ffb347"><line x1="20" y1="96" x2="36" y2="96"/><circle cx="20" cy="96" r="4"/><circle cx="36" cy="96" r="4"/></g>
+      <path d="M28 88 L28 65" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`,
+  'sit-to-stand-lower-extremity-bias': `
+      <line x1="18" y1="85" x2="82" y2="85" stroke="#5a5a5a" stroke-dasharray="3 4"/>
+      <line x1="25" y1="85" x2="25" y2="108" stroke="#5a5a5a" stroke-dasharray="3 4"/>
+      <line x1="75" y1="85" x2="75" y2="108" stroke="#5a5a5a" stroke-dasharray="3 4"/>
       <circle cx="60" cy="35" r="8"/>
       <line x1="60" y1="43" x2="60" y2="75"/>
       <line x1="60" y1="75" x2="50" y2="108"/>
       <line x1="60" y1="75" x2="70" y2="108"/>
       <line x1="60" y1="48" x2="52" y2="80"/>
-      <line x1="60" y1="48" x2="68" y2="80"/>`
-  },
-  {
-    slug: 'heel-raise-single-leg',
-    name: 'Heel Raise - Single Leg',
-    type: 'bodyweight',
-    category: 'balance-legs',
-    description: 'Strengthens the calf muscles on one leg at a time, important for push-off during walking and for balance.',
-    setup: 'Stand on one leg near a wall or counter for light balance support, with your other foot lifted slightly off the floor.',
-    movement: 'Rise up onto the ball of your standing foot as high as comfortable, hold, then lower your heel back down with control.',
-    tip: 'Rise straight up - don’t let your ankle roll inward or outward as you lift.',
-    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
-    icon: `${ARROW}
-      <line x1="10" y1="100" x2="100" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
-      <line x1="95" y1="15" x2="95" y2="100" stroke="${GROUND}"/>
+      <line x1="60" y1="48" x2="68" y2="80"/>`,
+  'heel-raise-single-leg': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="10" y1="100" x2="100" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
+      <line x1="95" y1="15" x2="95" y2="100" stroke="#5a5a5a"/>
       <circle cx="45" cy="20" r="8"/>
       <line x1="45" y1="28" x2="45" y2="65"/>
       <line x1="45" y1="65" x2="40" y2="92"/>
       <line x1="40" y1="92" x2="34" y2="98"/>
       <line x1="45" y1="35" x2="80" y2="45"/>
-      <path d="M40 85 L40 68" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`
-  }
-];
+      <path d="M40 85 L40 68" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`,
+};
+
+// Icon lookup, keyed by slug - kept separate from exercises.txt since these
+// are hand-drawn SVG line art, not something a non-coder should need to
+// touch. A new exercise added purely via the text file (no matching entry
+// here) falls back to a plain neutral figure instead of a missing icon.
+const GENERIC_ICON = `
+  <circle cx="60" cy="20" r="9"/>
+  <line x1="60" y1="29" x2="60" y2="68"/>
+  <line x1="60" y1="68" x2="48" y2="108"/>
+  <line x1="60" y1="68" x2="72" y2="108"/>
+  <line x1="60" y1="38" x2="38" y2="58"/>
+  <line x1="60" y1="38" x2="82" y2="58"/>`;
+
+let EXERCISES = [];
 
 const gridEl = document.getElementById('grid');
 const detailEl = document.getElementById('detail');
@@ -905,18 +735,88 @@ const selectBarEl = document.getElementById('selectBar');
 const selectCountEl = document.getElementById('selectCount');
 const runAllBtnEl = document.getElementById('runAllBtn');
 
-const CATEGORIES = [
-  { key: 'hip', label: 'Hip & Glute' },
-  { key: 'core', label: 'Core' },
-  { key: 'back-shoulder', label: 'Back & Shoulder' },
-  { key: 'arms', label: 'Arms' },
-  { key: 'balance-legs', label: 'Balance & Legs' }
-];
-const EQUIPMENT = [
-  { key: 'band', label: 'Band' },
-  { key: 'dumbbell', label: 'Dumbbell' },
-  { key: 'bodyweight', label: 'Bodyweight' }
-];
+// Filter chips are derived from whatever categories/equipment actually show
+// up in exercises.txt, not a fixed list - so a non-coder can invent a new
+// one just by typing it into the text file, and a chip for it appears on
+// its own. These give the known ones a nicer label and a stable order;
+// anything else falls back to an auto-formatted label, appended after.
+const CATEGORY_LABELS = { hip: 'Hip & Glute', core: 'Core', 'back-shoulder': 'Back & Shoulder', arms: 'Arms', 'balance-legs': 'Balance & Legs' };
+const EQUIPMENT_LABELS = { band: 'Band', dumbbell: 'Dumbbell', bodyweight: 'Bodyweight' };
+const CATEGORY_ORDER = ['hip', 'core', 'back-shoulder', 'arms', 'balance-legs'];
+const EQUIPMENT_ORDER = ['band', 'dumbbell', 'bodyweight'];
+let CATEGORIES = [];
+let EQUIPMENT = [];
+
+function autoLabel(key) {
+  return key.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function orderedFacet(present, preferredOrder, labels) {
+  const known = preferredOrder.filter(k => present.has(k));
+  const unknown = [...present].filter(k => !preferredOrder.includes(k)).sort();
+  return [...known, ...unknown].map(key => ({ key, label: labels[key] || autoLabel(key) }));
+}
+
+function computeFacets() {
+  const presentCategories = new Set(EXERCISES.map(e => e.category));
+  const presentEquipment = new Set(EXERCISES.map(e => e.type));
+  CATEGORIES = orderedFacet(presentCategories, CATEGORY_ORDER, CATEGORY_LABELS);
+  EQUIPMENT = orderedFacet(presentEquipment, EQUIPMENT_ORDER, EQUIPMENT_LABELS);
+  // Drop any saved filter selection that no longer matches a real category/
+  // equipment (e.g. it was renamed or removed in exercises.txt).
+  activeCategories = new Set([...activeCategories].filter(k => presentCategories.has(k)));
+  activeEquipment = new Set([...activeEquipment].filter(k => presentEquipment.has(k)));
+}
+
+// exercises.txt is a plain "Field: value" block-per-exercise text file (see
+// the comment header in that file) so a non-coder can add/edit exercises
+// without touching any code. Unknown fields are ignored; missing optional
+// fields just come back empty/default, so a typo degrades gracefully
+// instead of breaking the whole list.
+function slugify(text) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'exercise';
+}
+
+function parseExercisesText(text) {
+  const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+  const usedSlugs = new Set();
+  const exercises = [];
+  for (const block of blocks) {
+    const fields = {};
+    for (const rawLine of block.split('\n')) {
+      const line = rawLine.trim();
+      if (!line || line.startsWith('#')) continue;
+      const idx = line.indexOf(':');
+      if (idx === -1) continue;
+      const key = line.slice(0, idx).trim().toLowerCase();
+      fields[key] = line.slice(idx + 1).trim();
+    }
+    if (!fields.name) continue; // not a real exercise block (e.g. a comment-only paragraph)
+    const baseSlug = slugify(fields.slug || fields.name);
+    let slug = baseSlug;
+    for (let n = 2; usedSlugs.has(slug); n++) slug = `${baseSlug}-${n}`;
+    usedSlugs.add(slug);
+    exercises.push({
+      slug,
+      name: fields.name,
+      category: (fields.category || 'other').toLowerCase(),
+      type: (fields.equipment || 'bodyweight').toLowerCase(),
+      description: fields.description || '',
+      setup: fields.setup || '',
+      movement: fields.movement || '',
+      tip: fields.tip || '',
+      defaults: {
+        sets: parseInt(fields.sets) || 2,
+        reps: parseInt(fields.reps) || 10,
+        seconds: parseInt(fields.seconds) || 2,
+        rest: parseInt(fields.rest) || 0
+      },
+      startImage: fields.startimage || '',
+      finishImage: fields.finishimage || ''
+    });
+  }
+  return exercises;
+}
 
 function loadStringSet(key) {
   try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); }
@@ -961,8 +861,16 @@ function lastDoneClass(slug) {
 function resolvedIcon(ex, suffix) {
   // Each icon can define an arrowhead marker; give it a unique id per
   // rendering so duplicate SVG ids on the page don't make icons borrow
-  // each other's marker color.
-  return ex.icon.replaceAll('__ARROWID__', `arrow-${ex.slug}-${suffix}`);
+  // each other's marker color. Falls back to a plain generic figure for an
+  // exercise added via exercises.txt that has no hand-drawn icon.
+  const raw = ICONS[ex.slug] || GENERIC_ICON;
+  return raw.replaceAll('__ARROWID__', `arrow-${ex.slug}-${suffix}`);
+}
+
+function cardVisual(ex) {
+  return ex.startImage
+    ? `<img src="${ex.startImage}" alt="" loading="lazy">`
+    : buildIconSvg(resolvedIcon(ex, 'card'));
 }
 
 function buildIconSvg(inner) {
@@ -997,7 +905,7 @@ function buildGrid() {
   gridEl.innerHTML = list.map(ex => `
     <div class="card ${ex.type}" onclick="openDetail('${ex.slug}')">
       <input type="checkbox" class="cardCheck" onclick="event.stopPropagation()" onchange="toggleSelected('${ex.slug}', this.checked)" ${selectedSlugs.has(ex.slug) ? 'checked' : ''}>
-      ${buildIconSvg(resolvedIcon(ex, 'card'))}
+      ${cardVisual(ex)}
       <div>${ex.name}</div>
       <div class="lastDone ${lastDoneClass(ex.slug)}">${formatLastDone(ex.slug)}</div>
     </div>
@@ -1040,9 +948,35 @@ function pickLeastRecent() {
 
 const startParams = new URLSearchParams(window.location.search);
 
-buildChips();
-buildGrid();
-updateSelectBar();
+async function loadExercises() {
+  try {
+    const res = await fetch('exercises.txt', { cache: 'no-store' });
+    if (!res.ok) throw new Error('fetch failed: ' + res.status);
+    EXERCISES = parseExercisesText(await res.text());
+    return true;
+  } catch (e) {
+    gridEl.innerHTML = '<div style="text-align:center;color:#888;padding:6vh 2vw;">Couldn’t load the exercise list. Try again once you’re back online.</div>';
+    return false;
+  }
+}
+
+async function init() {
+  gridEl.innerHTML = '<div style="text-align:center;color:#888;padding:6vh 2vw;">Loading exercises…</div>';
+  if (!(await loadExercises())) return;
+  computeFacets();
+  buildChips();
+  buildGrid();
+  updateSelectBar();
+
+  // Deep link: index.html?ex=bridge&voice=1 opens straight to that
+  // exercise's description (and speaks it if voice=1), skipping the grid -
+  // this is what a Siri Shortcut for one specific exercise should point to.
+  const exParam = startParams.get('ex');
+  if (exParam && EXERCISES.some(e => e.slug === exParam)) {
+    openDetail(exParam);
+  }
+}
+init();
 
 function showGrid() {
   window.speechSynthesis.cancel();
@@ -1112,7 +1046,17 @@ function openDetail(slug) {
   currentExercise = ex;
 
   const detailIconEl = document.getElementById('detailIcon');
-  detailIconEl.innerHTML = resolvedIcon(ex, 'detail');
+  const detailPhotosEl = document.getElementById('detailPhotos');
+  if (ex.startImage) {
+    detailIconEl.style.display = 'none';
+    detailPhotosEl.style.display = 'flex';
+    document.getElementById('detailPhotoStart').src = ex.startImage;
+    document.getElementById('detailPhotoFinish').src = ex.finishImage || '';
+  } else {
+    detailIconEl.style.display = '';
+    detailPhotosEl.style.display = 'none';
+    detailIconEl.innerHTML = resolvedIcon(ex, 'detail');
+  }
   document.getElementById('detailName').textContent = ex.name;
   document.getElementById('detailDescription').textContent = ex.description;
   document.getElementById('detailSetup').textContent = ex.setup;
@@ -1526,14 +1470,6 @@ function startRunAll() {
   requestWakeLock();
 
   runAllExercises(list, voiceOn, myToken);
-}
-
-// Deep link: index.html?ex=bridge&voice=1 opens straight to that
-// exercise's description (and speaks it if voice=1), skipping the grid -
-// this is what a Siri Shortcut for one specific exercise should point to.
-const exParam = startParams.get('ex');
-if (exParam && EXERCISES.some(e => e.slug === exParam)) {
-  openDetail(exParam);
 }
 </script>
 </body>
