@@ -615,6 +615,119 @@ const EXERCISES = [
       <line x1="95" y1="20" x2="95" y2="42"/>
       <line x1="55" y1="35" x2="95" y2="32" stroke-dasharray="3 4"/>
       <path d="M95 32 Q90 65 68 92" marker-end="url(#__ARROWID__)"/>`
+  },
+  {
+    slug: 'scapular-retraction-prone-arms-side',
+    name: 'Scapular Retraction - Prone (Arms at Side)',
+    type: 'bodyweight',
+    description: 'Strengthens the mid-back and lower trapezius muscles that hold your shoulder blades down and back - the foundation for the other prone versions.',
+    setup: 'Lie face down on a bed, table, or the floor, forehead resting down, arms resting straight alongside your body, palms facing in.',
+    movement: 'Without lifting your arms, squeeze your shoulder blades down and together, hold, then release with control.',
+    tip: 'Keep your neck relaxed and avoid shrugging your shoulders up toward your ears.',
+    defaults: { sets: 2, reps: 12, seconds: 2, rest: 5 },
+    icon: `${ARROW}
+      <line x1="5" y1="100" x2="115" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
+      <circle cx="15" cy="90" r="8"/>
+      <line x1="23" y1="91" x2="95" y2="97"/>
+      <line x1="30" y1="91" x2="26" y2="70"/>
+      <path d="M40 89 L52 92" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M64 95 L52 92" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`
+  },
+  {
+    slug: 'scapular-retraction-prone-arms-side-lift',
+    name: 'Scapular Retraction - Prone (Arms at Side, Lift)',
+    type: 'bodyweight',
+    description: 'Builds on the arms-at-side version by adding a small arm lift, increasing the demand on the mid-back and rear shoulder muscles.',
+    setup: 'Lie face down, forehead resting down, arms resting straight alongside your body, palms facing in.',
+    movement: 'Squeeze your shoulder blades together and lift both arms a few inches off the surface, hold, then lower with control.',
+    tip: 'Lift from your shoulder blades, not by arching your lower back.',
+    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
+    icon: `${ARROW}
+      <line x1="5" y1="100" x2="115" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
+      <circle cx="15" cy="90" r="8"/>
+      <line x1="23" y1="91" x2="95" y2="97"/>
+      <line x1="30" y1="91" x2="26" y2="70"/>
+      <path d="M26 78 L26 62" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M40 89 L52 92" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M64 95 L52 92" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`
+  },
+  {
+    slug: 'scapular-retraction-prone-arms-overhead-lift',
+    name: 'Scapular Retraction - Prone (Arms Overhead, Lift)',
+    type: 'bodyweight',
+    description: 'The most demanding version, challenging the mid and lower trapezius through a full overhead range against gravity.',
+    setup: 'Lie face down, forehead resting down, arms extended straight overhead in a "Y" position, thumbs pointing up.',
+    movement: 'Squeeze your shoulder blades down and together and lift both arms up off the surface, hold, then lower with control.',
+    tip: 'Keep your arms in line with your ears rather than letting them drift out to the sides.',
+    defaults: { sets: 2, reps: 8, seconds: 2, rest: 5 },
+    icon: `${ARROW}
+      <line x1="5" y1="100" x2="115" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
+      <circle cx="20" cy="90" r="8"/>
+      <line x1="28" y1="91" x2="98" y2="97"/>
+      <line x1="14" y1="85" x2="2" y2="60"/>
+      <path d="M2 68 L2 52" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M45 89 L57 92" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M69 95 L57 92" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`
+  },
+  {
+    slug: 'bent-over-rows-dumbbell',
+    name: 'Bent Over Rows - Dumbbell',
+    type: 'dumbbell',
+    description: 'Strengthens the mid-back and rear shoulder muscles used to pull your shoulder blades together and support good posture.',
+    setup: 'Holding a dumbbell in one hand, support yourself with your other hand on a chair or bench and hinge forward from your hips with a flat back. (Both arms can be done together, without support, if you prefer.)',
+    movement: 'Pull the dumbbell straight up toward your hip, leading with your elbow and squeezing your shoulder blade back, then lower with control.',
+    tip: 'Keep your back flat and avoid twisting your torso to help lift the weight.',
+    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
+    icon: `${ARROW}
+      <line x1="75" y1="100" x2="95" y2="100" stroke="${GROUND}"/>
+      <line x1="85" y1="100" x2="85" y2="70" stroke="${GROUND}"/>
+      <circle cx="30" cy="35" r="8"/>
+      <line x1="33" y1="42" x2="60" y2="70"/>
+      <line x1="60" y1="70" x2="55" y2="105"/>
+      <line x1="60" y1="70" x2="75" y2="100"/>
+      <line x1="45" y1="55" x2="85" y2="75"/>
+      <line x1="40" y1="50" x2="30" y2="90"/>
+      ${DUMBBELL(28, 96, 80)}
+      <path d="M28 88 L28 65" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`
+  },
+  {
+    slug: 'sit-to-stand-lower-extremity-bias',
+    name: 'Sit to Stand - Lower Extremity Bias',
+    type: 'bodyweight',
+    description: 'A variation of Sit to Stand that removes the arms-crossed torso-control challenge, putting more of the demand on the legs alone.',
+    setup: 'Sit toward the front edge of a sturdy chair, feet flat on the floor, hands resting loosely on your thighs or at your sides.',
+    movement: 'Push through your feet to stand up fully using your legs, then lower back down to the chair with control.',
+    tip: 'Move slowly on the way down - control on the descent is what builds leg strength, not just standing up quickly.',
+    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
+    icon: `
+      <line x1="18" y1="85" x2="82" y2="85" stroke="${GROUND}" stroke-dasharray="3 4"/>
+      <line x1="25" y1="85" x2="25" y2="108" stroke="${GROUND}" stroke-dasharray="3 4"/>
+      <line x1="75" y1="85" x2="75" y2="108" stroke="${GROUND}" stroke-dasharray="3 4"/>
+      <circle cx="60" cy="35" r="8"/>
+      <line x1="60" y1="43" x2="60" y2="75"/>
+      <line x1="60" y1="75" x2="50" y2="108"/>
+      <line x1="60" y1="75" x2="70" y2="108"/>
+      <line x1="60" y1="48" x2="52" y2="80"/>
+      <line x1="60" y1="48" x2="68" y2="80"/>`
+  },
+  {
+    slug: 'heel-raise-single-leg',
+    name: 'Heel Raise - Single Leg',
+    type: 'bodyweight',
+    description: 'Strengthens the calf muscles on one leg at a time, important for push-off during walking and for balance.',
+    setup: 'Stand on one leg near a wall or counter for light balance support, with your other foot lifted slightly off the floor.',
+    movement: 'Rise up onto the ball of your standing foot as high as comfortable, hold, then lower your heel back down with control.',
+    tip: 'Rise straight up - don’t let your ankle roll inward or outward as you lift.',
+    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
+    icon: `${ARROW}
+      <line x1="10" y1="100" x2="100" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
+      <line x1="95" y1="15" x2="95" y2="100" stroke="${GROUND}"/>
+      <circle cx="45" cy="20" r="8"/>
+      <line x1="45" y1="28" x2="45" y2="65"/>
+      <line x1="45" y1="65" x2="40" y2="92"/>
+      <line x1="40" y1="92" x2="34" y2="98"/>
+      <line x1="45" y1="35" x2="80" y2="45"/>
+      <path d="M40 85 L40 68" stroke="${MOTION}" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`
   }
 ];
 
@@ -630,8 +743,8 @@ const runAllBarEl = document.getElementById('runAllBar');
 // work grouped together, more coordination-demanding moves done first while
 // fresh, and exercises that share a band anchor kept adjacent.
 const DAY_ORDER = {
-  lower: ['hip-abduction', 'hip-extension', 'bridge', 'abdominal-bracing-marches', 'clamshell', 'sit-to-stand'],
-  upper: ['pnf-d2', 'no-money', 'shoulder-horizontal-abduction', 'rows', 'shoulder-extension', 'bicep-curl']
+  lower: ['hip-abduction', 'hip-extension', 'heel-raise-single-leg', 'bridge', 'abdominal-bracing-marches', 'clamshell', 'sit-to-stand', 'sit-to-stand-lower-extremity-bias'],
+  upper: ['pnf-d2', 'no-money', 'shoulder-horizontal-abduction', 'rows', 'shoulder-extension', 'scapular-retraction-prone-arms-side', 'scapular-retraction-prone-arms-side-lift', 'scapular-retraction-prone-arms-overhead-lift', 'bent-over-rows-dumbbell', 'bicep-curl']
 };
 const DAY_LABEL = { lower: 'Lower Body Day', upper: 'Upper Body Day' };
 let currentDay = localStorage.getItem('repcounter_day') || 'lower';
