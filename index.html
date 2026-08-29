@@ -449,7 +449,7 @@
   <button id="runAllBtn" onclick="startRunAll()" disabled>&#9654; Run Selected</button>
   <a id="voiceSettingsLink" href="counter.html">&#128264; Voice settings &amp; test</a>
 </div>
-<div id="appUpdated">Updated __BUILD_TIME__</div>
+<div id="appUpdated">Updated <span id="appUpdatedTime">__BUILD_TIME__</span></div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
@@ -512,6 +512,19 @@
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
+
+// The deploy workflow stamps an unambiguous UTC ISO timestamp into this
+// element (it has no idea what timezone your device is in) - reformat it
+// here, client-side, into local time. Pure Date math, so this still works
+// offline. Leaves the raw placeholder alone if it was never stamped (e.g.
+// viewing the source file directly) rather than showing "Invalid Date".
+(function () {
+  const el = document.getElementById('appUpdatedTime');
+  if (!el) return;
+  const stamped = new Date(el.textContent.trim());
+  if (isNaN(stamped)) return;
+  el.textContent = stamped.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+})();
 
 // Simple original line-icon parts, reused across exercises.
 const DUMBBELL = (cx, cy, angle) => `<g transform="rotate(${angle} ${cx} ${cy})" stroke="#ffb347"><line x1="${cx-8}" y1="${cy}" x2="${cx+8}" y2="${cy}"/><circle cx="${cx-8}" cy="${cy}" r="4"/><circle cx="${cx+8}" cy="${cy}" r="4"/></g>`;
