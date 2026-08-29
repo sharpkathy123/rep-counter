@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0a0a">
+<title>Exercises</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  html, body {
+    background: #0a0a0a;
+    margin: 0; padding: 0;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    overscroll-behavior: none;
+  }
+  body {
+    min-height: 100vh;
+    padding: 4vw 4vw 8vw;
+    box-sizing: border-box;
+  }
+  h1 {
+    font-size: 6.5vw;
+    margin: 2vh 0 3vh;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  #dayTabs {
+    display: flex;
+    gap: 2vw;
+    margin-bottom: 3vh;
+  }
+  #dayTabs button {
+    flex: 1;
+    min-width: 0;
+    font-size: 4.2vw;
+    font-weight: 600;
+    padding: 2.5vw;
+    border-radius: 10px;
+    border: 1px solid #333;
+    background: #1a1a1a;
+    color: #999;
+  }
+  #dayTabs button.active {
+    background: #2fa84f;
+    border-color: #2fa84f;
+    color: #fff;
+  }
+  #dayTabs.hidden { display: none; }
+  #runAllBar {
+    margin-bottom: 4vh;
+  }
+  #runAllBar.hidden { display: none; }
+  #runAllBar .chk-row {
+    font-size: 4vw;
+    margin-bottom: 1.5vh;
+  }
+  #runAllBtn {
+    display: block;
+    width: 100%;
+    font-size: 5vw;
+    padding: 3vw;
+    border-radius: 12px;
+    border: none;
+    background: #4da3ff;
+    color: #fff;
+    font-weight: 700;
+  }
+  #voiceSettingsLink {
+    display: block;
+    text-align: center;
+    margin-top: 2vh;
+    font-size: 3.8vw;
+    color: #888;
+    text-decoration: none;
+  }
+  #grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5vw;
+  }
+  .card {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 14px;
+    padding: 3vw 2vw;
+    text-align: center;
+    color: #fff;
+    font-size: 3.8vw;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+    gap: 1.5vw;
+    cursor: pointer;
+  }
+  .card svg {
+    width: 15vw;
+    height: 15vw;
+    color: #eee;
+  }
+  .card.band { border-color: #3d6f9e; }
+  .card.bodyweight { border-color: #3d7a4a; }
+  .card.dumbbell { border-color: #8a6a2f; }
+
+  #detail {
+    display: none;
+  }
+  #detail.open { display: block; }
+  #grid.hidden { display: none; }
+  h1.hidden { display: none; }
+
+  .back {
+    display: inline-block;
+    margin-bottom: 3vh;
+    color: #ccc;
+    font-size: 4.2vw;
+    text-decoration: none;
+  }
+  .detail-icon {
+    display: block;
+    width: 40vw;
+    height: 40vw;
+    margin: 0 auto 2vh;
+    color: #eee;
+  }
+  .detail-name {
+    font-size: 6.5vw;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3vh;
+  }
+  .detail-section {
+    margin-bottom: 3vh;
+  }
+  .detail-section h2 {
+    font-size: 4vw;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #999;
+    margin: 0 0 1vh;
+  }
+  .detail-section p {
+    font-size: 4.6vw;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .my-notes {
+    width: 100%;
+    box-sizing: border-box;
+    background: #1a1a1a;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 10px;
+    font-size: 4.2vw;
+    padding: 2vw;
+    font-family: inherit;
+    resize: vertical;
+  }
+  .params {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 14px;
+    padding: 3vw;
+    margin-bottom: 3vh;
+  }
+  .params .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2vw;
+    font-size: 4.2vw;
+  }
+  .params input[type=number] {
+    font-size: 4.2vw;
+    width: 3em;
+    text-align: center;
+    background: #222;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 8px;
+  }
+  .params .hint {
+    color: #888;
+    font-size: 3.3vw;
+    margin-top: 1vh;
+  }
+  .chk-row {
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+    font-size: 4.2vw;
+    margin-bottom: 3vh;
+  }
+  #startBtn {
+    display: block;
+    width: 100%;
+    font-size: 5.5vw;
+    padding: 3vw;
+    border-radius: 12px;
+    border: none;
+    background: #2fa84f;
+    color: #fff;
+    font-weight: 700;
+  }
+  #speakBtn {
+    display: block;
+    width: 100%;
+    font-size: 4vw;
+    padding: 2vw;
+    margin-top: 2vh;
+    border-radius: 10px;
+    border: 1px solid #555;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+
+  #countWrap {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0a0a0a;
+    z-index: 20;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+  }
+  #countWrap.active { display: flex; }
+  .countControls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3vw;
+    margin-bottom: 4vh;
+  }
+  .countControls .back { margin-bottom: 0; }
+  #pauseBtn {
+    font-size: 4vw;
+    padding: 0.5em 1em;
+    border-radius: 10px;
+    border: 1px solid #555;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+  #pauseBtn.paused {
+    background: #4da3ff;
+    border-color: #4da3ff;
+    color: #fff;
+  }
+  #resetBtn {
+    font-size: 4vw;
+    padding: 0.5em 1em;
+    border-radius: 10px;
+    border: 1px solid #555;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+  #cLabel {
+    font-size: 10vw;
+    letter-spacing: 2px;
+    color: #ccc;
+    text-transform: uppercase;
+    margin-bottom: 2vh;
+    font-weight: 600;
+    max-width: 92vw;
+  }
+  #cBig {
+    font-size: min(58vw, 55vh);
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: #ffffff;
+    text-shadow: 0 0 30px rgba(255,255,255,0.35);
+    transition: transform 0.1s ease-out;
+  }
+  #cBig.pulse { animation: pulseScale 0.35s ease-out; }
+  #cBig.c-done { font-size: min(22vw, 22vh); }
+  @keyframes pulseScale {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.22); }
+    100% { transform: scale(1); }
+  }
+  #cSub {
+    font-size: 9vw;
+    color: #ccc;
+    margin-top: 3vh;
+    font-weight: 500;
+    max-width: 92vw;
+  }
+  .c-rest { color: #4da3ff; }
+  .c-go { color: #fff; }
+  .c-done { color: #2fa84f; }
+  .lastrep { color: #ff5b3d; }
+  #cFlash {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 21;
+  }
+  #cFlash.rep-flash { background: #fff; animation: repFlash 0.25s ease-out; }
+  #cFlash.set-flash { background: #ffd23f; animation: setFlash 0.7s ease-out; }
+  #cFlash.last-flash { background: #ff5b3d; animation: lastFlash 0.9s ease-out; }
+  @keyframes repFlash { 0% { opacity: 0.45; } 100% { opacity: 0; } }
+  @keyframes setFlash { 0% { opacity: 0.65; } 30% { opacity: 0; } 50% { opacity: 0.65; } 100% { opacity: 0; } }
+  @keyframes lastFlash { 0% { opacity: 0.6; } 20% { opacity: 0; } 35% { opacity: 0.6; } 55% { opacity: 0; } 70% { opacity: 0.6; } 100% { opacity: 0; } }
+</style>
+</head>
+<body>
+
+<h1 id="pageTitle">Exercises</h1>
+<div id="dayTabs">
+  <button id="lowerTab" onclick="selectDay('lower')">Lower Body Day</button>
+  <button id="upperTab" onclick="selectDay('upper')">Upper Body Day</button>
+</div>
+<div id="runAllBar">
+  <label class="chk-row" style="justify-content:center;"><input type="checkbox" id="runAllVoice"> Speak aloud</label>
+  <button id="runAllBtn" onclick="startRunAll()">&#9654; Run All Exercises</button>
+  <a id="voiceSettingsLink" href="index.html">&#128264; Voice settings &amp; test</a>
+</div>
+<div id="grid"></div>
+
+<div id="cFlash"></div>
+<div id="countWrap">
+  <div class="countControls">
+    <a class="back" href="#" onclick="cancelCount(); return false;">&#10005; Exercises</a>
+    <button id="pauseBtn" onclick="togglePause()">&#10074;&#10074; Pause</button>
+    <button id="resetBtn" onclick="resetCurrentRun()">&#8635; Reset</button>
+  </div>
+  <div id="cLabel"></div>
+  <div id="cBig"></div>
+  <div id="cSub"></div>
+</div>
+
+<div id="detail">
+  <a class="back" href="#" onclick="showGrid(); return false;">&larr; All exercises</a>
+  <svg class="detail-icon" id="detailIcon" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></svg>
+  <div class="detail-name" id="detailName"></div>
+
+  <div class="detail-section">
+    <h2>Description</h2>
+    <p id="detailDescription"></p>
+  </div>
+  <div class="detail-section">
+    <h2>Setup</h2>
+    <p id="detailSetup"></p>
+  </div>
+  <div class="detail-section">
+    <h2>Movement</h2>
+    <p id="detailMovement"></p>
+  </div>
+  <div class="detail-section">
+    <h2>Tip</h2>
+    <p id="detailTip"></p>
+  </div>
+  <div class="detail-section">
+    <h2>Your notes</h2>
+    <textarea class="my-notes" id="myNotes" rows="2" placeholder="Add your own cues here..."></textarea>
+  </div>
+
+  <div class="params">
+    <div class="row"><span>Sets</span><input type="number" id="f-sets"></div>
+    <div class="row"><span>Reps</span><input type="number" id="f-reps"></div>
+    <div class="row"><span>Seconds / rep</span><input type="number" id="f-seconds"></div>
+    <div class="row"><span>Rest (sec)</span><input type="number" id="f-rest"></div>
+    <div class="hint">Starting numbers are placeholders - edit to match what your PT prescribed. Changes are saved on this device, including for Run All.</div>
+  </div>
+
+  <label class="chk-row"><input type="checkbox" id="f-voice"> Speak aloud during counting</label>
+
+  <button id="speakBtn" onclick="speakDescription()">&#128264; Read description aloud</button>
+  <button id="startBtn" onclick="startCounting()">Start Counting</button>
+</div>
+
+<script>
+// Simple original line-icon parts, reused across exercises.
+const DUMBBELL = (cx, cy, angle) => `<g transform="rotate(${angle} ${cx} ${cy})" stroke="#ffb347"><line x1="${cx-8}" y1="${cy}" x2="${cx+8}" y2="${cy}"/><circle cx="${cx-8}" cy="${cy}" r="4"/><circle cx="${cx+8}" cy="${cy}" r="4"/></g>`;
+// Consistent color coding across every icon: white = body, amber = equipment
+// (bands, anchors, dumbbells), gray = ground/furniture context, and this
+// accent = motion. The arrowhead is always this accent color and a slim,
+// pointed shape so it never reads as part of the body.
+const EQUIP = '#ffb347';
+const GROUND = '#5a5a5a';
+const MOTION = '#ff5b3d';
+const ARROW = `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="${MOTION}"/></marker></defs>`;
+
+const EXERCISES = [
+  {
+    slug: 'hip-abduction',
+    name: 'Hip Abduction - Standing',
+    type: 'band',
+    description: 'Strengthens the outer hip and glute muscles that stabilize your pelvis while standing and walking.',
+    setup: 'Loop the band around both ankles. Stand sideways next to a wall or chair and hold on for balance.',
+    movement: 'Keeping your leg straight and toes pointing forward, lift your working leg out to the side against the band, then return with control.',
+    tip: 'Keep your hips level - don’t let your body lean or your toes turn upward as you lift.',
+    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
+    icon: `${ARROW}
+      <circle cx="55" cy="20" r="8"/>
+      <line x1="55" y1="28" x2="55" y2="65"/>
+      <line x1="55" y1="65" x2="48" y2="105"/>
+      <line x1="55" y1="65" x2="90" y2="80" marker-end="url(#__ARROWID__)"/>
+      <line x1="55" y1="35" x2="42" y2="55"/>
+      <line x1="55" y1="35" x2="68" y2="55"/>
+      <path d="M48 105 Q70 95 90 80" stroke="${EQUIP}" stroke-dasharray="4 5"/>`
+  },
+  {
+    slug: 'hip-extension',
+    name: 'Hip Extension - Standing',
+    type: 'band',
+    description: 'Strengthens the glutes and hamstrings used to push your leg backward, important for walking and stairs.',
+    setup: 'Anchor the band low in front of you (or loop around both ankles). Face the anchor and hold something stable for balance.',
+    movement: 'Keeping your knee straight, extend your working leg backward against the band, squeeze your glute, then return with control.',
+    tip: 'Keep your torso upright - avoid arching your lower back to get extra range.',
+    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
+    icon: `${ARROW}
+      <circle cx="58" cy="18" r="7"/>
+      <line x1="57" y1="25" x2="54" y2="62"/>
+      <line x1="54" y1="62" x2="50" y2="105"/>
+      <line x1="54" y1="62" x2="85" y2="95" marker-end="url(#__ARROWID__)"/>
+      <line x1="56" y1="32" x2="42" y2="46"/>
+      <path d="M50 105 Q68 100 85 95" stroke="${EQUIP}" stroke-dasharray="4 5"/>`
+  },
+  {
+    slug: 'pnf-d2',
+    name: 'PNF D2 - Standing',
+    type: 'band',
+    description: 'A diagonal arm pattern that trains the shoulder and trunk to work together through a full range, mimicking reaching-and-rotating movements.',
+    setup: 'Anchor the band low, at your side opposite your working arm. Start with your working hand near your opposite hip, palm facing back.',
+    movement: 'Sweep your arm in one smooth diagonal, up and out, finishing overhead and out to the side with your palm turning to face away from you. Reverse slowly to return.',
+    tip: 'Move through the whole diagonal smoothly - don’t just raise your arm straight up.',
+    defaults: { sets: 2, reps: 10, seconds: 3, rest: 5 },
+    icon: `${ARROW}
+      <circle cx="55" cy="30" r="8"/>
+      <line x1="55" y1="38" x2="55" y2="75"/>
+      <line x1="55" y1="75" x2="45" y2="110"/>
+      <line x1="55" y1="75" x2="65" y2="110"/>
+      <path d="M40 75 Q60 60 95 20" marker-end="url(#__ARROWID__)"/>
+      <line x1="20" y1="103" x2="20" y2="116" stroke="${EQUIP}"/>
+      <path d="M20 106 Q30 92 40 76" stroke="${EQUIP}" stroke-dasharray="4 5"/>`
+  },
+  {
+    slug: 'bicep-curl',
+    name: 'Bicep Curls - Alternating',
+    type: 'dumbbell',
+    description: 'Strengthens the biceps at the front of the upper arm, used for lifting and carrying.',
+    setup: 'Stand or sit holding a dumbbell in each hand, arms at your sides, palms facing forward.',
+    movement: 'Curl one dumbbell up toward your shoulder while keeping your elbow tucked at your side, lower with control, then alternate arms.',
+    tip: 'Keep your elbow still and close to your body - don’t swing your back or shoulders to help lift.',
+    defaults: { sets: 2, reps: 12, seconds: 2, rest: 5 },
+    icon: `
+      <circle cx="55" cy="20" r="8"/>
+      <line x1="55" y1="28" x2="55" y2="65"/>
+      <line x1="55" y1="65" x2="48" y2="108"/>
+      <line x1="55" y1="65" x2="63" y2="108"/>
+      <line x1="55" y1="33" x2="70" y2="50"/>
+      <line x1="70" y1="50" x2="50" y2="42"/>
+      ${DUMBBELL(46, 40, -25)}
+      <line x1="55" y1="33" x2="40" y2="60"/>
+      ${DUMBBELL(40, 66, 5)}`
+  },
+  {
+    slug: 'bridge',
+    name: 'Bridge',
+    type: 'bodyweight',
+    description: 'Strengthens the glutes and lower back while supporting the spine in a neutral, controlled position.',
+    setup: 'Lie on your back with your knees bent and feet flat on the floor, hip-width apart.',
+    movement: 'Squeeze your glutes and lift your hips toward the ceiling until your body forms a straight line from knees to shoulders. Hold, then lower with control.',
+    tip: 'Drive through your heels and avoid over-arching your lower back at the top.',
+    defaults: { sets: 2, reps: 10, seconds: 3, rest: 5 },
+    icon: `
+      <line x1="8" y1="100" x2="115" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
+      <circle cx="13" cy="90" r="8"/>
+      <line x1="20" y1="95" x2="55" y2="85"/>
+      <line x1="55" y1="85" x2="90" y2="75"/>
+      <line x1="90" y1="75" x2="90" y2="100"/>`
+  },
+  {
+    slug: 'clamshell',
+    name: 'Clamshell - Side Lying',
+    type: 'band',
+    description: 'Targets the outer hip (glute medius) to improve hip stability without straining the lower back.',
+    setup: 'Lie on your side with knees bent about 45 degrees, hips stacked, and the band looped around your thighs just above the knees.',
+    movement: 'Keeping your feet together, open your top knee upward like a clamshell, then lower it with control.',
+    tip: 'Keep your hips stacked and still - don’t let your top hip roll backward as you open your knee.',
+    defaults: { sets: 2, reps: 12, seconds: 2, rest: 5 },
+    icon: `${ARROW}
+      <line x1="5" y1="100" x2="100" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
+      <circle cx="12" cy="88" r="8"/>
+      <line x1="20" y1="89" x2="38" y2="90"/>
+      <line x1="38" y1="90" x2="58" y2="98"/>
+      <line x1="58" y1="98" x2="78" y2="89"/>
+      <line x1="38" y1="90" x2="58" y2="95" stroke-dasharray="3 4"/>
+      <line x1="58" y1="95" x2="78" y2="92" stroke-dasharray="3 4"/>
+      <line x1="38" y1="90" x2="58" y2="72"/>
+      <line x1="58" y1="72" x2="78" y2="90"/>
+      <line x1="58" y1="93" x2="58" y2="76" stroke="${MOTION}" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`
+  },
+  {
+    slug: 'abdominal-bracing-marches',
+    name: 'Abdominal Bracing - Marches',
+    type: 'bodyweight',
+    description: 'Trains your core to stay braced and your spine to stay steady while your legs move - a foundation for safe lifting and walking.',
+    setup: 'Lie on your back, knees bent, feet flat on the floor. Gently brace your abdominals as if about to be poked in the stomach.',
+    movement: 'Keeping the brace and your low back still, lift one foot off the floor to a tabletop position, then lower with control and switch legs.',
+    tip: 'Keep your low back gently pressed to the floor the whole time - don’t let your pelvis rock side to side.',
+    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
+    icon: `${ARROW}
+      <line x1="8" y1="100" x2="115" y2="100" stroke="${GROUND}" stroke-dasharray="4 5"/>
+      <circle cx="15" cy="88" r="8"/>
+      <line x1="23" y1="90" x2="55" y2="92"/>
+      <line x1="55" y1="92" x2="72" y2="78" stroke-dasharray="3 4"/>
+      <line x1="72" y1="78" x2="85" y2="98" stroke-dasharray="3 4"/>
+      <line x1="55" y1="92" x2="38" y2="58"/>
+      <line x1="38" y1="58" x2="65" y2="58"/>
+      <line x1="72" y1="76" x2="42" y2="60" stroke="${MOTION}" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`
+  },
+  {
+    slug: 'sit-to-stand',
+    name: 'Sit to Stand - Arms Crossed',
+    type: 'bodyweight',
+    description: 'Builds functional leg and core strength for getting up from a chair without using your hands or momentum.',
+    setup: 'Sit toward the front edge of a sturdy chair, feet flat on the floor, arms crossed over your chest.',
+    movement: 'Lean slightly forward and push through your feet to stand up fully, then lower back down to the chair with control.',
+    tip: 'Keep your chest up and avoid rocking or using your arms to help you up.',
+    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
+    icon: `
+      <line x1="18" y1="85" x2="82" y2="85" stroke="${GROUND}" stroke-dasharray="3 4"/>
+      <line x1="25" y1="85" x2="25" y2="108" stroke="${GROUND}" stroke-dasharray="3 4"/>
+      <line x1="75" y1="85" x2="75" y2="108" stroke="${GROUND}" stroke-dasharray="3 4"/>
+      <circle cx="60" cy="35" r="8"/>
+      <line x1="60" y1="43" x2="60" y2="75"/>
+      <line x1="60" y1="75" x2="50" y2="108"/>
+      <line x1="60" y1="75" x2="70" y2="108"/>
+      <line x1="50" y1="58" x2="70" y2="70"/>
+      <line x1="70" y1="58" x2="50" y2="70"/>`
+  },
+  {
+    slug: 'no-money',
+    name: 'No Money - Scapular Retraction',
+    type: 'band',
+    description: 'Strengthens the mid-back and rotator cuff muscles that support good shoulder posture.',
+    setup: 'Hold the band with both hands, shoulder-width apart. Bend your elbows 90 degrees and tuck them at your sides, forearms pointing forward.',
+    movement: 'Keeping your elbows glued to your sides, rotate your forearms outward away from each other while squeezing your shoulder blades together, then return with control.',
+    tip: 'Keep your elbows pinned to your sides the whole time - the motion happens at the shoulder, not by flaring the elbows out.',
+    defaults: { sets: 2, reps: 12, seconds: 2, rest: 5 },
+    icon: `${ARROW}
+      <circle cx="60" cy="15" r="7"/>
+      <line x1="60" y1="22" x2="60" y2="55"/>
+      <line x1="60" y1="55" x2="52" y2="95"/>
+      <line x1="60" y1="55" x2="68" y2="95"/>
+      <line x1="60" y1="25" x2="52" y2="45"/>
+      <line x1="60" y1="25" x2="68" y2="45"/>
+      <line x1="52" y1="45" x2="28" y2="45" marker-end="url(#__ARROWID__)"/>
+      <line x1="68" y1="45" x2="92" y2="45" marker-end="url(#__ARROWID__)"/>`
+  },
+  {
+    slug: 'shoulder-horizontal-abduction',
+    name: 'Shoulder Horizontal Abduction',
+    type: 'band',
+    description: 'Strengthens the mid-back and rear shoulder muscles that pull the shoulders into good posture.',
+    setup: 'Anchor the band in front of you at chest height. Hold a handle in each hand with arms extended forward at shoulder height.',
+    movement: 'Keeping your arms roughly straight and at shoulder height, pull both arms out to the sides, squeezing your shoulder blades together, then return with control.',
+    tip: 'Keep your shoulders down, away from your ears, throughout the movement.',
+    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
+    icon: `${ARROW}
+      <circle cx="60" cy="15" r="7"/>
+      <line x1="60" y1="22" x2="60" y2="55"/>
+      <line x1="60" y1="55" x2="52" y2="95"/>
+      <line x1="60" y1="55" x2="68" y2="95"/>
+      <path d="M45 32 L75 32" stroke-dasharray="3 4"/>
+      <path d="M60 32 L15 30" marker-end="url(#__ARROWID__)"/>
+      <path d="M60 32 L105 30" marker-end="url(#__ARROWID__)"/>`
+  },
+  {
+    slug: 'rows',
+    name: 'Rows with Resistance Bands',
+    type: 'band',
+    description: 'Strengthens the mid-back muscles that pull your shoulder blades together, countering a forward-slumped posture.',
+    setup: 'Anchor the band in front of you at chest height and step back for tension. Start with arms extended forward.',
+    movement: 'Pull your elbows straight back, squeezing your shoulder blades together and keeping elbows close to your body, then return with control.',
+    tip: 'Keep your chest up and avoid shrugging your shoulders toward your ears as you pull.',
+    defaults: { sets: 2, reps: 12, seconds: 2, rest: 5 },
+    icon: `${ARROW}
+      <circle cx="70" cy="20" r="8"/>
+      <line x1="70" y1="28" x2="70" y2="65"/>
+      <line x1="70" y1="65" x2="62" y2="108"/>
+      <line x1="70" y1="65" x2="78" y2="108"/>
+      <line x1="70" y1="40" x2="55" y2="48"/>
+      <line x1="55" y1="48" x2="40" y2="50"/>
+      <path d="M40 50 L15 43" stroke="${EQUIP}" stroke-dasharray="3 4"/>
+      <line x1="15" y1="36" x2="15" y2="50" stroke="${EQUIP}"/>
+      <line x1="42" y1="58" x2="88" y2="58" stroke="${MOTION}" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`
+  },
+  {
+    slug: 'shoulder-extension',
+    name: 'Shoulder Extension',
+    type: 'band',
+    description: 'Strengthens the back of the shoulder and lat muscles used to pull your arm down and back.',
+    setup: 'Anchor the band in front of you at shoulder height. Hold the handle with your arm extended forward.',
+    movement: 'Keeping your elbow straight, pull your arm down and back past your hip against the band, then return with control.',
+    tip: 'Keep your torso still and upright - avoid leaning back to generate extra range.',
+    defaults: { sets: 2, reps: 10, seconds: 2, rest: 5 },
+    icon: `${ARROW}
+      <circle cx="55" cy="20" r="8"/>
+      <line x1="55" y1="28" x2="55" y2="65"/>
+      <line x1="55" y1="65" x2="48" y2="108"/>
+      <line x1="55" y1="65" x2="62" y2="108"/>
+      <line x1="95" y1="20" x2="95" y2="42"/>
+      <line x1="55" y1="35" x2="95" y2="32" stroke-dasharray="3 4"/>
+      <path d="M95 32 Q90 65 68 92" marker-end="url(#__ARROWID__)"/>`
+  }
+];
+
+const gridEl = document.getElementById('grid');
+const detailEl = document.getElementById('detail');
+const titleEl = document.getElementById('pageTitle');
+const dayTabsEl = document.getElementById('dayTabs');
+const lowerTabEl = document.getElementById('lowerTab');
+const upperTabEl = document.getElementById('upperTab');
+const runAllBarEl = document.getElementById('runAllBar');
+
+// A good order for each day: standing/banded work grouped together, floor
+// work grouped together, more coordination-demanding moves done first while
+// fresh, and exercises that share a band anchor kept adjacent.
+const DAY_ORDER = {
+  lower: ['hip-abduction', 'hip-extension', 'bridge', 'abdominal-bracing-marches', 'clamshell', 'sit-to-stand'],
+  upper: ['pnf-d2', 'no-money', 'shoulder-horizontal-abduction', 'rows', 'shoulder-extension', 'bicep-curl']
+};
+const DAY_LABEL = { lower: 'Lower Body Day', upper: 'Upper Body Day' };
+let currentDay = localStorage.getItem('repcounter_day') || 'lower';
+
+function resolvedIcon(ex, suffix) {
+  // Each icon can define an arrowhead marker; give it a unique id per
+  // rendering so duplicate SVG ids on the page don't make icons borrow
+  // each other's marker color.
+  return ex.icon.replaceAll('__ARROWID__', `arrow-${ex.slug}-${suffix}`);
+}
+
+function buildIconSvg(inner) {
+  return `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+}
+
+function buildGrid() {
+  const list = DAY_ORDER[currentDay].map(slug => EXERCISES.find(e => e.slug === slug));
+  gridEl.innerHTML = list.map(ex => `
+    <div class="card ${ex.type}" onclick="openDetail('${ex.slug}')">
+      ${buildIconSvg(resolvedIcon(ex, 'card'))}
+      <div>${ex.name}</div>
+    </div>
+  `).join('');
+}
+
+function selectDay(day) {
+  currentDay = day;
+  localStorage.setItem('repcounter_day', day);
+  lowerTabEl.classList.toggle('active', day === 'lower');
+  upperTabEl.classList.toggle('active', day === 'upper');
+  titleEl.textContent = DAY_LABEL[day];
+  buildGrid();
+}
+selectDay(currentDay);
+
+function showGrid() {
+  window.speechSynthesis.cancel();
+  detailEl.classList.remove('open');
+  gridEl.classList.remove('hidden');
+  titleEl.classList.remove('hidden');
+  dayTabsEl.classList.remove('hidden');
+  runAllBarEl.classList.remove('hidden');
+  history.replaceState(null, '', 'exercises.html');
+}
+
+function getSavedVoice() {
+  if (!('speechSynthesis' in window)) return null;
+  const saved = localStorage.getItem('repcounter_voice');
+  if (!saved) return null;
+  return window.speechSynthesis.getVoices().find(v => v.voiceURI === saved) || null;
+}
+
+// Sets/reps/seconds/rest edited for an exercise are remembered on this
+// device, so Run All and future visits pick up the same numbers instead of
+// resetting to the generic placeholder defaults every time.
+function getExerciseParams(ex) {
+  const saved = localStorage.getItem('params_' + ex.slug);
+  if (saved) {
+    try { return JSON.parse(saved); } catch (e) {}
+  }
+  return ex.defaults;
+}
+
+function saveCurrentExerciseParams() {
+  if (!currentExercise) return;
+  const params = {
+    sets: parseInt(document.getElementById('f-sets').value) || currentExercise.defaults.sets,
+    reps: parseInt(document.getElementById('f-reps').value) || currentExercise.defaults.reps,
+    seconds: parseInt(document.getElementById('f-seconds').value) || currentExercise.defaults.seconds,
+    rest: parseInt(document.getElementById('f-rest').value) || 0
+  };
+  localStorage.setItem('params_' + currentExercise.slug, JSON.stringify(params));
+}
+
+let currentExercise = null;
+
+// The full picture for an exercise: what it is, how to set it up and do it,
+// the coaching cue, and the numbers - especially seconds per rep, so the
+// pace of the movement can be thought through before starting.
+function buildFullInfoText(ex, p) {
+  return `${ex.name}. ${ex.description} ${ex.setup} ${ex.movement} ${ex.tip} `
+    + `${p.sets} set${p.sets === 1 ? '' : 's'} of ${p.reps} rep${p.reps === 1 ? '' : 's'}, ${p.seconds} second${p.seconds === 1 ? '' : 's'} per rep, `
+    + `with ${p.rest} second${p.rest === 1 ? '' : 's'} rest between sets.`;
+}
+
+function speakDescription() {
+  if (!currentExercise || !('speechSynthesis' in window)) return;
+  const ex = currentExercise;
+  const text = buildFullInfoText(ex, getExerciseParams(ex));
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  const v = getSavedVoice();
+  if (v) u.voice = v;
+  window.speechSynthesis.speak(u);
+}
+
+function openDetail(slug) {
+  const ex = EXERCISES.find(e => e.slug === slug);
+  if (!ex) return;
+  currentExercise = ex;
+
+  const detailIconEl = document.getElementById('detailIcon');
+  detailIconEl.innerHTML = resolvedIcon(ex, 'detail');
+  document.getElementById('detailName').textContent = ex.name;
+  document.getElementById('detailDescription').textContent = ex.description;
+  document.getElementById('detailSetup').textContent = ex.setup;
+  document.getElementById('detailMovement').textContent = ex.movement;
+  document.getElementById('detailTip').textContent = ex.tip;
+  document.getElementById('myNotes').value = localStorage.getItem('notes_' + ex.slug) || '';
+  const savedParams = getExerciseParams(ex);
+  document.getElementById('f-sets').value = savedParams.sets;
+  document.getElementById('f-reps').value = savedParams.reps;
+  document.getElementById('f-seconds').value = savedParams.seconds;
+  document.getElementById('f-rest').value = savedParams.rest;
+
+  const params = new URLSearchParams(window.location.search);
+  const voiceMode = params.get('voice') === '1';
+  document.getElementById('f-voice').checked = voiceMode;
+
+  gridEl.classList.add('hidden');
+  titleEl.classList.add('hidden');
+  dayTabsEl.classList.add('hidden');
+  runAllBarEl.classList.add('hidden');
+  detailEl.classList.add('open');
+}
+
+document.getElementById('myNotes').addEventListener('input', (e) => {
+  if (currentExercise) localStorage.setItem('notes_' + currentExercise.slug, e.target.value);
+});
+
+['f-sets', 'f-reps', 'f-seconds', 'f-rest'].forEach(id => {
+  document.getElementById(id).addEventListener('input', saveCurrentExerciseParams);
+});
+
+// Keep the screen awake during a voice-guided workout run on this page.
+let wakeLock = null;
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator && document.visibilityState === 'visible') {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    }
+  } catch (e) {
+    // unsupported browser, Low Power Mode, etc. - fail silently
+  }
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && !wakeLock) requestWakeLock();
+});
+
+function vibrate(pattern) {
+  if (navigator.vibrate) navigator.vibrate(pattern);
+}
+
+const countWrapEl = document.getElementById('countWrap');
+const cLabelEl = document.getElementById('cLabel');
+const cBigEl = document.getElementById('cBig');
+const cSubEl = document.getElementById('cSub');
+const cFlashEl = document.getElementById('cFlash');
+const pauseBtnEl = document.getElementById('pauseBtn');
+
+function cFlash(type) {
+  cFlashEl.className = '';
+  void cFlashEl.offsetWidth;
+  cFlashEl.className = type === 'set' ? 'set-flash' : (type === 'last' ? 'last-flash' : 'rep-flash');
+}
+function cPulse() {
+  cBigEl.classList.remove('pulse');
+  void cBigEl.offsetWidth;
+  cBigEl.classList.add('pulse');
+}
+const WARM = [255, 91, 61];
+const REP_START = [255, 255, 255];
+const REST_START = [77, 163, 255];
+function lerpColor(start, t) {
+  const r = Math.round(start[0] + (WARM[0] - start[0]) * t);
+  const g = Math.round(start[1] + (WARM[1] - start[1]) * t);
+  const b = Math.round(start[2] + (WARM[2] - start[2]) * t);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+async function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+
+// Every run (single exercise or Run All) gets a token. A loop only keeps
+// going while its own token is still the current one, so starting a fresh
+// run (Reset, or a new Start) cleanly invalidates whatever was running
+// before - no race between an old run winding down and a new one starting,
+// which a shared "cancelled" flag can't guarantee on its own.
+let runToken = 0;
+let lastRunStarter = null; // re-invoking this is what "Reset" does
+
+// Ticks time down in small chunks, freezing progress while runPaused is
+// true - this is what makes the Pause button work for both a single
+// exercise and a Run All sequence, without any complex resume bookkeeping.
+let runPaused = false;
+async function pausableWait(ms, token) {
+  let remaining = ms;
+  while (remaining > 0 && token === runToken) {
+    if (runPaused) {
+      await sleep(150);
+      continue;
+    }
+    const chunk = Math.min(150, remaining);
+    await sleep(chunk);
+    remaining -= chunk;
+  }
+}
+
+function togglePause() {
+  runPaused = !runPaused;
+  if (runPaused) window.speechSynthesis.cancel();
+  pauseBtnEl.textContent = runPaused ? '▶ Resume' : '❙❙ Pause';
+  pauseBtnEl.classList.toggle('paused', runPaused);
+}
+
+function resetCurrentRun() {
+  if (lastRunStarter) lastRunStarter();
+}
+
+let speechToken = 0;
+function speakCount(text) {
+  const myToken = ++speechToken;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  const v = getSavedVoice();
+  if (v) u.voice = v;
+  u.onstart = () => {
+    // iOS Safari doesn't always fully cancel a still-queued utterance; if a
+    // newer speakCount() has since superseded this one, stop it the instant
+    // it starts instead of letting it play late and sound like a repeated cue.
+    if (myToken !== speechToken) window.speechSynthesis.cancel();
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function cancelCount() {
+  runToken++;
+  runPaused = false;
+  window.speechSynthesis.cancel();
+  countWrapEl.classList.remove('active');
+  gridEl.classList.remove('hidden');
+  titleEl.classList.remove('hidden');
+  dayTabsEl.classList.remove('hidden');
+  runAllBarEl.classList.remove('hidden');
+}
+
+async function countdownStart(token, speakFn) {
+  const steps = ['3', '2', '1', 'Go!'];
+  for (const step of steps) {
+    if (token !== runToken) return;
+    cLabelEl.textContent = '';
+    cSubEl.textContent = '';
+    cBigEl.textContent = step;
+    cBigEl.className = step === 'Go!' ? 'c-done' : 'c-go';
+    cBigEl.style.color = '';
+    vibrate(step === 'Go!' ? [80, 40, 80] : 30);
+    speakFn(step === 'Go!' ? 'Go' : step);
+    await pausableWait(650, token);
+  }
+}
+
+async function runCount(sets, reps, seconds, rest, voiceOn, token) {
+  const speakFn = voiceOn ? speakCount : () => {};
+  for (let s = 1; s <= sets && token === runToken; s++) {
+    // Announce the set, then run a full 3-2-1-Go countdown before every set
+    // (not just the first) - a clear, unmissable "reps start now" cue.
+    // The announcement gets its own pause before the countdown starts so it
+    // isn't cancelled mid-word by the countdown's own speech.
+    cLabelEl.textContent = `Set ${s} of ${sets}`;
+    cBigEl.textContent = '';
+    cSubEl.textContent = '';
+    speakFn(`Set ${s} of ${sets}`);
+    vibrate([40, 40, 40]);
+    await pausableWait(900, token);
+    if (token !== runToken) return;
+    await countdownStart(token, speakFn);
+    if (token !== runToken) return;
+    cLabelEl.textContent = `Set ${s} of ${sets}`;
+
+    for (let r = 1; r <= reps && token === runToken; r++) {
+      const isLastRep = r === reps;
+      cSubEl.textContent = isLastRep ? `LAST REP (${r} of ${reps})` : `rep ${r} of ${reps}`;
+      cSubEl.className = isLastRep ? 'lastrep' : '';
+      speakFn(isLastRep ? 'Last rep!' : `Rep ${r}`);
+      vibrate(isLastRep ? [50, 40, 50, 40, 120] : 40);
+      if (isLastRep) cFlash('last');
+      // Count through each second of this rep, visually and (in voice mode) aloud.
+      // Second 1 isn't spoken aloud - the "Rep N"/"Last rep!" cue just spoken
+      // already marks the start, and speaking over it would cancel it before
+      // it's heard (same reason the rest countdown below skips its own first tick).
+      for (let sec = 1; sec <= seconds && token === runToken; sec++) {
+        cBigEl.textContent = sec;
+        cBigEl.className = 'c-go';
+        cBigEl.style.color = lerpColor(REP_START, seconds > 1 ? (sec - 1) / (seconds - 1) : 1);
+        if (sec > 1) speakFn(String(sec));
+        if (!wakeLock) requestWakeLock();
+        await pausableWait(1000, token);
+      }
+      if (token !== runToken) return;
+      cPulse();
+      cFlash('rep');
+      vibrate(60);
+    }
+    if (token !== runToken) return;
+    cSubEl.className = '';
+    cFlash('set');
+    vibrate([60, 40, 60]);
+    if (s < sets) {
+      // One utterance instead of two back-to-back calls, so "Set complete"
+      // isn't cancelled the instant "Rest, N seconds" starts.
+      speakFn(rest > 0 ? `Set complete. Rest ${rest} seconds.` : 'Set complete.');
+      await pausableWait(900, token);
+      if (token !== runToken) return;
+      if (rest > 0) {
+        for (let t = rest; t > 0 && token === runToken; t--) {
+          cLabelEl.textContent = 'Rest';
+          cBigEl.textContent = t;
+          cBigEl.className = 'c-rest';
+          cBigEl.style.color = lerpColor(REST_START, rest > 1 ? (rest - t) / (rest - 1) : 1);
+          cSubEl.textContent = `next: set ${s + 1}`;
+          // skip the very first tick's own number - it would otherwise just
+          // repeat the total already spoken in the announcement above
+          if (t !== rest && (t <= 3 || t % 5 === 0)) speakFn(String(t));
+          await pausableWait(1000, token);
+        }
+      }
+    }
+  }
+  if (token !== runToken) return;
+  cLabelEl.textContent = '';
+  cBigEl.textContent = 'Done';
+  cBigEl.className = 'c-done';
+  cBigEl.style.color = '';
+  cSubEl.textContent = '';
+  cFlash('set');
+  speakFn('Done! Great job.');
+  vibrate([100, 50, 100, 50, 200]);
+}
+
+function startCounting() {
+  const sets = parseInt(document.getElementById('f-sets').value);
+  const reps = parseInt(document.getElementById('f-reps').value);
+  const seconds = parseInt(document.getElementById('f-seconds').value);
+  const rest = parseInt(document.getElementById('f-rest').value) || 0;
+  const voiceOn = document.getElementById('f-voice').checked;
+
+  if (!voiceOn) {
+    // Silent flow: no speech involved, so handing off to the counter page works fine.
+    window.location.href = `index.html?sets=${sets}&reps=${reps}&seconds=${seconds}&rest=${rest}&voice=0`;
+    return;
+  }
+
+  // Voice flow: stay on THIS page instead of navigating to index.html.
+  // The tap on "Start Counting" is what unlocks iOS speech - a navigation
+  // to a new page loses that unlock and silently kills the audio, which is
+  // exactly the bug that was reported. Speaking the description here first
+  // also gives time to get back into position before the counting starts.
+  const myToken = ++runToken;
+  lastRunStarter = startCounting;
+  runPaused = false;
+  pauseBtnEl.textContent = '❙❙ Pause';
+  pauseBtnEl.classList.remove('paused');
+  window.speechSynthesis.cancel();
+  detailEl.classList.remove('open');
+  countWrapEl.classList.add('active');
+  cLabelEl.textContent = 'Get ready...';
+  cBigEl.textContent = '';
+  cSubEl.textContent = '';
+  requestWakeLock();
+
+  const beginCounting = () => runCount(sets, reps, seconds, rest, true, myToken);
+
+  if (!('speechSynthesis' in window)) {
+    beginCounting();
+    return;
+  }
+  const ex = currentExercise;
+  const text = buildFullInfoText(ex, { sets, reps, seconds, rest }) + ' Get in position now.';
+  const u = new SpeechSynthesisUtterance(text);
+  const v = getSavedVoice();
+  if (v) u.voice = v;
+  u.onend = beginCounting;
+  u.onerror = beginCounting;
+  window.speechSynthesis.speak(u);
+}
+
+function speakAndWait(text) {
+  return new Promise(resolve => {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    const v = getSavedVoice();
+    if (v) u.voice = v;
+    u.onend = resolve;
+    u.onerror = resolve;
+    window.speechSynthesis.speak(u);
+  });
+}
+
+async function runAllExercises(voiceOn, token) {
+  const list = DAY_ORDER[currentDay].map(slug => EXERCISES.find(e => e.slug === slug));
+  for (let i = 0; i < list.length && token === runToken; i++) {
+    const ex = list[i];
+    cLabelEl.textContent = `Exercise ${i + 1} of ${list.length}`;
+    cBigEl.textContent = '';
+    cBigEl.className = '';
+    cBigEl.style.color = '';
+    cSubEl.textContent = ex.name;
+    const p = getExerciseParams(ex);
+
+    if (voiceOn && 'speechSynthesis' in window) {
+      await speakAndWait(buildFullInfoText(ex, p) + ' Get in position now.');
+    } else {
+      await pausableWait(4000, token);
+    }
+    if (token !== runToken) return;
+
+    await runCount(p.sets, p.reps, p.seconds, p.rest, voiceOn, token);
+    if (token !== runToken) return;
+  }
+
+  if (token !== runToken) return;
+  cLabelEl.textContent = '';
+  cBigEl.textContent = 'All Done!';
+  cBigEl.className = 'c-done';
+  cBigEl.style.color = '';
+  cSubEl.textContent = '';
+  cFlash('set');
+  if (voiceOn) speakCount('Workout complete. Great job!');
+  vibrate([100, 50, 100, 50, 100, 50, 200]);
+}
+
+function startRunAll() {
+  const voiceOn = document.getElementById('runAllVoice').checked;
+
+  const myToken = ++runToken;
+  lastRunStarter = startRunAll;
+  runPaused = false;
+  pauseBtnEl.textContent = '❙❙ Pause';
+  pauseBtnEl.classList.remove('paused');
+  window.speechSynthesis.cancel();
+  gridEl.classList.add('hidden');
+  titleEl.classList.add('hidden');
+  dayTabsEl.classList.add('hidden');
+  runAllBarEl.classList.add('hidden');
+  countWrapEl.classList.add('active');
+  cLabelEl.textContent = 'Get ready...';
+  cBigEl.textContent = '';
+  cSubEl.textContent = '';
+  requestWakeLock();
+
+  runAllExercises(voiceOn, myToken);
+}
+
+// exercises.html?day=upper (or lower) jumps straight to that day's tab -
+// handy for a dedicated bookmark or Siri Shortcut per workout day.
+const startParams = new URLSearchParams(window.location.search);
+const dayParam = startParams.get('day');
+if (dayParam === 'upper' || dayParam === 'lower') {
+  selectDay(dayParam);
+}
+
+// Deep link: exercises.html?ex=bridge&voice=1 opens straight to that
+// exercise's description (and speaks it if voice=1), skipping the grid -
+// this is what a Siri Shortcut for one specific exercise should point to.
+const exParam = startParams.get('ex');
+if (exParam && EXERCISES.some(e => e.slug === exParam)) {
+  openDetail(exParam);
+}
+</script>
+</body>
+</html>
