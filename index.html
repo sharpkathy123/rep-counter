@@ -144,6 +144,7 @@
   .rest { color: #4da3ff; }
   .go { color: #fff; }
   .done { color: #2fa84f; }
+  .lastrep { color: #ff5b3d; }
 
   #flash {
     position: fixed;
@@ -160,6 +161,10 @@
     background: #ffd23f;
     animation: setFlash 0.7s ease-out;
   }
+  #flash.last-flash {
+    background: #ff5b3d;
+    animation: lastFlash 0.9s ease-out;
+  }
   @keyframes repFlash {
     0% { opacity: 0.45; }
     100% { opacity: 0; }
@@ -168,6 +173,14 @@
     0% { opacity: 0.65; }
     30% { opacity: 0; }
     50% { opacity: 0.65; }
+    100% { opacity: 0; }
+  }
+  @keyframes lastFlash {
+    0% { opacity: 0.6; }
+    20% { opacity: 0; }
+    35% { opacity: 0.6; }
+    55% { opacity: 0; }
+    70% { opacity: 0.6; }
     100% { opacity: 0; }
   }
 </style>
@@ -280,18 +293,26 @@ if ('speechSynthesis' in window) {
   window.speechSynthesis.onvoiceschanged = loadVoices;
 }
 
+let speechToken = 0;
 function speak(text) {
   if (!voiceMode || !('speechSynthesis' in window)) return;
+  const myToken = ++speechToken;
   window.speechSynthesis.cancel(); // drop anything queued so audio can't fall behind
   const u = new SpeechSynthesisUtterance(text);
   if (selectedVoice) u.voice = selectedVoice;
+  u.onstart = () => {
+    // iOS Safari doesn't always fully cancel a still-queued utterance; if a
+    // newer speak() has since superseded this one, stop it the instant it
+    // starts instead of letting it play late and sound like a repeated cue.
+    if (myToken !== speechToken) window.speechSynthesis.cancel();
+  };
   window.speechSynthesis.speak(u);
 }
 
 function flash(type) {
   flashEl.className = '';
   void flashEl.offsetWidth; // force reflow so the animation restarts
-  flashEl.className = type === 'set' ? 'set-flash' : 'rep-flash';
+  flashEl.className = type === 'set' ? 'set-flash' : (type === 'last' ? 'last-flash' : 'rep-flash');
 }
 
 function pulseBig() {
@@ -350,21 +371,36 @@ async function countdown() {
 }
 
 async function run() {
-  await countdown();
-  label.textContent = '';
   for (let s = 1; s <= sets; s++) {
+    // Announce the set, then run a full 3-2-1-Go countdown before every set
+    // (not just the first) - a clear, unmissable "reps start now" cue.
+    // The announcement gets its own pause before the countdown starts so it
+    // isn't cancelled mid-word by the countdown's own speech.
     label.textContent = `Set ${s} of ${sets}`;
+    big.textContent = '';
+    sub.textContent = '';
     speak(`Set ${s} of ${sets}`);
+    vibrate([40, 40, 40]);
+    await sleep(900);
+    await countdown();
+    label.textContent = `Set ${s} of ${sets}`;
+
     for (let r = 1; r <= reps; r++) {
-      sub.textContent = `rep ${r} of ${reps}`;
-      speak(`Rep ${r}`);
-      vibrate(40);
-      // Count through each second of this rep, visually and (in voice mode) aloud
+      const isLastRep = r === reps;
+      sub.textContent = isLastRep ? `LAST REP (${r} of ${reps})` : `rep ${r} of ${reps}`;
+      sub.className = isLastRep ? 'lastrep' : '';
+      speak(isLastRep ? 'Last rep!' : `Rep ${r}`);
+      vibrate(isLastRep ? [50, 40, 50, 40, 120] : 40);
+      if (isLastRep) flash('last');
+      // Count through each second of this rep, visually and (in voice mode) aloud.
+      // Second 1 isn't spoken aloud - the "Rep N"/"Last rep!" cue just spoken
+      // already marks the start, and speaking over it would cancel it before
+      // it's heard (same reason the rest countdown below skips its own first tick).
       for (let sec = 1; sec <= seconds; sec++) {
         big.textContent = sec;
         big.className = 'go';
         big.style.color = lerpColor(REP_START, seconds > 1 ? (sec - 1) / (seconds - 1) : 1);
-        speak(String(sec));
+        if (sec > 1) speak(String(sec));
         if (!wakeLock) requestWakeLock(); // heartbeat: recover a silently-dropped lock
         await sleep(1000);
       }
@@ -373,21 +409,24 @@ async function run() {
       flash('rep');
       vibrate(60);
     }
+    sub.className = '';
     // Set boundary gets a bigger flash + a distinct vibration pattern
     flash('set');
     vibrate([60, 40, 60]);
     if (s < sets) {
-      speak('Set complete');
+      // One utterance instead of two back-to-back calls, so "Set complete"
+      // isn't cancelled the instant "Rest, N seconds" starts.
+      speak(rest > 0 ? `Set complete. Rest ${rest} seconds.` : 'Set complete.');
+      await sleep(900);
       if (rest > 0) {
-        speak(`Rest, ${rest} seconds`);
         for (let t = rest; t > 0; t--) {
           label.textContent = 'Rest';
           big.textContent = t;
           big.className = 'rest';
           big.style.color = lerpColor(REST_START, rest > 1 ? (rest - t) / (rest - 1) : 1);
           sub.textContent = `next: set ${s + 1}`;
-          // skip the very first tick's own number - it would otherwise cancel
-          // the "Rest, N seconds" announcement before it's even heard
+          // skip the very first tick's own number - it would otherwise just
+          // repeat the total already spoken in the announcement above
           if (t !== rest && (t <= 3 || t % 5 === 0)) speak(String(t));
           await sleep(1000);
         }
