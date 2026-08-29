@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rep Counter">
 <meta name="theme-color" content="#0a0a0a">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
 <title>Rep Counter</title>
 <style>
   * {
@@ -371,6 +375,47 @@
   @keyframes repFlash { 0% { opacity: 0.45; } 100% { opacity: 0; } }
   @keyframes setFlash { 0% { opacity: 0.65; } 30% { opacity: 0; } 50% { opacity: 0.65; } 100% { opacity: 0; } }
   @keyframes lastFlash { 0% { opacity: 0.6; } 20% { opacity: 0; } 35% { opacity: 0.6; } 55% { opacity: 0; } 70% { opacity: 0.6; } 100% { opacity: 0; } }
+
+  /* Everything above is tuned in vw/vh for a phone screen, where the full
+     viewport width is a reasonable proxy for "how big should this be." On
+     an iPad that assumption breaks - a 2-column grid with 10vw icons gets
+     huge and sparse - so past this width, cap sizes to fixed points, add a
+     3rd/4th grid column, and constrain the layout to a centered column
+     instead of stretching edge to edge. */
+  @media (min-width: 700px) {
+    body { max-width: 900px; margin: 0 auto; }
+    #detail.open { max-width: 640px; margin: 0 auto; }
+    h1 { font-size: 32px; }
+    .filterLabel { font-size: 14px; }
+    .chip { font-size: 15px; padding: 8px 18px; }
+    #grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .card { font-size: 16px; padding: 20px 14px; gap: 8px; }
+    .card svg { width: 90px; height: 90px; }
+    .cardCheck { width: 26px; height: 26px; top: 10px; right: 10px; }
+    .lastDone { font-size: 13px; }
+    #selectCount { font-size: 18px; }
+    .selectBtnRow button { font-size: 16px; padding: 10px; }
+    #runAllBtn { font-size: 20px; padding: 16px; }
+    #voiceSettingsLink { font-size: 15px; }
+    .back { font-size: 17px; }
+    .detail-icon { width: 220px; height: 220px; }
+    .detail-name { font-size: 30px; }
+    .detail-section h2 { font-size: 15px; }
+    .detail-section p { font-size: 18px; }
+    .my-notes { font-size: 17px; }
+    .params .row { font-size: 17px; }
+    .params input[type=number] { font-size: 18px; }
+    .chk-row { font-size: 17px; }
+    #startBtn { font-size: 22px; }
+    #speakBtn { font-size: 16px; }
+    #cLabel { font-size: 42px; }
+    #cBig { font-size: min(260px, 42vh); }
+    #cSub { font-size: 34px; }
+    #pauseBtn, #resetBtn, #repeatBtn, #skipBtn { font-size: 16px; }
+  }
+  @media (min-width: 1000px) {
+    #grid { grid-template-columns: repeat(4, 1fr); }
+  }
 </style>
 </head>
 <body>
@@ -453,6 +498,13 @@
 </div>
 
 <script>
+// Registering here (and again on counter.html) is what makes Airplane Mode
+// work after Add to Home Screen - the SW precaches both pages, the icons,
+// and the manifest on the first successful online load.
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
 // Simple original line-icon parts, reused across exercises.
 const DUMBBELL = (cx, cy, angle) => `<g transform="rotate(${angle} ${cx} ${cy})" stroke="#ffb347"><line x1="${cx-8}" y1="${cy}" x2="${cx+8}" y2="${cy}"/><circle cx="${cx-8}" cy="${cy}" r="4"/><circle cx="${cx+8}" cy="${cy}" r="4"/></g>`;
 // Consistent color coding across every icon: white = body, amber = equipment
