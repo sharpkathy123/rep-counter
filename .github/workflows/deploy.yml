@@ -36,6 +36,17 @@ jobs:
             rm -rf staging-deploy/.git staging-deploy/.github staging-deploy/staging-deploy
           fi
 
+      # Stamps the real deploy time into the landing page's "Updated" footer
+      # (index.html ships __BUILD_TIME__ as a literal placeholder in the repo
+      # so the source stays a plain static file with no build step - this is
+      # the one step that makes it a real timestamp). Runs on the staged
+      # copy only, so it covers both the live site and PR preview deploys
+      # without caring which branch of the step above produced them.
+      - name: Stamp Build Time
+        run: |
+          BUILD_TIME=$(date -u '+%b %-d, %Y · %-I:%M %p UTC')
+          find staging-deploy -name index.html -exec sed -i "s/__BUILD_TIME__/$BUILD_TIME/" {} +
+
       # THE CORRECTED COMMUNITY UTILITY: Safely handles first-time branch initialization
       - name: Deploy Workspace Upstream
         uses: peaceiris/actions-gh-pages@v4

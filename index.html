@@ -118,6 +118,12 @@
     color: #888;
     text-decoration: none;
   }
+  #appUpdated {
+    text-align: center;
+    margin-top: 3vh;
+    font-size: 2.6vw;
+    color: #444;
+  }
   #grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -397,6 +403,7 @@
     .selectBtnRow button { font-size: 16px; padding: 10px; }
     #runAllBtn { font-size: 20px; padding: 16px; }
     #voiceSettingsLink { font-size: 15px; }
+    #appUpdated { font-size: 12px; }
     .back { font-size: 17px; }
     .detail-icon { width: 220px; height: 220px; }
     .detail-name { font-size: 30px; }
@@ -442,6 +449,7 @@
   <button id="runAllBtn" onclick="startRunAll()" disabled>&#9654; Run Selected</button>
   <a id="voiceSettingsLink" href="counter.html">&#128264; Voice settings &amp; test</a>
 </div>
+<div id="appUpdated">Updated __BUILD_TIME__</div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
