@@ -145,6 +145,38 @@
     padding: 0.3em 0.9em;
     margin-left: 0.5em;
   }
+  #countControls {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3vw;
+    margin-bottom: 3vh;
+  }
+  #countControls.active { display: flex; }
+  #exitBtn {
+    font-size: 4.2vw;
+    font-weight: 700;
+    color: #fff;
+    background: #2a2a2a;
+    border: 1px solid #555;
+    border-radius: 10px;
+    padding: 0.4em 1em;
+    text-decoration: none;
+  }
+  #pauseBtn, #resetBtn {
+    font-size: 4vw;
+    padding: 0.5em 1em;
+    border-radius: 10px;
+    border: 1px solid #555;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+  #pauseBtn.paused {
+    background: #4da3ff;
+    border-color: #4da3ff;
+    color: #fff;
+  }
   .rest { color: #4da3ff; }
   .go { color: #fff; }
   .done { color: #2fa84f; }
@@ -206,6 +238,8 @@
     #setup button { font-size: 22px; }
     #setup select { font-size: 16px; }
     #testVoiceBtn { font-size: 16px; }
+    #exitBtn { font-size: 18px; }
+    #pauseBtn, #resetBtn { font-size: 16px; }
     #tapStart .msg { font-size: 20px; }
     #tapStart button { font-size: 26px; }
   }
@@ -215,6 +249,11 @@
 <div id="bgLayer" style="position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background-color:#0a0a0a;z-index:-1;"></div>
 <div id="flash"></div>
 <div id="wrap">
+  <div id="countControls">
+    <a id="exitBtn" href="#" onclick="exitCounting(); return false;">&#10005; Exit</a>
+    <button id="pauseBtn" onclick="togglePause()">&#10074;&#10074; Pause</button>
+    <button id="resetBtn" onclick="resetCurrentRun()">&#8635; Reset</button>
+  </div>
   <div id="label"></div>
   <div id="big"></div>
   <div id="sub"></div>
@@ -226,7 +265,7 @@
     Rest (sec) <input type="number" id="rt" value="15"><br>
     <label class="chk"><input type="checkbox" id="v"> Speak aloud</label>
     <select id="vn"></select>
-    <button type="button" id="testVoiceBtn" onclick="previewVoice()">Test voice</button><br>
+    <button type="button" id="testVoiceBtn" onclick="testSequence()">&#9654; Test Sequence</button><br>
     <button onclick="startFromForm()">Start</button>
   </div>
   <div id="tapStart">
@@ -273,6 +312,70 @@ const big = document.getElementById('big');
 const sub = document.getElementById('sub');
 const wrap = document.getElementById('wrap');
 const flashEl = document.getElementById('flash');
+const countControlsEl = document.getElementById('countControls');
+const pauseBtnEl = document.getElementById('pauseBtn');
+
+// Every run gets a token; countdown()/run() only keep going while their own
+// token is still current, so Exit/Reset can cleanly stop or restart an
+// in-flight count without any of it racing a fresh one. True while a run
+// was launched from the on-page form (Start or Test Sequence) rather than
+// from URL params/Siri, so Exit knows whether to return to the form (keep
+// testing) or leave the page entirely (back to the exercise list).
+let runToken = 0;
+let runPaused = false;
+let startedFromForm = false;
+function aborted(token) { return token !== runToken; }
+
+async function pausableWait(ms, token) {
+  let remaining = ms;
+  while (remaining > 0 && !aborted(token)) {
+    if (runPaused) {
+      await sleep(150);
+      continue;
+    }
+    const chunk = Math.min(150, remaining);
+    await sleep(chunk);
+    remaining -= chunk;
+  }
+}
+
+function showCountControls(visible) {
+  countControlsEl.classList.toggle('active', visible);
+}
+
+function togglePause() {
+  runPaused = !runPaused;
+  if (runPaused) window.speechSynthesis.cancel();
+  pauseBtnEl.textContent = runPaused ? '▶ Resume' : '❙❙ Pause';
+  pauseBtnEl.classList.toggle('paused', runPaused);
+}
+
+// Stops whatever's running. Where it goes next depends on how this run was
+// reached - back to the settings form if you're mid-test, or back to the
+// exercise list if this page was opened for a real exercise (URL params
+// from index.html or a Siri Shortcut), since there's no back button to
+// rely on once this is installed as a Home Screen app.
+function exitCounting() {
+  runToken++;
+  runPaused = false;
+  window.speechSynthesis.cancel();
+  showCountControls(false);
+  label.textContent = '';
+  big.textContent = '';
+  big.className = '';
+  big.style.color = '';
+  sub.textContent = '';
+  sub.className = '';
+  if (startedFromForm) {
+    showSetupForm();
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+
+function resetCurrentRun() {
+  beginRun(sets, reps, seconds, rest, voiceMode);
+}
 
 // Keep the screen from dimming/locking while this page is open.
 // Re-requested on visibility changes and on the Start tap (a user gesture),
@@ -324,13 +427,19 @@ function updateSelectedVoice() {
   selectedVoice = voices.find(v => v.voiceURI === voiceSelectEl.value) || null;
 }
 
-function previewVoice() {
+// Runs the exact same countdown()/run() code a real exercise uses, just
+// with small representative numbers (2 sets, 2 reps each) - about 30
+// seconds to hear every cue type (Set/Go countdown, the first-rep cue,
+// per-second counting, the last-rep cue, rest, and the closing "Done")
+// instead of a disconnected "one two three" that doesn't tell you how the
+// real thing sounds or paces.
+function testSequence() {
   updateSelectedVoice();
   if (selectedVoice) localStorage.setItem('repcounter_voice', selectedVoice.voiceURI);
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance('One, two, three');
-  if (selectedVoice) u.voice = selectedVoice;
-  window.speechSynthesis.speak(u);
+  setupEl.style.display = 'none';
+  requestWakeLock();
+  startedFromForm = true;
+  beginRun(2, 2, 2, 3, true);
 }
 
 if ('speechSynthesis' in window) {
@@ -387,23 +496,43 @@ function showSetupForm() {
 }
 
 function startFromForm() {
-  sets = parseInt(document.getElementById('s').value);
-  reps = parseInt(document.getElementById('r').value);
-  seconds = parseInt(document.getElementById('d').value);
-  rest = parseInt(document.getElementById('rt').value) || 0;
-  voiceMode = document.getElementById('v').checked;
   updateSelectedVoice();
   if (selectedVoice) localStorage.setItem('repcounter_voice', selectedVoice.voiceURI);
   setupEl.style.display = 'none';
   requestWakeLock(); // re-request from this tap, since it's a direct user gesture
-  run();
+  startedFromForm = true;
+  beginRun(
+    parseInt(document.getElementById('s').value),
+    parseInt(document.getElementById('r').value),
+    parseInt(document.getElementById('d').value),
+    parseInt(document.getElementById('rt').value) || 0,
+    document.getElementById('v').checked
+  );
+}
+
+// Single entry point for every way a count can start (real Start, Test
+// Sequence, Reset) - assigns the numbers, gets a fresh token so any prior
+// run stops cleanly, and shows the Exit/Pause/Reset controls.
+function beginRun(runSets, runReps, runSeconds, runRest, runVoice) {
+  sets = runSets;
+  reps = runReps;
+  seconds = runSeconds;
+  rest = runRest;
+  voiceMode = runVoice;
+  const myToken = ++runToken;
+  runPaused = false;
+  pauseBtnEl.textContent = '❙❙ Pause';
+  pauseBtnEl.classList.remove('paused');
+  showCountControls(true);
+  run(myToken);
 }
 
 async function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 
-async function countdown() {
+async function countdown(token) {
   const steps = ['3', '2', '1', 'Go!'];
   for (const step of steps) {
+    if (aborted(token)) return;
     label.textContent = '';
     sub.textContent = '';
     big.textContent = step;
@@ -411,12 +540,12 @@ async function countdown() {
     big.style.color = '';
     vibrate(step === 'Go!' ? [80, 40, 80] : 30);
     speak(step === 'Go!' ? 'Go' : step);
-    await sleep(650);
+    await pausableWait(650, token);
   }
 }
 
-async function run() {
-  for (let s = 1; s <= sets; s++) {
+async function run(token) {
+  for (let s = 1; s <= sets && !aborted(token); s++) {
     // Announce the set, then run a full 3-2-1-Go countdown before every set
     // (not just the first) - a clear, unmissable "reps start now" cue.
     // The announcement gets its own pause before the countdown starts so it
@@ -426,11 +555,13 @@ async function run() {
     sub.textContent = '';
     speak(`Set ${s} of ${sets}`);
     vibrate([40, 40, 40]);
-    await sleep(900);
-    await countdown();
+    await pausableWait(900, token);
+    if (aborted(token)) return;
+    await countdown(token);
+    if (aborted(token)) return;
     label.textContent = `Set ${s} of ${sets}`;
 
-    for (let r = 1; r <= reps; r++) {
+    for (let r = 1; r <= reps && !aborted(token); r++) {
       const isLastRep = r === reps;
       sub.textContent = isLastRep ? `LAST REP (${r} of ${reps})` : `rep ${r} of ${reps}`;
       sub.className = isLastRep ? 'lastrep' : '';
@@ -441,19 +572,21 @@ async function run() {
       // Second 1 isn't spoken aloud - the "Rep N"/"Last rep!" cue just spoken
       // already marks the start, and speaking over it would cancel it before
       // it's heard (same reason the rest countdown below skips its own first tick).
-      for (let sec = 1; sec <= seconds; sec++) {
+      for (let sec = 1; sec <= seconds && !aborted(token); sec++) {
         big.textContent = sec;
         big.className = 'go';
         big.style.color = lerpColor(REP_START, seconds > 1 ? (sec - 1) / (seconds - 1) : 1);
         if (sec > 1) speak(String(sec));
         if (!wakeLock) requestWakeLock(); // heartbeat: recover a silently-dropped lock
-        await sleep(1000);
+        await pausableWait(1000, token);
       }
+      if (aborted(token)) return;
       // Make the rep boundary obvious even if you're not watching closely
       pulseBig();
       flash('rep');
       vibrate(60);
     }
+    if (aborted(token)) return;
     sub.className = '';
     // Set boundary gets a bigger flash + a distinct vibration pattern
     flash('set');
@@ -462,9 +595,10 @@ async function run() {
       // One utterance instead of two back-to-back calls, so "Set complete"
       // isn't cancelled the instant "Rest, N seconds" starts.
       speak(rest > 0 ? `Set complete. Rest ${rest} seconds.` : 'Set complete.');
-      await sleep(900);
+      await pausableWait(900, token);
+      if (aborted(token)) return;
       if (rest > 0) {
-        for (let t = rest; t > 0; t--) {
+        for (let t = rest; t > 0 && !aborted(token); t--) {
           label.textContent = 'Rest';
           big.textContent = t;
           big.className = 'rest';
@@ -473,11 +607,12 @@ async function run() {
           // skip the very first tick's own number - it would otherwise just
           // repeat the total already spoken in the announcement above
           if (t !== rest && (t <= 3 || t % 5 === 0)) speak(String(t));
-          await sleep(1000);
+          await pausableWait(1000, token);
         }
       }
     }
   }
+  if (aborted(token)) return;
   markDone();
   label.textContent = '';
   big.textContent = 'Done';
@@ -494,7 +629,8 @@ const tapStartEl = document.getElementById('tapStart');
 function beginFromTap() {
   tapStartEl.style.display = 'none';
   requestWakeLock(); // re-request from this tap, since it's a direct user gesture
-  run();
+  startedFromForm = false;
+  beginRun(sets, reps, seconds, rest, voiceMode);
 }
 
 // If URL params are present, auto-start - unless voice mode is on, in which
@@ -506,7 +642,8 @@ if (sets && reps && seconds) {
   if (voiceMode) {
     tapStartEl.style.display = 'block';
   } else {
-    run();
+    startedFromForm = false;
+    beginRun(sets, reps, seconds, rest, voiceMode);
   }
 } else {
   showSetupForm();
