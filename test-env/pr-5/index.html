@@ -844,13 +844,6 @@ const EQUIPMENT = [
   { key: 'dumbbell', label: 'Dumbbell' },
   { key: 'bodyweight', label: 'Bodyweight' }
 ];
-// Coarse mapping kept only so an old ?day=upper/lower bookmark or Siri
-// Shortcut (from before categories existed) still lands on a sensible
-// pre-filtered view instead of a dead link.
-const REGION_OF_CATEGORY = {
-  hip: 'lower', core: 'lower', 'balance-legs': 'lower',
-  'back-shoulder': 'upper', arms: 'upper'
-};
 
 function loadStringSet(key) {
   try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); }
@@ -972,15 +965,7 @@ function pickLeastRecent() {
   updateSelectBar();
 }
 
-// An old ?day=upper/lower link (bookmark, Siri Shortcut, or Run All history)
-// pre-filters by the matching coarse region so it still lands somewhere
-// sensible instead of silently doing nothing.
 const startParams = new URLSearchParams(window.location.search);
-const dayParam = startParams.get('day');
-if (dayParam === 'upper' || dayParam === 'lower') {
-  activeCategories = new Set(CATEGORIES.filter(c => REGION_OF_CATEGORY[c.key] === dayParam).map(c => c.key));
-  saveStringSet('repcounter_categories', activeCategories);
-}
 
 buildChips();
 buildGrid();
