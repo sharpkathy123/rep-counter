@@ -1,0 +1,66 @@
+name: Native Website Deployment
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Pulls full git history to safely handle branch matching
+
+      - name: Stage Workspace Files
+        run: |
+          mkdir -p staging-deploy
+
+          # IF PULL REQUEST: Package changes inside an isolated test environment folder
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            PR_FOLDER="staging-deploy/test-env/pr-${{ github.event.number }}"
+            mkdir -p "$PR_FOLDER"
+            cp -r ./* "$PR_FOLDER" 2>/dev/null || true
+            rm -rf "$PR_FOLDER/.git" "$PR_FOLDER/.github" "$PR_FOLDER/staging-deploy"
+
+          # IF MERGE TO MAIN: Switch the entire live site to the new version
+          else
+            cp -r ./* staging-deploy/ 2>/dev/null || true
+            rm -rf staging-deploy/.git staging-deploy/.github staging-deploy/staging-deploy
+          fi
+
+      # THE CORRECTED COMMUNITY UTILITY: Safely handles first-time branch initialization
+      - name: Deploy Workspace Upstream
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./staging-deploy
+          publish_branch: gh-pages
+          keep_files: true # Guarantees test preview folders aren't overwritten by main branches
+
+      # NATIVE API COMMENT: Automatically drops a clickable preview link on your PR
+      - name: Post Preview Link to Pull Request
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.issue.number;
+            const repoName = context.repo.repo;
+            const ownerName = context.repo.owner;
+            const previewUrl = `https://${ownerName}.github.io/${repoName}/test-env/pr-${prNumber}/`;
+
+            const message = `### 🚀 Test Environment Ready!\n\nYour modifications have been built and deployed successfully. You can review and test your updated page here:\n\n🔗 **[View Live Test Web Page](${previewUrl})**`;
+
+            github.rest.issues.createComment({
+              issue_number: prNumber,
+              owner: ownerName,
+              repo: repoName,
+              body: message
+            });
