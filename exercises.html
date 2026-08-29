@@ -262,6 +262,15 @@
     background: #1a1a1a;
     color: #ccc;
   }
+  #repeatBtn, #skipBtn {
+    font-size: 4vw;
+    padding: 0.5em 1em;
+    border-radius: 10px;
+    border: 1px solid #555;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+  #repeatBtn.hidden, #skipBtn.hidden { display: none; }
   #cLabel {
     font-size: 10vw;
     letter-spacing: 2px;
@@ -330,9 +339,11 @@
 <div id="cFlash"></div>
 <div id="countWrap">
   <div class="countControls">
-    <a class="back" href="#" onclick="cancelCount(); return false;">&#10005; Exercises</a>
+    <a class="back" href="#" onclick="cancelCount(); return false;">&#10005; Exit</a>
     <button id="pauseBtn" onclick="togglePause()">&#10074;&#10074; Pause</button>
     <button id="resetBtn" onclick="resetCurrentRun()">&#8635; Reset</button>
+    <button id="repeatBtn" class="hidden" onclick="repeatExercise()">&#128257; Repeat</button>
+    <button id="skipBtn" class="hidden" onclick="skipExercise()">&#9197; Skip</button>
   </div>
   <div id="cLabel"></div>
   <div id="cBig"></div>
@@ -792,6 +803,8 @@ const cBigEl = document.getElementById('cBig');
 const cSubEl = document.getElementById('cSub');
 const cFlashEl = document.getElementById('cFlash');
 const pauseBtnEl = document.getElementById('pauseBtn');
+const repeatBtnEl = document.getElementById('repeatBtn');
+const skipBtnEl = document.getElementById('skipBtn');
 
 function cFlash(type) {
   cFlashEl.className = '';
@@ -826,9 +839,29 @@ let lastRunStarter = null; // re-invoking this is what "Reset" does
 // true - this is what makes the Pause button work for both a single
 // exercise and a Run All sequence, without any complex resume bookkeeping.
 let runPaused = false;
+
+// Skip/Repeat only make sense mid-sequence (Run All), so they're a separate
+// signal from runToken: bumping runToken would also invalidate the outer
+// runAllExercises loop and end the whole workout, not just the current
+// exercise. These flags cut short whichever runCount()/countdownStart()
+// call is in flight; runAllExercises reads them afterward to decide whether
+// to redo the same exercise or move to the next one.
+let skipRequested = false;
+let repeatRequested = false;
+let runAllActive = false;
+function aborted(token) {
+  return token !== runToken || skipRequested || repeatRequested;
+}
+
+function setRunAllControlsVisible(visible) {
+  runAllActive = visible;
+  repeatBtnEl.classList.toggle('hidden', !visible);
+  skipBtnEl.classList.toggle('hidden', !visible);
+}
+
 async function pausableWait(ms, token) {
   let remaining = ms;
-  while (remaining > 0 && token === runToken) {
+  while (remaining > 0 && !aborted(token)) {
     if (runPaused) {
       await sleep(150);
       continue;
@@ -847,7 +880,25 @@ function togglePause() {
 }
 
 function resetCurrentRun() {
+  skipRequested = false;
+  repeatRequested = false;
   if (lastRunStarter) lastRunStarter();
+}
+
+// Only meaningful during Run All (setRunAllControlsVisible keeps these
+// buttons hidden otherwise, and the current exercise's cancelling
+// speechSynthesis.cancel() here is what breaks it out of a still-playing
+// intro description, not just the numeric countdown).
+function skipExercise() {
+  if (!runAllActive) return;
+  skipRequested = true;
+  window.speechSynthesis.cancel();
+}
+
+function repeatExercise() {
+  if (!runAllActive) return;
+  repeatRequested = true;
+  window.speechSynthesis.cancel();
 }
 
 let speechToken = 0;
@@ -869,6 +920,9 @@ function speakCount(text) {
 function cancelCount() {
   runToken++;
   runPaused = false;
+  skipRequested = false;
+  repeatRequested = false;
+  setRunAllControlsVisible(false);
   window.speechSynthesis.cancel();
   countWrapEl.classList.remove('active');
   gridEl.classList.remove('hidden');
@@ -880,7 +934,7 @@ function cancelCount() {
 async function countdownStart(token, speakFn) {
   const steps = ['3', '2', '1', 'Go!'];
   for (const step of steps) {
-    if (token !== runToken) return;
+    if (aborted(token)) return;
     cLabelEl.textContent = '';
     cSubEl.textContent = '';
     cBigEl.textContent = step;
@@ -894,7 +948,7 @@ async function countdownStart(token, speakFn) {
 
 async function runCount(sets, reps, seconds, rest, voiceOn, token) {
   const speakFn = voiceOn ? speakCount : () => {};
-  for (let s = 1; s <= sets && token === runToken; s++) {
+  for (let s = 1; s <= sets && !aborted(token); s++) {
     // Announce the set, then run a full 3-2-1-Go countdown before every set
     // (not just the first) - a clear, unmissable "reps start now" cue.
     // The announcement gets its own pause before the countdown starts so it
@@ -905,12 +959,12 @@ async function runCount(sets, reps, seconds, rest, voiceOn, token) {
     speakFn(`Set ${s} of ${sets}`);
     vibrate([40, 40, 40]);
     await pausableWait(900, token);
-    if (token !== runToken) return;
+    if (aborted(token)) return;
     await countdownStart(token, speakFn);
-    if (token !== runToken) return;
+    if (aborted(token)) return;
     cLabelEl.textContent = `Set ${s} of ${sets}`;
 
-    for (let r = 1; r <= reps && token === runToken; r++) {
+    for (let r = 1; r <= reps && !aborted(token); r++) {
       const isLastRep = r === reps;
       cSubEl.textContent = isLastRep ? `LAST REP (${r} of ${reps})` : `rep ${r} of ${reps}`;
       cSubEl.className = isLastRep ? 'lastrep' : '';
@@ -921,7 +975,7 @@ async function runCount(sets, reps, seconds, rest, voiceOn, token) {
       // Second 1 isn't spoken aloud - the "Rep N"/"Last rep!" cue just spoken
       // already marks the start, and speaking over it would cancel it before
       // it's heard (same reason the rest countdown below skips its own first tick).
-      for (let sec = 1; sec <= seconds && token === runToken; sec++) {
+      for (let sec = 1; sec <= seconds && !aborted(token); sec++) {
         cBigEl.textContent = sec;
         cBigEl.className = 'c-go';
         cBigEl.style.color = lerpColor(REP_START, seconds > 1 ? (sec - 1) / (seconds - 1) : 1);
@@ -929,12 +983,12 @@ async function runCount(sets, reps, seconds, rest, voiceOn, token) {
         if (!wakeLock) requestWakeLock();
         await pausableWait(1000, token);
       }
-      if (token !== runToken) return;
+      if (aborted(token)) return;
       cPulse();
       cFlash('rep');
       vibrate(60);
     }
-    if (token !== runToken) return;
+    if (aborted(token)) return;
     cSubEl.className = '';
     cFlash('set');
     vibrate([60, 40, 60]);
@@ -943,9 +997,9 @@ async function runCount(sets, reps, seconds, rest, voiceOn, token) {
       // isn't cancelled the instant "Rest, N seconds" starts.
       speakFn(rest > 0 ? `Set complete. Rest ${rest} seconds.` : 'Set complete.');
       await pausableWait(900, token);
-      if (token !== runToken) return;
+      if (aborted(token)) return;
       if (rest > 0) {
-        for (let t = rest; t > 0 && token === runToken; t--) {
+        for (let t = rest; t > 0 && !aborted(token); t--) {
           cLabelEl.textContent = 'Rest';
           cBigEl.textContent = t;
           cBigEl.className = 'c-rest';
@@ -959,7 +1013,7 @@ async function runCount(sets, reps, seconds, rest, voiceOn, token) {
       }
     }
   }
-  if (token !== runToken) return;
+  if (aborted(token)) return;
   cLabelEl.textContent = '';
   cBigEl.textContent = 'Done';
   cBigEl.className = 'c-done';
@@ -991,6 +1045,9 @@ function startCounting() {
   const myToken = ++runToken;
   lastRunStarter = startCounting;
   runPaused = false;
+  skipRequested = false;
+  repeatRequested = false;
+  setRunAllControlsVisible(false); // no sequence to skip/repeat within outside Run All
   pauseBtnEl.textContent = '❙❙ Pause';
   pauseBtnEl.classList.remove('paused');
   window.speechSynthesis.cancel();
@@ -1031,7 +1088,8 @@ function speakAndWait(text) {
 
 async function runAllExercises(voiceOn, token) {
   const list = DAY_ORDER[currentDay].map(slug => EXERCISES.find(e => e.slug === slug));
-  for (let i = 0; i < list.length && token === runToken; i++) {
+  let i = 0;
+  while (i < list.length && token === runToken) {
     const ex = list[i];
     cLabelEl.textContent = `Exercise ${i + 1} of ${list.length}`;
     cBigEl.textContent = '';
@@ -1047,11 +1105,22 @@ async function runAllExercises(voiceOn, token) {
     }
     if (token !== runToken) return;
 
+    // Skip pressed during the intro: runCount below sees skipRequested
+    // already set and returns immediately without counting anything, so
+    // this exercise is effectively skipped without any special-casing here.
     await runCount(p.sets, p.reps, p.seconds, p.rest, voiceOn, token);
     if (token !== runToken) return;
+
+    if (repeatRequested) {
+      repeatRequested = false;
+      continue; // redo this same exercise from its intro
+    }
+    skipRequested = false; // consumed - move on whether it was set or not
+    i++;
   }
 
   if (token !== runToken) return;
+  setRunAllControlsVisible(false);
   cLabelEl.textContent = '';
   cBigEl.textContent = 'All Done!';
   cBigEl.className = 'c-done';
@@ -1068,6 +1137,9 @@ function startRunAll() {
   const myToken = ++runToken;
   lastRunStarter = startRunAll;
   runPaused = false;
+  skipRequested = false;
+  repeatRequested = false;
+  setRunAllControlsVisible(true);
   pauseBtnEl.textContent = '❙❙ Pause';
   pauseBtnEl.classList.remove('paused');
   window.speechSynthesis.cancel();
