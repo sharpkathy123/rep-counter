@@ -143,13 +143,13 @@ FinishImage:
 Slug: abdominal-bracing-marches
 Name: Abdominal Bracing - Marches
 Category: core
-Equipment: bodyweight
+Equipment: band
 Sets: 2
 Reps: 10
 Seconds: 2
 Rest: 6
 Description: Trains your core to stay braced and your spine to stay steady while your legs move - a foundation for safe lifting and walking.
-Setup: Lie on your back, knees bent, feet flat on the floor. Gently brace your abdominals as if about to be poked in the stomach.
+Setup: Lie on your back, exercise band around legs just above knees, knees bent, feet flat on the floor. Gently brace your abdominals as if about to be poked in the stomach.
 Movement: Keeping the brace and your low back still, lift one foot off the floor to a tabletop position, then lower with control and switch legs.
 Tip: Keep your low back gently pressed to the floor the whole time - don’t let your pelvis rock side to side.
 StartImage: IMG_0311.jpeg
