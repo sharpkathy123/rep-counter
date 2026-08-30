@@ -47,7 +47,7 @@ Equipment: band
 Sets: 2
 Reps: 10
 Seconds: 3
-Rest: 5
+Rest: 6
 Description: Strengthens the outer hip and glute muscles that stabilize your pelvis while standing and walking.
 Setup: Loop the band just below knees. Stand sideways next to a wall or chair and hold on for balance.
 Movement: Keeping your leg straight and toes pointing forward, lift your working leg out to the side against the band, hold momentarily, then return with control.
@@ -62,7 +62,7 @@ Equipment: band
 Sets: 2
 Reps: 10
 Seconds: 3
-Rest: 5
+Rest: 6
 Description: Strengthens the glutes and hamstrings used to push your leg backward, important for walking and stairs.
 Setup: Loop the band just below knees. Face something stable for balance.
 Movement: Keeping your knee straight, extend your working leg backward and slightly outward against the band, squeeze your glute, then return with control.
@@ -77,7 +77,7 @@ Equipment: band
 Sets: 2
 Reps: 10
 Seconds: 5
-Rest: 5
+Rest: 6
 Description: A diagonal arm pattern that trains the shoulder and trunk to work together through a full range, mimicking reaching-and-rotating movements.
 Setup: Anchor the band low, at your side opposite your working arm. Start with your working hand near your opposite hip, palm facing back.
 Movement: Sweep your arm in one smooth diagonal, up and out, finishing overhead and out to the side with your palm turning to face away from you. Reverse slowly to return.
@@ -92,7 +92,7 @@ Equipment: dumbbell
 Sets: 2
 Reps: 10
 Seconds: 4
-Rest: 5
+Rest: 6
 Description: Strengthens the biceps at the front of the upper arm, used for lifting and carrying.
 Setup: Stand or sit holding a dumbbell in each hand, arms at your sides, palms facing forward.
 Movement: Curl one or both dumbbells up toward your shoulder while keeping your elbow tucked at your side, lower with control, then alternate arms.
@@ -107,12 +107,12 @@ Equipment: bodyweight
 Sets: 2
 Reps: 10
 Seconds: 8
-Rest: 5
+Rest: 6
 Description: Strengthens the glutes and lower back while supporting the spine in a neutral, controlled position.
 Setup: Lie on your back with your knees bent and feet flat on the floor, hip-width apart.
 Movement: Squeeze your glutes and lift your hips toward the ceiling until your body forms a straight line from knees to shoulders. Hold 5 seconds, then lower with control.
 Tip: Drive through your heels and avoid over-arching your lower back at the top.
-StartImage:
+StartImage: IMG_0313.jpeg
 FinishImage:
 
 Slug: clamshell
@@ -122,12 +122,12 @@ Equipment: band
 Sets: 2
 Reps: 10
 Seconds: 2
-Rest: 5
+Rest: 6
 Description: Targets the outer hip (glute medius) to improve hip stability without straining the lower back.
 Setup: Lie on your side with knees bent about 45 degrees, hips stacked, and the band looped around your thighs just above the knees.
 Movement: Keeping your feet together, open your top knee upward like a clamshell, then lower it with control.
 Tip: Keep your hips stacked and still - don’t let your top hip roll backward as you open your knee.
-StartImage:
+StartImage: IMG_0312.jpeg
 FinishImage:
 
 Slug: abdominal-bracing-marches
@@ -137,12 +137,12 @@ Equipment: bodyweight
 Sets: 2
 Reps: 10
 Seconds: 2
-Rest: 5
+Rest: 6
 Description: Trains your core to stay braced and your spine to stay steady while your legs move - a foundation for safe lifting and walking.
 Setup: Lie on your back, knees bent, feet flat on the floor. Gently brace your abdominals as if about to be poked in the stomach.
 Movement: Keeping the brace and your low back still, lift one foot off the floor to a tabletop position, then lower with control and switch legs.
 Tip: Keep your low back gently pressed to the floor the whole time - don’t let your pelvis rock side to side.
-StartImage:
+StartImage: IMG_0311.jpeg
 FinishImage:
 
 Slug: sit-to-stand
@@ -152,12 +152,12 @@ Equipment: bodyweight
 Sets: 2
 Reps: 12
 Seconds: 2
-Rest: 5
+Rest: 6
 Description: Builds functional leg and core strength for getting up from a chair without using your hands or momentum.
 Setup: Sit toward the front edge of a sturdy chair, feet flat on the floor, arms crossed over your chest.
 Movement: Lean slightly forward and push through your feet to stand up fully, then lower back down to the chair with control.
 Tip: Keep your chest up and avoid rocking or using your arms to help you up.
-StartImage:
+StartImage: IMG_0310.jpeg
 FinishImage:
 
 Slug: no-money
@@ -167,12 +167,12 @@ Equipment: band
 Sets: 2
 Reps: 10
 Seconds: 3
-Rest: 5
+Rest: 6
 Description: Strengthens the mid-back and rotator cuff muscles that support good shoulder posture.
 Setup: Hold the band with both hands, shoulder-width apart. Bend your elbows 90 degrees and tuck them at your sides, forearms pointing forward, palms up.
 Movement: Keeping your elbows glued to your sides, rotate your forearms outward away from each other while squeezing your shoulder blades together, then return with control.
 Tip: Keep your elbows pinned to your sides the whole time - the motion happens at the shoulder, not by flaring the elbows out.
-StartImage:
+StartImage: IMG_0307.jpeg
 FinishImage:
 
 Slug: shoulder-horizontal-abduction
@@ -182,12 +182,12 @@ Equipment: band
 Sets: 2
 Reps: 10
 Seconds: 3
-Rest: 5
+Rest: 6
 Description: Strengthens the mid-back and rear shoulder muscles that pull the shoulders into good posture.
 Setup: Hold the band in front of you in each hand with arms extended forward at shoulder height, palms down.
 Movement: Keeping your arms roughly straight and at shoulder height, pull both arms out to the sides, squeezing your shoulder blades together, then return with control.
 Tip: Keep your shoulders down, away from your ears, throughout the movement.
-StartImage:
+StartImage: IMG_0309.jpeg
 FinishImage:
 
 Slug: rows
@@ -197,12 +197,12 @@ Equipment: band
 Sets: 2
 Reps: 10
 Seconds: 3
-Rest: 5
+Rest: 6
 Description: Strengthens the mid-back muscles that pull your shoulder blades together, countering a forward-slumped posture.
 Setup: Anchor the band in front of you at chest height and step back for tension. Start with arms extended forward.
 Movement: Pull your elbows straight back, squeezing your shoulder blades together and keeping elbows close to your body, hold momentarily, then return with control.
 Tip: Keep your chest up and avoid shrugging your shoulders toward your ears as you pull.
-StartImage:
+StartImage: IMG_0306.jpeg
 FinishImage:
 
 Slug: shoulder-extension
@@ -212,7 +212,7 @@ Equipment: band
 Sets: 2
 Reps: 10
 Seconds: 3
-Rest: 5
+Rest: 6
 Description: Strengthens the back of the shoulder and lat muscles used to pull your arm down and back.
 Setup: Anchor the band in front of you at shoulder height. Hold the band ends with your arms extended forward. Step back for tension.
 Movement: Keeping your elbow straight, pull your arm down and back past your hip against the band, hold momentarily, then return with control.
@@ -227,7 +227,7 @@ Equipment: bodyweight
 Sets: 1
 Reps: 10
 Seconds: 8
-Rest: 5
+Rest: 6
 Description: Strengthens the mid-back and lower trapezius muscles that hold your shoulder blades down and back - the foundation for the other prone versions.
 Setup: Lie face down on a bed, table, or the floor, forehead resting down, arms resting straight alongside your body, palms facing in or up.
 Movement: Without lifting your arms, squeeze your shoulder blades down and together, hold 5 seconds, then release with control.
@@ -242,7 +242,7 @@ Equipment: bodyweight
 Sets: 1
 Reps: 10
 Seconds: 8
-Rest: 5
+Rest: 6
 Description: Builds on the arms-at-side version by adding a small arm lift, increasing the demand on the mid-back and rear shoulder muscles.
 Setup: Lie face down, forehead resting down, arms resting straight alongside your body, palms facing in or up.
 Movement: Squeeze your shoulder blades together and lift both arms a few inches off the surface, hold 5 seconds, then lower with control.
@@ -257,7 +257,7 @@ Equipment: bodyweight
 Sets: 1
 Reps: 10
 Seconds: 8
-Rest: 5
+Rest: 6
 Description: The most demanding version, challenging the mid and lower trapezius through a full overhead range against gravity.
 Setup: Lie face down, forehead resting down, arms extended straight overhead in a "Y" position, thumbs pointing up.
 Movement: Squeeze your shoulder blades down and together and lift both arms up off the surface, hold 5 seconds, then lower with control.
@@ -272,7 +272,7 @@ Equipment: dumbbell
 Sets: 2
 Reps: 12
 Seconds: 2
-Rest: 5
+Rest: 6
 Description: Strengthens the mid-back and rear shoulder muscles used to pull your shoulder blades together and support good posture.
 Setup: Holding a dumbbell in one hand, support yourself with your other hand on a chair or bench and hinge forward from your hips with a flat back.
 Movement: Pull the dumbbell straight up toward your hip, leading with your elbow and squeezing your shoulder blade back, then lower with control.
@@ -287,7 +287,7 @@ Equipment: bodyweight
 Sets: 2
 Reps: 10
 Seconds: 3
-Rest: 5
+Rest: 6
 Description: A variation of Sit to Stand that puts more of the demand on the legs alone. Do one set per foot in front.
 Setup: Sit toward the front edge of a sturdy chair, feet flat on the floor, with one foot further away than the other.
 Movement: Push through your feet to stand up fully using your legs, then lower back down to the chair with control.
@@ -302,7 +302,7 @@ Equipment: bodyweight
 Sets: 4
 Reps: 12
 Seconds: 2
-Rest: 5
+Rest: 6
 Description: Strengthens the calf muscles on one leg at a time, important for push-off during walking and for balance. Do two sets per foot.
 Setup: Stand on one leg near a wall or counter for light balance support, with your other foot lifted slightly off the floor.
 Movement: Rise up onto the ball of your standing foot as high as comfortable, hold, then lower your heel back down with control.
