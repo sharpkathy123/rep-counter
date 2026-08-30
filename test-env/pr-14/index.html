@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rep Counter">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>Rep Counter</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  html, body {
+    background: #0a0a0a;
+    margin: 0; padding: 0;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    overscroll-behavior: none;
+  }
+  body {
+    min-height: 100vh;
+    padding: 4vw 4vw 8vw;
+    box-sizing: border-box;
+  }
+  h1 {
+    font-size: 6.5vw;
+    margin: 2vh 0 3vh;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  #filterBar {
+    margin-bottom: 3vh;
+  }
+  #filterBar.hidden { display: none; }
+  .filterGroup {
+    margin-bottom: 2vh;
+  }
+  .filterLabel {
+    font-size: 3.3vw;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1vh;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2vw;
+  }
+  .chip {
+    font-size: 3.6vw;
+    font-weight: 600;
+    padding: 1.4vw 3.2vw;
+    border-radius: 999px;
+    border: 1px solid #333;
+    background: #1a1a1a;
+    color: #999;
+  }
+  .chip.active {
+    background: #2fa84f;
+    border-color: #2fa84f;
+    color: #fff;
+  }
+  #selectBar {
+    margin-bottom: 4vh;
+  }
+  #selectBar.hidden { display: none; }
+  #selectBar .chk-row {
+    font-size: 4vw;
+    margin-bottom: 1.5vh;
+  }
+  #selectCount {
+    font-size: 4vw;
+    color: #ccc;
+    text-align: center;
+    margin-bottom: 1.5vh;
+  }
+  #selectCount.overLimit { color: #ffb347; }
+  .selectBtnRow {
+    display: flex;
+    gap: 2vw;
+    margin-bottom: 1.5vh;
+  }
+  .selectBtnRow button {
+    flex: 1;
+    font-size: 3.8vw;
+    padding: 2.2vw;
+    border-radius: 10px;
+    border: 1px solid #555;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+  #runAllBtn {
+    display: block;
+    width: 100%;
+    font-size: 5vw;
+    padding: 3vw;
+    border-radius: 12px;
+    border: none;
+    background: #4da3ff;
+    color: #fff;
+    font-weight: 700;
+  }
+  #runAllBtn:disabled {
+    background: #2a2a2a;
+    color: #777;
+  }
+  #voiceSettingsLink {
+    display: block;
+    text-align: center;
+    margin-top: 2vh;
+    font-size: 3.8vw;
+    color: #888;
+    text-decoration: none;
+  }
+  #appUpdated {
+    text-align: center;
+    margin-top: 3vh;
+    font-size: 2.6vw;
+    color: #444;
+  }
+  #grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5vw;
+  }
+  .card {
+    position: relative;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 14px;
+    padding: 3vw 2vw;
+    text-align: center;
+    color: #fff;
+    font-size: 3.8vw;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+    gap: 1.5vw;
+    cursor: pointer;
+  }
+  .card svg {
+    width: 15vw;
+    height: 15vw;
+    color: #eee;
+  }
+  .card img {
+    width: 15vw;
+    height: 15vw;
+    /* contain, not cover: several of these photos are wide start+finish
+       composites, and cover would crop off one side of the picture. */
+    object-fit: contain;
+    border-radius: 8px;
+  }
+  .card.band { border-color: #3d6f9e; }
+  .card.bodyweight { border-color: #3d7a4a; }
+  .card.dumbbell { border-color: #8a6a2f; }
+  .cardCheck {
+    position: absolute;
+    top: 2vw;
+    right: 2vw;
+    width: 6vw;
+    height: 6vw;
+  }
+  .estTime {
+    font-size: 3vw;
+    font-weight: 500;
+    color: #6a9fd4;
+  }
+  .lastDone {
+    font-size: 3vw;
+    font-weight: 500;
+    color: #777;
+  }
+  .lastDone.due { color: #ffb347; }
+  .lastDone.overdue { color: #ff5b3d; }
+
+  #detail {
+    display: none;
+  }
+  #detail.open { display: block; }
+  #grid.hidden { display: none; }
+  h1.hidden { display: none; }
+
+  .back {
+    display: inline-block;
+    margin-bottom: 3vh;
+    color: #ccc;
+    font-size: 4.2vw;
+    text-decoration: none;
+  }
+  .back.bottom {
+    margin-top: 3vh;
+    margin-bottom: 0;
+  }
+  .detail-icon {
+    display: block;
+    width: 40vw;
+    height: 40vw;
+    margin: 0 auto 2vh;
+    color: #eee;
+  }
+  .detail-photos {
+    display: none;
+    justify-content: center;
+    gap: 2vw;
+    margin: 0 auto 2vh;
+  }
+  .detail-photos img {
+    border-radius: 12px;
+    display: block;
+  }
+  .detail-photos img[src=""] { display: none; }
+  /* Two separate photos (both StartImage and FinishImage given): shown
+     side by side, each cropped to a matching square. */
+  .detail-photos.pair img {
+    width: 40vw;
+    max-width: 220px;
+    height: 40vw;
+    max-height: 220px;
+    object-fit: cover;
+  }
+  /* Just one photo - either a true single "start" shot, or (common with
+     these exercise photos) a single wide image that already shows the
+     start and finish position side by side - shown at its natural aspect
+     ratio instead of cropped to the square meant for a pair. */
+  .detail-photos.single img {
+    width: auto;
+    height: auto;
+    max-width: 85vw;
+    max-height: 45vh;
+  }
+  .detail-name {
+    font-size: 6.5vw;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3vh;
+  }
+  .detail-section {
+    margin-bottom: 3vh;
+  }
+  .detail-section h2 {
+    font-size: 4vw;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #999;
+    margin: 0 0 1vh;
+  }
+  .detail-section p {
+    font-size: 4.6vw;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .my-notes {
+    width: 100%;
+    box-sizing: border-box;
+    background: #1a1a1a;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 10px;
+    font-size: 4.2vw;
+    padding: 2vw;
+    font-family: inherit;
+    resize: vertical;
+  }
+  .params {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 14px;
+    padding: 3vw;
+    margin-bottom: 3vh;
+  }
+  .params .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2vw;
+    font-size: 4.2vw;
+  }
+  .params input[type=number] {
+    font-size: 4.2vw;
+    width: 3em;
+    text-align: center;
+    background: #222;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 8px;
+  }
+  .params .hint {
+    color: #888;
+    font-size: 3.3vw;
+    margin-top: 1vh;
+  }
+  .chk-row {
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+    font-size: 4.2vw;
+    margin-bottom: 3vh;
+  }
+  #startBtn {
+    display: block;
+    width: 100%;
+    font-size: 5.5vw;
+    padding: 3vw;
+    border-radius: 12px;
+    border: none;
+    background: #2fa84f;
+    color: #fff;
+    font-weight: 700;
+  }
+  #speakBtn {
+    display: block;
+    width: 100%;
+    font-size: 4vw;
+    padding: 2vw;
+    margin-top: 2vh;
+    border-radius: 10px;
+    border: 1px solid #555;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+
+  #countWrap {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0a0a0a;
+    z-index: 20;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+  }
+  #countWrap.active { display: flex; }
+  .countControls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3vw;
+    margin-bottom: 4vh;
+  }
+  .countControls .back { margin-bottom: 0; }
+  #sessionTimer {
+    font-size: 3.6vw;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: #888;
+    margin-bottom: 3vh;
+  }
+  #pauseBtn {
+    font-size: 4vw;
+    padding: 0.5em 1em;
+    border-radius: 10px;
+    border: 1px solid #555;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+  #pauseBtn.paused {
+    background: #4da3ff;
+    border-color: #4da3ff;
+    color: #fff;
+  }
+  #resetBtn {
+    font-size: 4vw;
+    padding: 0.5em 1em;
+    border-radius: 10px;
+    border: 1px solid #555;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+  #repeatBtn, #skipBtn {
+    font-size: 4vw;
+    padding: 0.5em 1em;
+    border-radius: 10px;
+    border: 1px solid #555;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+  #repeatBtn.hidden, #skipBtn.hidden { display: none; }
+  #cLabel {
+    font-size: 10vw;
+    letter-spacing: 2px;
+    color: #ccc;
+    text-transform: uppercase;
+    margin-bottom: 2vh;
+    font-weight: 600;
+    max-width: 92vw;
+  }
+  /* Shown only while an exercise is being announced/described, before its
+     countdown starts - gone by the time counting begins, since #cBig needs
+     to stay the large, glanceable thing on screen while a rep is running. */
+  #cPhoto {
+    display: none;
+    max-width: 80vw;
+    max-height: 28vh;
+    border-radius: 12px;
+    margin: 0 auto 2vh;
+  }
+  #cPhoto.active { display: block; }
+  #cBig {
+    font-size: min(58vw, 55vh);
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: #ffffff;
+    text-shadow: 0 0 30px rgba(255,255,255,0.35);
+    transition: transform 0.1s ease-out;
+  }
+  #cBig.pulse { animation: pulseScale 0.35s ease-out; }
+  #cBig.c-done { font-size: min(22vw, 22vh); }
+  @keyframes pulseScale {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.22); }
+    100% { transform: scale(1); }
+  }
+  #cSub {
+    font-size: 9vw;
+    color: #ccc;
+    margin-top: 3vh;
+    font-weight: 500;
+    max-width: 92vw;
+  }
+  .c-rest { color: #4da3ff; }
+  .c-go { color: #fff; }
+  .c-done { color: #2fa84f; }
+  .lastrep { color: #ff5b3d; }
+  #cFlash {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 21;
+  }
+  #cFlash.rep-flash { background: #fff; animation: repFlash 0.25s ease-out; }
+  #cFlash.set-flash { background: #ffd23f; animation: setFlash 0.7s ease-out; }
+  #cFlash.last-flash { background: #ff5b3d; animation: lastFlash 0.9s ease-out; }
+  @keyframes repFlash { 0% { opacity: 0.45; } 100% { opacity: 0; } }
+  @keyframes setFlash { 0% { opacity: 0.65; } 30% { opacity: 0; } 50% { opacity: 0.65; } 100% { opacity: 0; } }
+  @keyframes lastFlash { 0% { opacity: 0.6; } 20% { opacity: 0; } 35% { opacity: 0.6; } 55% { opacity: 0; } 70% { opacity: 0.6; } 100% { opacity: 0; } }
+
+  /* Everything above is tuned in vw/vh for a phone screen, where the full
+     viewport width is a reasonable proxy for "how big should this be." On
+     an iPad that assumption breaks - a 2-column grid with 10vw icons gets
+     huge and sparse - so past this width, cap sizes to fixed points, add a
+     3rd/4th grid column, and constrain the layout to a centered column
+     instead of stretching edge to edge. */
+  @media (min-width: 700px) {
+    body { max-width: 900px; margin: 0 auto; }
+    #detail.open { max-width: 640px; margin: 0 auto; }
+    h1 { font-size: 32px; }
+    .filterLabel { font-size: 14px; }
+    .chip { font-size: 15px; padding: 8px 18px; }
+    #grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .card { font-size: 16px; padding: 20px 14px; gap: 8px; }
+    .card svg { width: 90px; height: 90px; }
+    .card img { width: 90px; height: 90px; }
+    .cardCheck { width: 26px; height: 26px; top: 10px; right: 10px; }
+    .estTime { font-size: 13px; }
+    .lastDone { font-size: 13px; }
+    #selectCount { font-size: 18px; }
+    .selectBtnRow button { font-size: 16px; padding: 10px; }
+    #runAllBtn { font-size: 20px; padding: 16px; }
+    #voiceSettingsLink { font-size: 15px; }
+    #appUpdated { font-size: 12px; }
+    .back { font-size: 17px; }
+    .detail-icon { width: 220px; height: 220px; }
+    .detail-photos.pair img { width: 220px; height: 220px; max-width: none; max-height: none; }
+    .detail-photos.single img { max-width: 500px; max-height: 380px; }
+    .detail-name { font-size: 30px; }
+    .detail-section h2 { font-size: 15px; }
+    .detail-section p { font-size: 18px; }
+    .my-notes { font-size: 17px; }
+    .params .row { font-size: 17px; }
+    .params input[type=number] { font-size: 18px; }
+    .chk-row { font-size: 17px; }
+    #startBtn { font-size: 22px; }
+    #speakBtn { font-size: 16px; }
+    #cLabel { font-size: 42px; }
+    #cPhoto { max-width: 420px; max-height: 320px; }
+    #cBig { font-size: min(260px, 42vh); }
+    #cSub { font-size: 34px; }
+    #pauseBtn, #resetBtn, #repeatBtn, #skipBtn { font-size: 16px; }
+    #sessionTimer { font-size: 16px; }
+  }
+  @media (min-width: 1000px) {
+    #grid { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<h1 id="pageTitle">Exercises</h1>
+<div id="filterBar">
+  <div class="filterGroup">
+    <div class="filterLabel">Category</div>
+    <div class="chips" id="categoryChips"></div>
+  </div>
+  <div class="filterGroup">
+    <div class="filterLabel">Equipment</div>
+    <div class="chips" id="equipmentChips"></div>
+  </div>
+</div>
+<div id="grid"></div>
+<div id="selectBar">
+  <div id="selectCount">No exercises selected</div>
+  <label class="chk-row" style="justify-content:center;"><input type="checkbox" id="runAllVoice"> Speak aloud</label>
+  <div class="selectBtnRow">
+    <button id="pickRecentBtn" onclick="pickLeastRecent()">&#128337; Pick 6 Least Recent</button>
+    <button id="clearSelectionBtn" onclick="clearSelection()">Clear</button>
+  </div>
+  <button id="runAllBtn" onclick="startRunAll()" disabled>&#9654; Run Selected</button>
+  <a id="voiceSettingsLink" href="counter.html">&#128264; Voice settings &amp; test</a>
+</div>
+<div id="appUpdated">Updated <span id="appUpdatedTime">2026-08-30T03:47:58Z</span></div>
+
+<div id="cFlash"></div>
+<div id="countWrap">
+  <div class="countControls">
+    <a class="back" href="#" onclick="cancelCount(); return false;">&#10005; Exit</a>
+    <button id="pauseBtn" onclick="togglePause()">&#10074;&#10074; Pause</button>
+    <button id="resetBtn" onclick="resetCurrentRun()">&#8635; Reset</button>
+    <button id="repeatBtn" class="hidden" onclick="repeatExercise()">&#128257; Repeat</button>
+    <button id="skipBtn" class="hidden" onclick="skipExercise()">&#9197; Skip</button>
+  </div>
+  <div id="sessionTimer">&#9201; 0:00</div>
+  <div id="cLabel"></div>
+  <img id="cPhoto" alt="">
+  <div id="cBig"></div>
+  <div id="cSub"></div>
+</div>
+
+<div id="detail">
+  <a class="back" href="#" onclick="showGrid(); return false;">&larr; All exercises</a>
+  <svg class="detail-icon" id="detailIcon" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></svg>
+  <div class="detail-photos" id="detailPhotos">
+    <img id="detailPhotoStart" alt="Start position">
+    <img id="detailPhotoFinish" alt="Finish position">
+  </div>
+  <div class="detail-name" id="detailName"></div>
+
+  <div class="detail-section">
+    <h2>Description</h2>
+    <p id="detailDescription"></p>
+  </div>
+  <div class="detail-section">
+    <h2>Setup</h2>
+    <p id="detailSetup"></p>
+  </div>
+  <div class="detail-section">
+    <h2>Movement</h2>
+    <p id="detailMovement"></p>
+  </div>
+  <div class="detail-section">
+    <h2>Tip</h2>
+    <p id="detailTip"></p>
+  </div>
+  <div class="detail-section">
+    <h2>Your notes</h2>
+    <textarea class="my-notes" id="myNotes" rows="2" placeholder="Add your own cues here..."></textarea>
+  </div>
+
+  <div class="params">
+    <div class="row"><span>Sets</span><input type="number" id="f-sets"></div>
+    <div class="row"><span>Reps</span><input type="number" id="f-reps"></div>
+    <div class="row"><span>Seconds / rep</span><input type="number" id="f-seconds"></div>
+    <div class="row"><span>Rest (sec)</span><input type="number" id="f-rest"></div>
+    <div class="row"><span>Estimated time</span><span id="f-estimate"></span></div>
+    <div class="hint">Starting numbers are placeholders - edit to match what your PT prescribed. Changes are saved on this device, including for Run All.</div>
+  </div>
+
+  <label class="chk-row"><input type="checkbox" id="f-voice"> Speak aloud during counting</label>
+
+  <button id="speakBtn" onclick="speakDescription()">&#128264; Read description aloud</button>
+  <button id="startBtn" onclick="startCounting()">Start Counting</button>
+  <a class="back bottom" href="#" onclick="showGrid(); return false;">&larr; All exercises</a>
+</div>
+
+<script>
+// Registering here (and again on counter.html) is what makes Airplane Mode
+// work after Add to Home Screen - the SW precaches both pages, the icons,
+// and the manifest on the first successful online load.
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+// The deploy workflow stamps an unambiguous UTC ISO timestamp into this
+// element (it has no idea what timezone your device is in) - reformat it
+// here, client-side, into local time. Pure Date math, so this still works
+// offline. Leaves the raw placeholder alone if it was never stamped (e.g.
+// viewing the source file directly) rather than showing "Invalid Date".
+(function () {
+  const el = document.getElementById('appUpdatedTime');
+  if (!el) return;
+  const stamped = new Date(el.textContent.trim());
+  if (isNaN(stamped)) return;
+  el.textContent = stamped.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+})();
+
+const ICONS = {
+  'hip-abduction': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <circle cx="55" cy="20" r="8"/>
+      <line x1="55" y1="28" x2="55" y2="65"/>
+      <line x1="55" y1="65" x2="48" y2="105"/>
+      <line x1="55" y1="65" x2="90" y2="80" marker-end="url(#__ARROWID__)"/>
+      <line x1="55" y1="35" x2="42" y2="55"/>
+      <line x1="55" y1="35" x2="68" y2="55"/>
+      <path d="M48 105 Q70 95 90 80" stroke="#ffb347" stroke-dasharray="4 5"/>`,
+  'hip-extension': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <circle cx="58" cy="18" r="7"/>
+      <line x1="57" y1="25" x2="54" y2="62"/>
+      <line x1="54" y1="62" x2="50" y2="105"/>
+      <line x1="54" y1="62" x2="85" y2="95" marker-end="url(#__ARROWID__)"/>
+      <line x1="56" y1="32" x2="42" y2="46"/>
+      <path d="M50 105 Q68 100 85 95" stroke="#ffb347" stroke-dasharray="4 5"/>`,
+  'pnf-d2': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <circle cx="55" cy="30" r="8"/>
+      <line x1="55" y1="38" x2="55" y2="75"/>
+      <line x1="55" y1="75" x2="45" y2="110"/>
+      <line x1="55" y1="75" x2="65" y2="110"/>
+      <path d="M40 75 Q60 60 95 20" marker-end="url(#__ARROWID__)"/>
+      <line x1="20" y1="103" x2="20" y2="116" stroke="#ffb347"/>
+      <path d="M20 106 Q30 92 40 76" stroke="#ffb347" stroke-dasharray="4 5"/>`,
+  'bicep-curl': `
+      <circle cx="55" cy="20" r="8"/>
+      <line x1="55" y1="28" x2="55" y2="65"/>
+      <line x1="55" y1="65" x2="48" y2="108"/>
+      <line x1="55" y1="65" x2="63" y2="108"/>
+      <line x1="55" y1="33" x2="70" y2="50"/>
+      <line x1="70" y1="50" x2="50" y2="42"/>
+      <g transform="rotate(-25 46 40)" stroke="#ffb347"><line x1="38" y1="40" x2="54" y2="40"/><circle cx="38" cy="40" r="4"/><circle cx="54" cy="40" r="4"/></g>
+      <line x1="55" y1="33" x2="40" y2="60"/>
+      <g transform="rotate(5 40 66)" stroke="#ffb347"><line x1="32" y1="66" x2="48" y2="66"/><circle cx="32" cy="66" r="4"/><circle cx="48" cy="66" r="4"/></g>`,
+  'bridge': `
+      <line x1="8" y1="100" x2="115" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
+      <circle cx="13" cy="90" r="8"/>
+      <line x1="20" y1="95" x2="55" y2="85"/>
+      <line x1="55" y1="85" x2="90" y2="75"/>
+      <line x1="90" y1="75" x2="90" y2="100"/>`,
+  'clamshell': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="5" y1="100" x2="100" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
+      <circle cx="12" cy="88" r="8"/>
+      <line x1="20" y1="89" x2="38" y2="90"/>
+      <line x1="38" y1="90" x2="58" y2="98"/>
+      <line x1="58" y1="98" x2="78" y2="89"/>
+      <line x1="38" y1="90" x2="58" y2="95" stroke-dasharray="3 4"/>
+      <line x1="58" y1="95" x2="78" y2="92" stroke-dasharray="3 4"/>
+      <line x1="38" y1="90" x2="58" y2="72"/>
+      <line x1="58" y1="72" x2="78" y2="90"/>
+      <line x1="58" y1="93" x2="58" y2="76" stroke="#ff5b3d" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`,
+  'abdominal-bracing-marches': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="8" y1="100" x2="115" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
+      <circle cx="15" cy="88" r="8"/>
+      <line x1="23" y1="90" x2="55" y2="92"/>
+      <line x1="55" y1="92" x2="72" y2="78" stroke-dasharray="3 4"/>
+      <line x1="72" y1="78" x2="85" y2="98" stroke-dasharray="3 4"/>
+      <line x1="55" y1="92" x2="38" y2="58"/>
+      <line x1="38" y1="58" x2="65" y2="58"/>
+      <line x1="72" y1="76" x2="42" y2="60" stroke="#ff5b3d" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`,
+  'sit-to-stand': `
+      <line x1="18" y1="85" x2="82" y2="85" stroke="#5a5a5a" stroke-dasharray="3 4"/>
+      <line x1="25" y1="85" x2="25" y2="108" stroke="#5a5a5a" stroke-dasharray="3 4"/>
+      <line x1="75" y1="85" x2="75" y2="108" stroke="#5a5a5a" stroke-dasharray="3 4"/>
+      <circle cx="60" cy="35" r="8"/>
+      <line x1="60" y1="43" x2="60" y2="75"/>
+      <line x1="60" y1="75" x2="50" y2="108"/>
+      <line x1="60" y1="75" x2="70" y2="108"/>
+      <line x1="50" y1="58" x2="70" y2="70"/>
+      <line x1="70" y1="58" x2="50" y2="70"/>`,
+  'no-money': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <circle cx="60" cy="15" r="7"/>
+      <line x1="60" y1="22" x2="60" y2="55"/>
+      <line x1="60" y1="55" x2="52" y2="95"/>
+      <line x1="60" y1="55" x2="68" y2="95"/>
+      <line x1="60" y1="25" x2="52" y2="45"/>
+      <line x1="60" y1="25" x2="68" y2="45"/>
+      <line x1="52" y1="45" x2="28" y2="45" marker-end="url(#__ARROWID__)"/>
+      <line x1="68" y1="45" x2="92" y2="45" marker-end="url(#__ARROWID__)"/>`,
+  'shoulder-horizontal-abduction': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <circle cx="60" cy="15" r="7"/>
+      <line x1="60" y1="22" x2="60" y2="55"/>
+      <line x1="60" y1="55" x2="52" y2="95"/>
+      <line x1="60" y1="55" x2="68" y2="95"/>
+      <path d="M45 32 L75 32" stroke-dasharray="3 4"/>
+      <path d="M60 32 L15 30" marker-end="url(#__ARROWID__)"/>
+      <path d="M60 32 L105 30" marker-end="url(#__ARROWID__)"/>`,
+  'rows': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <circle cx="70" cy="20" r="8"/>
+      <line x1="70" y1="28" x2="70" y2="65"/>
+      <line x1="70" y1="65" x2="62" y2="108"/>
+      <line x1="70" y1="65" x2="78" y2="108"/>
+      <line x1="70" y1="40" x2="55" y2="48"/>
+      <line x1="55" y1="48" x2="40" y2="50"/>
+      <path d="M40 50 L15 43" stroke="#ffb347" stroke-dasharray="3 4"/>
+      <line x1="15" y1="36" x2="15" y2="50" stroke="#ffb347"/>
+      <line x1="42" y1="58" x2="88" y2="58" stroke="#ff5b3d" stroke-width="2.5" stroke-dasharray="3 3" marker-end="url(#__ARROWID__)"/>`,
+  'shoulder-extension': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <circle cx="55" cy="20" r="8"/>
+      <line x1="55" y1="28" x2="55" y2="65"/>
+      <line x1="55" y1="65" x2="48" y2="108"/>
+      <line x1="55" y1="65" x2="62" y2="108"/>
+      <line x1="95" y1="20" x2="95" y2="42"/>
+      <line x1="55" y1="35" x2="95" y2="32" stroke-dasharray="3 4"/>
+      <path d="M95 32 Q90 65 68 92" marker-end="url(#__ARROWID__)"/>`,
+  'scapular-retraction-prone-arms-side': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="5" y1="100" x2="115" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
+      <circle cx="15" cy="90" r="8"/>
+      <line x1="23" y1="91" x2="95" y2="97"/>
+      <line x1="30" y1="91" x2="26" y2="70"/>
+      <path d="M40 89 L52 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M64 95 L52 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`,
+  'scapular-retraction-prone-arms-side-lift': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="5" y1="100" x2="115" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
+      <circle cx="15" cy="90" r="8"/>
+      <line x1="23" y1="91" x2="95" y2="97"/>
+      <line x1="30" y1="91" x2="26" y2="70"/>
+      <path d="M26 78 L26 62" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M40 89 L52 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M64 95 L52 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`,
+  'scapular-retraction-prone-arms-overhead-lift': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="5" y1="100" x2="115" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
+      <circle cx="20" cy="90" r="8"/>
+      <line x1="28" y1="91" x2="98" y2="97"/>
+      <line x1="14" y1="85" x2="2" y2="60"/>
+      <path d="M2 68 L2 52" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M45 89 L57 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>
+      <path d="M69 95 L57 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`,
+  'bent-over-rows-dumbbell': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="75" y1="100" x2="95" y2="100" stroke="#5a5a5a"/>
+      <line x1="85" y1="100" x2="85" y2="70" stroke="#5a5a5a"/>
+      <circle cx="30" cy="35" r="8"/>
+      <line x1="33" y1="42" x2="60" y2="70"/>
+      <line x1="60" y1="70" x2="55" y2="105"/>
+      <line x1="60" y1="70" x2="75" y2="100"/>
+      <line x1="45" y1="55" x2="85" y2="75"/>
+      <line x1="40" y1="50" x2="30" y2="90"/>
+      <g transform="rotate(80 28 96)" stroke="#ffb347"><line x1="20" y1="96" x2="36" y2="96"/><circle cx="20" cy="96" r="4"/><circle cx="36" cy="96" r="4"/></g>
+      <path d="M28 88 L28 65" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`,
+  'sit-to-stand-lower-extremity-bias': `
+      <line x1="18" y1="85" x2="82" y2="85" stroke="#5a5a5a" stroke-dasharray="3 4"/>
+      <line x1="25" y1="85" x2="25" y2="108" stroke="#5a5a5a" stroke-dasharray="3 4"/>
+      <line x1="75" y1="85" x2="75" y2="108" stroke="#5a5a5a" stroke-dasharray="3 4"/>
+      <circle cx="60" cy="35" r="8"/>
+      <line x1="60" y1="43" x2="60" y2="75"/>
+      <line x1="60" y1="75" x2="50" y2="108"/>
+      <line x1="60" y1="75" x2="70" y2="108"/>
+      <line x1="60" y1="48" x2="52" y2="80"/>
+      <line x1="60" y1="48" x2="68" y2="80"/>`,
+  'heel-raise-single-leg': `<defs><marker id="__ARROWID__" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="10" y1="100" x2="100" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
+      <line x1="95" y1="15" x2="95" y2="100" stroke="#5a5a5a"/>
+      <circle cx="45" cy="20" r="8"/>
+      <line x1="45" y1="28" x2="45" y2="65"/>
+      <line x1="45" y1="65" x2="40" y2="92"/>
+      <line x1="40" y1="92" x2="34" y2="98"/>
+      <line x1="45" y1="35" x2="80" y2="45"/>
+      <path d="M40 85 L40 68" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#__ARROWID__)"/>`,
+};
+
+// Icon lookup, keyed by slug - kept separate from exercises.txt since these
+// are hand-drawn SVG line art, not something a non-coder should need to
+// touch. A new exercise added purely via the text file (no matching entry
+// here) falls back to a plain neutral figure instead of a missing icon.
+const GENERIC_ICON = `
+  <circle cx="60" cy="20" r="9"/>
+  <line x1="60" y1="29" x2="60" y2="68"/>
+  <line x1="60" y1="68" x2="48" y2="108"/>
+  <line x1="60" y1="68" x2="72" y2="108"/>
+  <line x1="60" y1="38" x2="38" y2="58"/>
+  <line x1="60" y1="38" x2="82" y2="58"/>`;
+
+let EXERCISES = [];
+
+const gridEl = document.getElementById('grid');
+const detailEl = document.getElementById('detail');
+const titleEl = document.getElementById('pageTitle');
+const filterBarEl = document.getElementById('filterBar');
+const categoryChipsEl = document.getElementById('categoryChips');
+const equipmentChipsEl = document.getElementById('equipmentChips');
+const selectBarEl = document.getElementById('selectBar');
+const selectCountEl = document.getElementById('selectCount');
+const runAllBtnEl = document.getElementById('runAllBtn');
+
+// Filter chips are derived from whatever categories/equipment actually show
+// up in exercises.txt, not a fixed list - so a non-coder can invent a new
+// one just by typing it into the text file, and a chip for it appears on
+// its own. These give the known ones a nicer label and a stable order;
+// anything else falls back to an auto-formatted label, appended after.
+const CATEGORY_LABELS = { hip: 'Hip & Glute', core: 'Core', 'back-shoulder': 'Back & Shoulder', arms: 'Arms', 'balance-legs': 'Balance & Legs' };
+const EQUIPMENT_LABELS = { band: 'Band', dumbbell: 'Dumbbell', bodyweight: 'Bodyweight' };
+const CATEGORY_ORDER = ['hip', 'core', 'back-shoulder', 'arms', 'balance-legs'];
+const EQUIPMENT_ORDER = ['band', 'dumbbell', 'bodyweight'];
+let CATEGORIES = [];
+let EQUIPMENT = [];
+
+function autoLabel(key) {
+  return key.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function orderedFacet(present, preferredOrder, labels) {
+  const known = preferredOrder.filter(k => present.has(k));
+  const unknown = [...present].filter(k => !preferredOrder.includes(k)).sort();
+  return [...known, ...unknown].map(key => ({ key, label: labels[key] || autoLabel(key) }));
+}
+
+function computeFacets() {
+  const presentCategories = new Set(EXERCISES.map(e => e.category));
+  const presentEquipment = new Set(EXERCISES.map(e => e.type));
+  CATEGORIES = orderedFacet(presentCategories, CATEGORY_ORDER, CATEGORY_LABELS);
+  EQUIPMENT = orderedFacet(presentEquipment, EQUIPMENT_ORDER, EQUIPMENT_LABELS);
+  // Drop any saved filter selection that no longer matches a real category/
+  // equipment (e.g. it was renamed or removed in exercises.txt).
+  activeCategories = new Set([...activeCategories].filter(k => presentCategories.has(k)));
+  activeEquipment = new Set([...activeEquipment].filter(k => presentEquipment.has(k)));
+}
+
+// exercises.txt is a plain "Field: value" block-per-exercise text file (see
+// the comment header in that file) so a non-coder can add/edit exercises
+// without touching any code. Unknown fields are ignored; missing optional
+// fields just come back empty/default, so a typo degrades gracefully
+// instead of breaking the whole list.
+function slugify(text) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'exercise';
+}
+
+function parseExercisesText(text) {
+  const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+  const usedSlugs = new Set();
+  const exercises = [];
+  for (const block of blocks) {
+    const fields = {};
+    for (const rawLine of block.split('\n')) {
+      const line = rawLine.trim();
+      if (!line || line.startsWith('#')) continue;
+      const idx = line.indexOf(':');
+      if (idx === -1) continue;
+      const key = line.slice(0, idx).trim().toLowerCase();
+      fields[key] = line.slice(idx + 1).trim();
+    }
+    if (!fields.name) continue; // not a real exercise block (e.g. a comment-only paragraph)
+    const baseSlug = slugify(fields.slug || fields.name);
+    let slug = baseSlug;
+    for (let n = 2; usedSlugs.has(slug); n++) slug = `${baseSlug}-${n}`;
+    usedSlugs.add(slug);
+    exercises.push({
+      slug,
+      name: fields.name,
+      category: (fields.category || 'other').toLowerCase(),
+      type: (fields.equipment || 'bodyweight').toLowerCase(),
+      description: fields.description || '',
+      setup: fields.setup || '',
+      movement: fields.movement || '',
+      tip: fields.tip || '',
+      defaults: {
+        sets: parseInt(fields.sets) || 2,
+        reps: parseInt(fields.reps) || 10,
+        seconds: parseInt(fields.seconds) || 2,
+        rest: parseInt(fields.rest) || 0
+      },
+      startImage: fields.startimage || '',
+      finishImage: fields.finishimage || ''
+    });
+  }
+  return exercises;
+}
+
+function loadStringSet(key) {
+  try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); }
+  catch (e) { return new Set(); }
+}
+function saveStringSet(key, set) {
+  localStorage.setItem(key, JSON.stringify([...set]));
+}
+
+let activeCategories = loadStringSet('repcounter_categories');
+let activeEquipment = loadStringSet('repcounter_equipment');
+let selectedSlugs = loadStringSet('repcounter_selected');
+let lastDoneMap = {};
+try { lastDoneMap = JSON.parse(localStorage.getItem('repcounter_lastdone') || '{}'); } catch (e) {}
+
+function markDone(slug) {
+  lastDoneMap[slug] = Date.now();
+  localStorage.setItem('repcounter_lastdone', JSON.stringify(lastDoneMap));
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+function formatLastDone(slug) {
+  const ts = lastDoneMap[slug];
+  if (!ts) return 'Never done';
+  const days = Math.floor((Date.now() - ts) / DAY_MS);
+  if (days <= 0) return 'Done today';
+  if (days === 1) return 'Done yesterday';
+  if (days < 7) return `${days} days ago`;
+  const weeks = Math.floor(days / 7);
+  if (weeks < 5) return `${weeks} week${weeks === 1 ? '' : 's'} ago`;
+  return `${Math.floor(days / 30)} mo ago`;
+}
+function lastDoneClass(slug) {
+  const ts = lastDoneMap[slug];
+  if (!ts) return 'overdue';
+  const days = Math.floor((Date.now() - ts) / DAY_MS);
+  if (days >= 10) return 'overdue';
+  if (days >= 4) return 'due';
+  return '';
+}
+
+// Rough estimate, not a stopwatch-accurate one: counting time for every
+// rep, rest between sets, plus a few seconds per set for the "Set N of M"
+// announcement and the 3-2-1-Go countdown that precedes it.
+const SET_OVERHEAD_SEC = 3;
+function estimateSeconds(p) {
+  return p.sets * (p.reps * p.seconds + SET_OVERHEAD_SEC) + Math.max(0, p.sets - 1) * p.rest;
+}
+
+// Rough allowance for the "Exercise N of M" transition between exercises
+// in a multi-exercise session (Run Selected) - on top of each exercise's
+// own estimateSeconds().
+const TRANSITION_OVERHEAD_SEC = 5;
+function estimateTotalSeconds(list) {
+  return list.reduce((sum, ex) => sum + estimateSeconds(getExerciseParams(ex)), 0)
+    + list.length * TRANSITION_OVERHEAD_SEC;
+}
+
+function formatDuration(totalSeconds) {
+  const s = Math.round(totalSeconds / 5) * 5; // round to the nearest 5s - it's an estimate, not a stopwatch
+  if (s < 60) return `~${s}s`;
+  const m = Math.floor(s / 60);
+  const rem = s % 60;
+  return rem === 0 ? `~${m} min` : `~${m}m ${rem}s`;
+}
+
+function resolvedIcon(ex, suffix) {
+  // Each icon can define an arrowhead marker; give it a unique id per
+  // rendering so duplicate SVG ids on the page don't make icons borrow
+  // each other's marker color. Falls back to a plain generic figure for an
+  // exercise added via exercises.txt that has no hand-drawn icon.
+  const raw = ICONS[ex.slug] || GENERIC_ICON;
+  return raw.replaceAll('__ARROWID__', `arrow-${ex.slug}-${suffix}`);
+}
+
+function cardVisual(ex) {
+  return ex.startImage
+    ? `<img src="${ex.startImage}" alt="" loading="lazy">`
+    : buildIconSvg(resolvedIcon(ex, 'card'));
+}
+
+function buildIconSvg(inner) {
+  return `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+}
+
+function filteredExercises() {
+  return EXERCISES.filter(ex =>
+    (activeCategories.size === 0 || activeCategories.has(ex.category)) &&
+    (activeEquipment.size === 0 || activeEquipment.has(ex.type))
+  );
+}
+
+function buildChips() {
+  categoryChipsEl.innerHTML = CATEGORIES.map(c => `
+    <button class="chip ${activeCategories.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeCategories, '${c.key}', 'repcounter_categories')">${c.label}</button>
+  `).join('');
+  equipmentChipsEl.innerHTML = EQUIPMENT.map(c => `
+    <button class="chip ${activeEquipment.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeEquipment, '${c.key}', 'repcounter_equipment')">${c.label}</button>
+  `).join('');
+}
+
+function toggleChip(set, key, storageKey) {
+  if (set.has(key)) set.delete(key); else set.add(key);
+  saveStringSet(storageKey, set);
+  buildChips();
+  buildGrid();
+}
+
+function buildGrid() {
+  const list = filteredExercises();
+  gridEl.innerHTML = list.map(ex => `
+    <div class="card ${ex.type}" onclick="openDetail('${ex.slug}')">
+      <input type="checkbox" class="cardCheck" onclick="event.stopPropagation()" onchange="toggleSelected('${ex.slug}', this.checked)" ${selectedSlugs.has(ex.slug) ? 'checked' : ''}>
+      ${cardVisual(ex)}
+      <div>${ex.name}</div>
+      <div class="estTime">${formatDuration(estimateSeconds(getExerciseParams(ex)))}</div>
+      <div class="lastDone ${lastDoneClass(ex.slug)}">${formatLastDone(ex.slug)}</div>
+    </div>
+  `).join('');
+}
+
+function toggleSelected(slug, checked) {
+  if (checked) selectedSlugs.add(slug); else selectedSlugs.delete(slug);
+  saveStringSet('repcounter_selected', selectedSlugs);
+  updateSelectBar();
+}
+
+function updateSelectBar() {
+  const n = selectedSlugs.size;
+  if (n === 0) {
+    selectCountEl.textContent = 'No exercises selected';
+  } else {
+    const list = EXERCISES.filter(ex => selectedSlugs.has(ex.slug));
+    selectCountEl.textContent = `${n} selected · ${formatDuration(estimateTotalSeconds(list))}`;
+  }
+  selectCountEl.classList.toggle('overLimit', n > 6);
+  if (n > 6) selectCountEl.textContent += ' - more than a typical 5-6 exercise session';
+  runAllBtnEl.disabled = n === 0;
+}
+
+function clearSelection() {
+  selectedSlugs = new Set();
+  saveStringSet('repcounter_selected', selectedSlugs);
+  buildGrid();
+  updateSelectBar();
+}
+
+// Selects the 6 exercises (within the current category/equipment filters)
+// that have gone longest without being done, so working through "Pick 6
+// Least Recent" repeatedly cycles through the whole set over time instead
+// of always favoring whichever exercises happen to be picked by hand.
+function pickLeastRecent() {
+  const pool = filteredExercises();
+  const sorted = [...pool].sort((a, b) => (lastDoneMap[a.slug] || 0) - (lastDoneMap[b.slug] || 0));
+  selectedSlugs = new Set(sorted.slice(0, 6).map(e => e.slug));
+  saveStringSet('repcounter_selected', selectedSlugs);
+  buildGrid();
+  updateSelectBar();
+}
+
+const startParams = new URLSearchParams(window.location.search);
+
+async function loadExercises() {
+  try {
+    const res = await fetch('exercises.txt', { cache: 'no-store' });
+    if (!res.ok) throw new Error('fetch failed: ' + res.status);
+    EXERCISES = parseExercisesText(await res.text());
+    return true;
+  } catch (e) {
+    gridEl.innerHTML = '<div style="text-align:center;color:#888;padding:6vh 2vw;">Couldn’t load the exercise list. Try again once you’re back online.</div>';
+    return false;
+  }
+}
+
+async function init() {
+  gridEl.innerHTML = '<div style="text-align:center;color:#888;padding:6vh 2vw;">Loading exercises…</div>';
+  if (!(await loadExercises())) return;
+  computeFacets();
+  buildChips();
+  buildGrid();
+  updateSelectBar();
+
+  // Deep link: index.html?ex=bridge&voice=1 opens straight to that
+  // exercise's description (and speaks it if voice=1), skipping the grid -
+  // this is what a Siri Shortcut for one specific exercise should point to.
+  const exParam = startParams.get('ex');
+  if (exParam && EXERCISES.some(e => e.slug === exParam)) {
+    openDetail(exParam);
+  }
+}
+init();
+
+function showGrid() {
+  window.speechSynthesis.cancel();
+  detailEl.classList.remove('open');
+  gridEl.classList.remove('hidden');
+  titleEl.classList.remove('hidden');
+  filterBarEl.classList.remove('hidden');
+  selectBarEl.classList.remove('hidden');
+  buildGrid(); // refresh last-done badges/checkboxes in case a run just finished
+  history.replaceState(null, '', 'index.html');
+}
+
+function getSavedVoice() {
+  if (!('speechSynthesis' in window)) return null;
+  const saved = localStorage.getItem('repcounter_voice');
+  if (!saved) return null;
+  return window.speechSynthesis.getVoices().find(v => v.voiceURI === saved) || null;
+}
+
+// Sets/reps/seconds/rest edited for an exercise are remembered on this
+// device, so Run All and future visits pick up the same numbers instead of
+// resetting to the generic placeholder defaults every time.
+function getExerciseParams(ex) {
+  const saved = localStorage.getItem('params_' + ex.slug);
+  if (saved) {
+    try { return JSON.parse(saved); } catch (e) {}
+  }
+  return ex.defaults;
+}
+
+function saveCurrentExerciseParams() {
+  if (!currentExercise) return;
+  const params = {
+    sets: parseInt(document.getElementById('f-sets').value) || currentExercise.defaults.sets,
+    reps: parseInt(document.getElementById('f-reps').value) || currentExercise.defaults.reps,
+    seconds: parseInt(document.getElementById('f-seconds').value) || currentExercise.defaults.seconds,
+    rest: parseInt(document.getElementById('f-rest').value) || 0
+  };
+  localStorage.setItem('params_' + currentExercise.slug, JSON.stringify(params));
+  updateEstimateDisplay(params);
+}
+
+function updateEstimateDisplay(params) {
+  document.getElementById('f-estimate').textContent = formatDuration(estimateSeconds(params));
+}
+
+let currentExercise = null;
+
+// The full picture for an exercise: what it is, how to set it up and do it,
+// the coaching cue, and the numbers - especially seconds per rep, so the
+// pace of the movement can be thought through before starting.
+function buildFullInfoText(ex, p) {
+  return `${ex.name}. ${ex.description} ${ex.setup} ${ex.movement} ${ex.tip} `
+    + `${p.sets} set${p.sets === 1 ? '' : 's'} of ${p.reps} rep${p.reps === 1 ? '' : 's'}, ${p.seconds} second${p.seconds === 1 ? '' : 's'} per rep, `
+    + `with ${p.rest} second${p.rest === 1 ? '' : 's'} rest between sets.`;
+}
+
+function speakDescription() {
+  if (!currentExercise || !('speechSynthesis' in window)) return;
+  const ex = currentExercise;
+  const text = buildFullInfoText(ex, getExerciseParams(ex));
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  const v = getSavedVoice();
+  if (v) u.voice = v;
+  window.speechSynthesis.speak(u);
+}
+
+function openDetail(slug) {
+  const ex = EXERCISES.find(e => e.slug === slug);
+  if (!ex) return;
+  currentExercise = ex;
+
+  const detailIconEl = document.getElementById('detailIcon');
+  const detailPhotosEl = document.getElementById('detailPhotos');
+  const detailPhotoStartEl = document.getElementById('detailPhotoStart');
+  const detailPhotoFinishEl = document.getElementById('detailPhotoFinish');
+  if (ex.startImage) {
+    detailIconEl.style.display = 'none';
+    detailPhotosEl.style.display = 'flex';
+    // Only StartImage given (no FinishImage) covers two real cases: a
+    // photo of just the start position, or - common with these exercise
+    // photos - a single wide image that already shows start and finish
+    // side by side. Either way it's shown at full natural size, not
+    // cropped to the half-width square used when there are two photos.
+    detailPhotosEl.classList.toggle('single', !ex.finishImage);
+    detailPhotosEl.classList.toggle('pair', !!ex.finishImage);
+    detailPhotoStartEl.src = ex.startImage;
+    detailPhotoStartEl.alt = ex.finishImage ? 'Start position' : 'Exercise photo';
+    detailPhotoFinishEl.src = ex.finishImage || '';
+  } else {
+    detailIconEl.style.display = '';
+    detailPhotosEl.style.display = 'none';
+    detailIconEl.innerHTML = resolvedIcon(ex, 'detail');
+  }
+  document.getElementById('detailName').textContent = ex.name;
+  document.getElementById('detailDescription').textContent = ex.description;
+  document.getElementById('detailSetup').textContent = ex.setup;
+  document.getElementById('detailMovement').textContent = ex.movement;
+  document.getElementById('detailTip').textContent = ex.tip;
+  document.getElementById('myNotes').value = localStorage.getItem('notes_' + ex.slug) || '';
+  const savedParams = getExerciseParams(ex);
+  document.getElementById('f-sets').value = savedParams.sets;
+  document.getElementById('f-reps').value = savedParams.reps;
+  document.getElementById('f-seconds').value = savedParams.seconds;
+  document.getElementById('f-rest').value = savedParams.rest;
+  updateEstimateDisplay(savedParams);
+
+  const params = new URLSearchParams(window.location.search);
+  const voiceMode = params.get('voice') === '1';
+  document.getElementById('f-voice').checked = voiceMode;
+
+  gridEl.classList.add('hidden');
+  titleEl.classList.add('hidden');
+  filterBarEl.classList.add('hidden');
+  selectBarEl.classList.add('hidden');
+  detailEl.classList.add('open');
+}
+
+document.getElementById('myNotes').addEventListener('input', (e) => {
+  if (currentExercise) localStorage.setItem('notes_' + currentExercise.slug, e.target.value);
+});
+
+['f-sets', 'f-reps', 'f-seconds', 'f-rest'].forEach(id => {
+  document.getElementById(id).addEventListener('input', saveCurrentExerciseParams);
+});
+
+// Keep the screen awake during a voice-guided workout run on this page.
+let wakeLock = null;
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator && document.visibilityState === 'visible') {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    }
+  } catch (e) {
+    // unsupported browser, Low Power Mode, etc. - fail silently
+  }
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && !wakeLock) requestWakeLock();
+});
+
+function vibrate(pattern) {
+  if (navigator.vibrate) navigator.vibrate(pattern);
+}
+
+const countWrapEl = document.getElementById('countWrap');
+const cLabelEl = document.getElementById('cLabel');
+const cPhotoEl = document.getElementById('cPhoto');
+const cBigEl = document.getElementById('cBig');
+const cSubEl = document.getElementById('cSub');
+const sessionTimerEl = document.getElementById('sessionTimer');
+
+function showExercisePhoto(ex) {
+  if (!ex.startImage) {
+    cPhotoEl.classList.remove('active');
+    return;
+  }
+  cPhotoEl.src = ex.startImage;
+  cPhotoEl.alt = ex.finishImage ? 'Start position' : 'Exercise photo';
+  cPhotoEl.classList.add('active');
+}
+
+function hideExercisePhoto() {
+  cPhotoEl.classList.remove('active');
+}
+const cFlashEl = document.getElementById('cFlash');
+const pauseBtnEl = document.getElementById('pauseBtn');
+const repeatBtnEl = document.getElementById('repeatBtn');
+const skipBtnEl = document.getElementById('skipBtn');
+
+function cFlash(type) {
+  cFlashEl.className = '';
+  void cFlashEl.offsetWidth;
+  cFlashEl.className = type === 'set' ? 'set-flash' : (type === 'last' ? 'last-flash' : 'rep-flash');
+}
+function cPulse() {
+  cBigEl.classList.remove('pulse');
+  void cBigEl.offsetWidth;
+  cBigEl.classList.add('pulse');
+}
+const WARM = [255, 91, 61];
+const REP_START = [255, 255, 255];
+const REST_START = [77, 163, 255];
+function lerpColor(start, t) {
+  const r = Math.round(start[0] + (WARM[0] - start[0]) * t);
+  const g = Math.round(start[1] + (WARM[1] - start[1]) * t);
+  const b = Math.round(start[2] + (WARM[2] - start[2]) * t);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+async function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+
+// Every run (single exercise or Run All) gets a token. A loop only keeps
+// going while its own token is still the current one, so starting a fresh
+// run (Reset, or a new Start) cleanly invalidates whatever was running
+// before - no race between an old run winding down and a new one starting,
+// which a shared "cancelled" flag can't guarantee on its own.
+let runToken = 0;
+let lastRunStarter = null; // re-invoking this is what "Reset" does
+
+// Ticks time down in small chunks, freezing progress while runPaused is
+// true - this is what makes the Pause button work for both a single
+// exercise and a Run All sequence, without any complex resume bookkeeping.
+let runPaused = false;
+
+// Elapsed time for the whole session (not per-rep/per-set) - counts up
+// rather than down against the estimate, since a countdown gets thrown off
+// the moment you pause, skip, or repeat, while elapsed time is always
+// simply correct. sessionPausedAccum tracks total time spent paused so
+// far, and sessionPauseStartedAt (while non-null) tracks the current pause
+// in progress, so the displayed elapsed time freezes exactly while paused.
+let sessionStartTime = null;
+let sessionPausedAccum = 0;
+let sessionPauseStartedAt = null;
+let sessionTimerInterval = null;
+
+function startSessionTimer() {
+  sessionStartTime = Date.now();
+  sessionPausedAccum = 0;
+  sessionPauseStartedAt = null;
+  updateSessionTimerDisplay();
+  if (sessionTimerInterval) clearInterval(sessionTimerInterval);
+  sessionTimerInterval = setInterval(updateSessionTimerDisplay, 1000);
+}
+
+function stopSessionTimer() {
+  if (sessionTimerInterval) clearInterval(sessionTimerInterval);
+  sessionTimerInterval = null;
+  sessionStartTime = null;
+}
+
+function pauseSessionTimer() {
+  if (sessionStartTime && !sessionPauseStartedAt) sessionPauseStartedAt = Date.now();
+}
+
+function resumeSessionTimer() {
+  if (sessionPauseStartedAt) {
+    sessionPausedAccum += Date.now() - sessionPauseStartedAt;
+    sessionPauseStartedAt = null;
+  }
+}
+
+function formatElapsed(ms) {
+  const totalSec = Math.max(0, Math.floor(ms / 1000));
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+function updateSessionTimerDisplay() {
+  if (!sessionStartTime) return;
+  const pausedNow = sessionPauseStartedAt ? Date.now() - sessionPauseStartedAt : 0;
+  const elapsedMs = Date.now() - sessionStartTime - sessionPausedAccum - pausedNow;
+  sessionTimerEl.textContent = '⏱ ' + formatElapsed(elapsedMs);
+}
+
+// Skip/Repeat only make sense mid-sequence (Run All), so they're a separate
+// signal from runToken: bumping runToken would also invalidate the outer
+// runAllExercises loop and end the whole workout, not just the current
+// exercise. These flags cut short whichever runCount()/countdownStart()
+// call is in flight; runAllExercises reads them afterward to decide whether
+// to redo the same exercise or move to the next one.
+let skipRequested = false;
+let repeatRequested = false;
+let runAllActive = false;
+function aborted(token) {
+  return token !== runToken || skipRequested || repeatRequested;
+}
+
+function setRunAllControlsVisible(visible) {
+  runAllActive = visible;
+  repeatBtnEl.classList.toggle('hidden', !visible);
+  skipBtnEl.classList.toggle('hidden', !visible);
+}
+
+async function pausableWait(ms, token) {
+  let remaining = ms;
+  while (remaining > 0 && !aborted(token)) {
+    if (runPaused) {
+      await sleep(150);
+      continue;
+    }
+    const chunk = Math.min(150, remaining);
+    await sleep(chunk);
+    remaining -= chunk;
+  }
+}
+
+function togglePause() {
+  runPaused = !runPaused;
+  if (runPaused) {
+    window.speechSynthesis.cancel();
+    pauseSessionTimer();
+  } else {
+    resumeSessionTimer();
+  }
+  pauseBtnEl.textContent = runPaused ? '▶ Resume' : '❙❙ Pause';
+  pauseBtnEl.classList.toggle('paused', runPaused);
+}
+
+function resetCurrentRun() {
+  skipRequested = false;
+  repeatRequested = false;
+  if (lastRunStarter) lastRunStarter();
+}
+
+// Only meaningful during Run All (setRunAllControlsVisible keeps these
+// buttons hidden otherwise, and the current exercise's cancelling
+// speechSynthesis.cancel() here is what breaks it out of a still-playing
+// intro description, not just the numeric countdown).
+function skipExercise() {
+  if (!runAllActive) return;
+  skipRequested = true;
+  window.speechSynthesis.cancel();
+}
+
+function repeatExercise() {
+  if (!runAllActive) return;
+  repeatRequested = true;
+  window.speechSynthesis.cancel();
+}
+
+let speechToken = 0;
+function speakCount(text) {
+  const myToken = ++speechToken;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  const v = getSavedVoice();
+  if (v) u.voice = v;
+  u.onstart = () => {
+    // iOS Safari doesn't always fully cancel a still-queued utterance; if a
+    // newer speakCount() has since superseded this one, stop it the instant
+    // it starts instead of letting it play late and sound like a repeated cue.
+    if (myToken !== speechToken) window.speechSynthesis.cancel();
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function cancelCount() {
+  runToken++;
+  runPaused = false;
+  skipRequested = false;
+  repeatRequested = false;
+  setRunAllControlsVisible(false);
+  window.speechSynthesis.cancel();
+  hideExercisePhoto();
+  stopSessionTimer();
+  countWrapEl.classList.remove('active');
+  gridEl.classList.remove('hidden');
+  titleEl.classList.remove('hidden');
+  filterBarEl.classList.remove('hidden');
+  selectBarEl.classList.remove('hidden');
+  buildGrid(); // refresh last-done badges for whatever completed before cancelling
+}
+
+async function countdownStart(token, speakFn) {
+  const steps = ['3', '2', '1', 'Go!'];
+  for (const step of steps) {
+    if (aborted(token)) return;
+    cLabelEl.textContent = '';
+    cSubEl.textContent = '';
+    cBigEl.textContent = step;
+    cBigEl.className = step === 'Go!' ? 'c-done' : 'c-go';
+    cBigEl.style.color = '';
+    vibrate(step === 'Go!' ? [80, 40, 80] : 30);
+    speakFn(step === 'Go!' ? 'Go' : step);
+    await pausableWait(650, token);
+  }
+}
+
+async function runCount(sets, reps, seconds, rest, voiceOn, token, slug) {
+  const speakFn = voiceOn ? speakCount : () => {};
+  for (let s = 1; s <= sets && !aborted(token); s++) {
+    // Announce the set, then run a full 3-2-1-Go countdown before every set
+    // (not just the first) - a clear, unmissable "reps start now" cue.
+    // The announcement gets its own pause before the countdown starts so it
+    // isn't cancelled mid-word by the countdown's own speech.
+    cLabelEl.textContent = `Set ${s} of ${sets}`;
+    cBigEl.textContent = '';
+    cSubEl.textContent = '';
+    speakFn(`Set ${s} of ${sets}`);
+    vibrate([40, 40, 40]);
+    await pausableWait(900, token);
+    if (aborted(token)) return;
+    await countdownStart(token, speakFn);
+    if (aborted(token)) return;
+    cLabelEl.textContent = `Set ${s} of ${sets}`;
+
+    for (let r = 1; r <= reps && !aborted(token); r++) {
+      const isLastRep = r === reps;
+      cSubEl.textContent = isLastRep ? `LAST REP (${r} of ${reps})` : `rep ${r} of ${reps}`;
+      cSubEl.className = isLastRep ? 'lastrep' : '';
+      speakFn(isLastRep ? 'Last rep!' : `Rep ${r}`);
+      vibrate(isLastRep ? [50, 40, 50, 40, 120] : 40);
+      if (isLastRep) cFlash('last');
+      // Count through each second of this rep, visually and (in voice mode) aloud.
+      // Second 1 isn't spoken aloud - the "Rep N"/"Last rep!" cue just spoken
+      // already marks the start, and speaking over it would cancel it before
+      // it's heard (same reason the rest countdown below skips its own first tick).
+      for (let sec = 1; sec <= seconds && !aborted(token); sec++) {
+        cBigEl.textContent = sec;
+        cBigEl.className = 'c-go';
+        cBigEl.style.color = lerpColor(REP_START, seconds > 1 ? (sec - 1) / (seconds - 1) : 1);
+        if (sec > 1) speakFn(String(sec));
+        if (!wakeLock) requestWakeLock();
+        await pausableWait(1000, token);
+      }
+      if (aborted(token)) return;
+      cPulse();
+      cFlash('rep');
+      vibrate(60);
+    }
+    if (aborted(token)) return;
+    cSubEl.className = '';
+    cFlash('set');
+    vibrate([60, 40, 60]);
+    if (s < sets) {
+      // One utterance instead of two back-to-back calls, so "Set complete"
+      // isn't cancelled the instant "Rest, N seconds" starts.
+      speakFn(rest > 0 ? `Set complete. Rest ${rest} seconds.` : 'Set complete.');
+      await pausableWait(900, token);
+      if (aborted(token)) return;
+      if (rest > 0) {
+        for (let t = rest; t > 0 && !aborted(token); t--) {
+          cLabelEl.textContent = 'Rest';
+          cBigEl.textContent = t;
+          cBigEl.className = 'c-rest';
+          cBigEl.style.color = lerpColor(REST_START, rest > 1 ? (rest - t) / (rest - 1) : 1);
+          cSubEl.textContent = `next: set ${s + 1}`;
+          // skip the very first tick's own number - it would otherwise just
+          // repeat the total already spoken in the announcement above
+          if (t !== rest && (t <= 3 || t % 5 === 0)) speakFn(String(t));
+          await pausableWait(1000, token);
+        }
+      }
+    }
+  }
+  if (aborted(token)) return;
+  if (slug) markDone(slug);
+  cLabelEl.textContent = '';
+  cBigEl.textContent = 'Done';
+  cBigEl.className = 'c-done';
+  cBigEl.style.color = '';
+  cSubEl.textContent = '';
+  cFlash('set');
+  speakFn('Done! Great job.');
+  vibrate([100, 50, 100, 50, 200]);
+}
+
+function startCounting() {
+  const sets = parseInt(document.getElementById('f-sets').value);
+  const reps = parseInt(document.getElementById('f-reps').value);
+  const seconds = parseInt(document.getElementById('f-seconds').value);
+  const rest = parseInt(document.getElementById('f-rest').value) || 0;
+  const voiceOn = document.getElementById('f-voice').checked;
+
+  if (!voiceOn) {
+    // Silent flow: no speech involved, so handing off to the counter page works fine.
+    // slug is passed through so counter.html can still record "last done" there,
+    // since that page - not this one - is what's on screen when the count finishes.
+    window.location.href = `counter.html?sets=${sets}&reps=${reps}&seconds=${seconds}&rest=${rest}&voice=0&slug=${encodeURIComponent(currentExercise.slug)}`;
+    return;
+  }
+
+  // Voice flow: stay on THIS page instead of navigating to index.html.
+  // The tap on "Start Counting" is what unlocks iOS speech - a navigation
+  // to a new page loses that unlock and silently kills the audio, which is
+  // exactly the bug that was reported. Speaking the description here first
+  // also gives time to get back into position before the counting starts.
+  const myToken = ++runToken;
+  lastRunStarter = startCounting;
+  runPaused = false;
+  skipRequested = false;
+  repeatRequested = false;
+  setRunAllControlsVisible(false); // no sequence to skip/repeat within outside Run All
+  pauseBtnEl.textContent = '❙❙ Pause';
+  pauseBtnEl.classList.remove('paused');
+  window.speechSynthesis.cancel();
+  detailEl.classList.remove('open');
+  countWrapEl.classList.add('active');
+  cLabelEl.textContent = 'Get ready...';
+  cBigEl.textContent = '';
+  cSubEl.textContent = '';
+  showExercisePhoto(currentExercise);
+  startSessionTimer();
+  requestWakeLock();
+
+  const beginCounting = () => {
+    hideExercisePhoto(); // #cBig needs that space back once counting starts
+    return runCount(sets, reps, seconds, rest, true, myToken, currentExercise.slug).then(stopSessionTimer);
+  };
+
+  if (!('speechSynthesis' in window)) {
+    beginCounting();
+    return;
+  }
+  const ex = currentExercise;
+  const text = buildFullInfoText(ex, { sets, reps, seconds, rest }) + ' Get in position now.';
+  const u = new SpeechSynthesisUtterance(text);
+  const v = getSavedVoice();
+  if (v) u.voice = v;
+  u.onend = beginCounting;
+  u.onerror = beginCounting;
+  window.speechSynthesis.speak(u);
+}
+
+function speakAndWait(text) {
+  return new Promise(resolve => {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    const v = getSavedVoice();
+    if (v) u.voice = v;
+    u.onend = resolve;
+    u.onerror = resolve;
+    window.speechSynthesis.speak(u);
+  });
+}
+
+async function runAllExercises(list, voiceOn, token) {
+  let i = 0;
+  while (i < list.length && token === runToken) {
+    const ex = list[i];
+    cLabelEl.textContent = `Exercise ${i + 1} of ${list.length}`;
+    cBigEl.textContent = '';
+    cBigEl.className = '';
+    cBigEl.style.color = '';
+    cSubEl.textContent = ex.name;
+    showExercisePhoto(ex);
+    const p = getExerciseParams(ex);
+
+    if (voiceOn && 'speechSynthesis' in window) {
+      await speakAndWait(buildFullInfoText(ex, p) + ' Get in position now.');
+    } else {
+      await pausableWait(4000, token);
+    }
+    if (token !== runToken) return;
+
+    // Skip pressed during the intro: runCount below sees skipRequested
+    // already set and returns immediately without counting anything, so
+    // this exercise is effectively skipped without any special-casing here.
+    // The photo comes down here too, whether skipped or not - #cBig needs
+    // that space back once counting is actually about to start.
+    hideExercisePhoto();
+    await runCount(p.sets, p.reps, p.seconds, p.rest, voiceOn, token, ex.slug);
+    if (token !== runToken) return;
+
+    if (repeatRequested) {
+      repeatRequested = false;
+      continue; // redo this same exercise from its intro
+    }
+    skipRequested = false; // consumed - move on whether it was set or not
+    i++;
+  }
+
+  if (token !== runToken) return;
+  setRunAllControlsVisible(false);
+  stopSessionTimer();
+  cLabelEl.textContent = '';
+  cBigEl.textContent = 'All Done!';
+  cBigEl.className = 'c-done';
+  cBigEl.style.color = '';
+  cSubEl.textContent = '';
+  cFlash('set');
+  if (voiceOn) speakCount('Workout complete. Great job!');
+  vibrate([100, 50, 100, 50, 100, 50, 200]);
+}
+
+function startRunAll() {
+  const list = EXERCISES.filter(ex => selectedSlugs.has(ex.slug));
+  if (list.length === 0) return; // Run Selected is disabled at 0, but guard anyway
+  const voiceOn = document.getElementById('runAllVoice').checked;
+
+  const myToken = ++runToken;
+  lastRunStarter = startRunAll;
+  runPaused = false;
+  skipRequested = false;
+  repeatRequested = false;
+  setRunAllControlsVisible(true);
+  pauseBtnEl.textContent = '❙❙ Pause';
+  pauseBtnEl.classList.remove('paused');
+  window.speechSynthesis.cancel();
+  gridEl.classList.add('hidden');
+  titleEl.classList.add('hidden');
+  filterBarEl.classList.add('hidden');
+  selectBarEl.classList.add('hidden');
+  countWrapEl.classList.add('active');
+  cLabelEl.textContent = 'Get ready...';
+  cBigEl.textContent = '';
+  cSubEl.textContent = '';
+  startSessionTimer();
+  requestWakeLock();
+
+  runAllExercises(list, voiceOn, myToken);
+}
+</script>
+</body>
+</html>
