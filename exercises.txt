@@ -49,7 +49,7 @@ Reps: 10
 Seconds: 3
 Rest: 6
 Description: Strengthens the outer hip and glute muscles that stabilize your pelvis while standing and walking.
-Setup: Loop the band just below knees. Stand sideways next to a wall or chair and hold on for balance.
+Setup: Loop the exercise band just below knees. Stand sideways next to a wall or chair and hold on for balance.
 Movement: Keeping your leg straight and toes pointing forward, lift your working leg out to the side against the band, hold momentarily, then return with control.
 Tip: Keep your hips level - don’t let your body lean or your toes turn upward as you lift.
 StartImage:
@@ -64,8 +64,8 @@ Reps: 10
 Seconds: 3
 Rest: 6
 Description: Strengthens the glutes and hamstrings used to push your leg backward, important for walking and stairs.
-Setup: Loop the band just below knees. Face something stable for balance.
-Movement: Keeping your knee straight, extend your working leg backward and slightly outward against the band, squeeze your glute, then return with control.
+Setup: Loop the exercise band just below knees. Face something stable for balance.
+Movement: Keeping your knee straight and toes forward, extend your working leg backward and slightly outward against the band, squeeze your glute, then return with control.
 Tip: Keep your torso upright - avoid arching your lower back to get extra range.
 StartImage:
 FinishImage:
@@ -79,9 +79,9 @@ Reps: 10
 Seconds: 5
 Rest: 6
 Description: A diagonal arm pattern that trains the shoulder and trunk to work together through a full range, mimicking reaching-and-rotating movements.
-Setup: Anchor the band low, at your side opposite your working arm. Start with your working hand near your opposite hip, palm facing back.
-Movement: Sweep your arm in one smooth diagonal, up and out, finishing overhead and out to the side with your palm turning to face away from you. Reverse slowly to return.
-Tip: Move through the whole diagonal smoothly - don’t just raise your arm straight up. Keep wrist neutral, as if removing a sword from a scabbard and pointing it upward.
+Setup: Hold one end of the resistance band low, at your side opposite your working arm. Hold the other end of the band with your working hand near the other hand.
+Movement: Sweep your working arm in one smooth diagonal, up and out, finishing overhead and out to the side with your palm turning to face away from you. Keep wrist neutral. The whole movement is like removing a sword from a scabbard and pointing it upward. Reverse slowly to return.
+Tip: Move through the whole diagonal smoothly - don’t just raise your arm straight up.
 StartImage:
 FinishImage:
 
@@ -94,9 +94,9 @@ Reps: 10
 Seconds: 4
 Rest: 6
 Description: Strengthens the biceps at the front of the upper arm, used for lifting and carrying.
-Setup: Stand or sit holding a dumbbell in each hand, arms at your sides, palms facing forward.
+Setup: Stand or sit with arms straight down at your sides, holding a dumbbell in each hand, gripping dumbbells with palms facing forward.
 Movement: Curl one or both dumbbells up toward your shoulder while keeping your elbow tucked at your side, lower with control, then alternate arms.
-Tip: Keep your elbow still and close to your body - don’t swing your back or shoulders to help lift. Keep wrist neutral; dumbbell doesn’t need to touch shoulder.
+Tip: Keep your elbow still and close to your body - don’t swing your back or shoulders to help lift. Keep wrist neutral throughout movement; dumbbell doesn’t need to touch shoulder.
 StartImage:
 FinishImage:
 
@@ -274,7 +274,7 @@ Reps: 12
 Seconds: 2
 Rest: 6
 Description: Strengthens the mid-back and rear shoulder muscles used to pull your shoulder blades together and support good posture.
-Setup: Holding a dumbbell in one hand, support yourself with your other hand on a chair or bench and hinge forward from your hips with a flat back.
+Setup: Holding a dumbbell in one hand, support yourself with your other hand on the back of a chair and hinge forward from your hips with a flat back.
 Movement: Pull the dumbbell straight up toward your hip, leading with your elbow and squeezing your shoulder blade back, then lower with control.
 Tip: Keep your back flat and avoid twisting your torso to help lift the weight.
 StartImage:
@@ -290,7 +290,7 @@ Seconds: 3
 Rest: 6
 Description: A variation of Sit to Stand that puts more of the demand on the legs alone. Do one set per foot in front.
 Setup: Sit toward the front edge of a sturdy chair, feet flat on the floor, with one foot further away than the other.
-Movement: Push through your feet to stand up fully using your legs, then lower back down to the chair with control.
+Movement: Push through your feet to stand up fully using your legs, then lower back down to the chair with control, keeping both feet flat on the floor.
 Tip: Move slowly on the way down - control on the descent is what builds leg strength, not just standing up quickly.
 StartImage:
 FinishImage:
@@ -304,7 +304,7 @@ Reps: 12
 Seconds: 2
 Rest: 6
 Description: Strengthens the calf muscles on one leg at a time, important for push-off during walking and for balance. Do two sets per foot.
-Setup: Stand on one leg near a wall or counter for light balance support, with your other foot lifted slightly off the floor.
+Setup: Stand on one leg near a wall or counter for light balance support, with your other foot lifted slightly off the floor. You can tuck the lifted foot behind the standing leg.
 Movement: Rise up onto the ball of your standing foot as high as comfortable, hold, then lower your heel back down with control.
 Tip: Rise straight up on ball of foot - don’t let your ankle roll inward or outward as you lift.
 StartImage:
