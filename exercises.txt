@@ -36,9 +36,19 @@
 #
 # Optional fields:
 #   StartImage / FinishImage
-#                 Filename of a photo in this same folder showing the
-#                 start/finish position (e.g. IMG_0306.jpeg). Leave blank
-#                 to use a built-in line-drawing icon instead.
+#                 Filename of a photo in this same folder (e.g.
+#                 IMG_0306.jpeg). Leave both blank to use a built-in
+#                 line-drawing icon instead. Two common ways to fill these
+#                 in:
+#                   - One photo per position: put the start photo in
+#                     StartImage and the finish photo in FinishImage -
+#                     they're shown side by side.
+#                   - One combined photo: if you already have a single
+#                     photo showing both the start and finish position
+#                     (e.g. a "before/after" side-by-side shot), just put
+#                     its filename in StartImage and leave FinishImage
+#                     blank - it's shown at full size instead of being
+#                     cropped in half.
 
 Slug: hip-abduction
 Name: Hip Abduction - Standing
