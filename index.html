@@ -1397,7 +1397,7 @@ async function runCount(sets, reps, seconds, rest, voiceOn, token, slug) {
   cBigEl.style.color = '';
   cSubEl.textContent = '';
   cFlash('set');
-  speakFn('Done! Great job.');
+  speakFn('Done!');
   vibrate([100, 50, 100, 50, 200]);
 }
 
@@ -1513,7 +1513,7 @@ async function runAllExercises(list, voiceOn, token) {
   cBigEl.style.color = '';
   cSubEl.textContent = '';
   cFlash('set');
-  if (voiceOn) speakCount('Workout complete. Great job!');
+  if (voiceOn) speakCount('Workout complete.');
   vibrate([100, 50, 100, 50, 100, 50, 200]);
 }
 
