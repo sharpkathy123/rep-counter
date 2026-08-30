@@ -154,7 +154,9 @@
   .card img {
     width: 15vw;
     height: 15vw;
-    object-fit: cover;
+    /* contain, not cover: several of these photos are wide start+finish
+       composites, and cover would crop off one side of the picture. */
+    object-fit: contain;
     border-radius: 8px;
   }
   .card.band { border-color: #3d6f9e; }
@@ -203,12 +205,29 @@
     margin: 0 auto 2vh;
   }
   .detail-photos img {
-    width: 40vw;
-    max-width: 220px;
     border-radius: 12px;
-    object-fit: cover;
+    display: block;
   }
   .detail-photos img[src=""] { display: none; }
+  /* Two separate photos (both StartImage and FinishImage given): shown
+     side by side, each cropped to a matching square. */
+  .detail-photos.pair img {
+    width: 40vw;
+    max-width: 220px;
+    height: 40vw;
+    max-height: 220px;
+    object-fit: cover;
+  }
+  /* Just one photo - either a true single "start" shot, or (common with
+     these exercise photos) a single wide image that already shows the
+     start and finish position side by side - shown at its natural aspect
+     ratio instead of cropped to the square meant for a pair. */
+  .detail-photos.single img {
+    width: auto;
+    height: auto;
+    max-width: 85vw;
+    max-height: 45vh;
+  }
   .detail-name {
     font-size: 6.5vw;
     font-weight: 700;
@@ -426,7 +445,8 @@
     #appUpdated { font-size: 12px; }
     .back { font-size: 17px; }
     .detail-icon { width: 220px; height: 220px; }
-    .detail-photos img { width: 220px; max-width: none; }
+    .detail-photos.pair img { width: 220px; height: 220px; max-width: none; max-height: none; }
+    .detail-photos.single img { max-width: 500px; max-height: 380px; }
     .detail-name { font-size: 30px; }
     .detail-section h2 { font-size: 15px; }
     .detail-section p { font-size: 18px; }
@@ -1047,11 +1067,21 @@ function openDetail(slug) {
 
   const detailIconEl = document.getElementById('detailIcon');
   const detailPhotosEl = document.getElementById('detailPhotos');
+  const detailPhotoStartEl = document.getElementById('detailPhotoStart');
+  const detailPhotoFinishEl = document.getElementById('detailPhotoFinish');
   if (ex.startImage) {
     detailIconEl.style.display = 'none';
     detailPhotosEl.style.display = 'flex';
-    document.getElementById('detailPhotoStart').src = ex.startImage;
-    document.getElementById('detailPhotoFinish').src = ex.finishImage || '';
+    // Only StartImage given (no FinishImage) covers two real cases: a
+    // photo of just the start position, or - common with these exercise
+    // photos - a single wide image that already shows start and finish
+    // side by side. Either way it's shown at full natural size, not
+    // cropped to the half-width square used when there are two photos.
+    detailPhotosEl.classList.toggle('single', !ex.finishImage);
+    detailPhotosEl.classList.toggle('pair', !!ex.finishImage);
+    detailPhotoStartEl.src = ex.startImage;
+    detailPhotoStartEl.alt = ex.finishImage ? 'Start position' : 'Exercise photo';
+    detailPhotoFinishEl.src = ex.finishImage || '';
   } else {
     detailIconEl.style.display = '';
     detailPhotosEl.style.display = 'none';
