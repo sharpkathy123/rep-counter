@@ -217,7 +217,7 @@ Description: Strengthens the back of the shoulder and lat muscles used to pull y
 Setup: Anchor the band in front of you at shoulder height. Hold the band ends with your arms extended forward. Step back for tension.
 Movement: Keeping your elbow straight, pull your arm down and back past your hip against the band, hold momentarily, then return with control.
 Tip: Keep your torso still and upright - avoid leaning back to generate extra range.
-StartImage:
+StartImage: IMG_0319.jpeg
 FinishImage:
 
 Slug: scapular-retraction-prone-arms-side
