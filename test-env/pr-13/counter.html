@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rep Counter">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>Rep Counter</title>
+<style>
+  html {
+    background: #0a0a0a;
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+  body {
+    margin: 0; padding: 0; height: 100%;
+    background: #0a0a0a; color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    overscroll-behavior: none;
+    position: fixed;
+    inset: 0;
+  }
+  #wrap {
+    text-align: center;
+    width: 100%;
+  }
+  #label {
+    font-size: 10vw;
+    letter-spacing: 2px;
+    color: #ccc;
+    text-transform: uppercase;
+    margin-bottom: 2vh;
+    font-weight: 600;
+  }
+  #big {
+    font-size: min(58vw, 55vh);
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: #ffffff;
+    text-shadow: 0 0 30px rgba(255,255,255,0.35);
+    -webkit-font-smoothing: antialiased;
+    transition: transform 0.1s ease-out;
+  }
+  #big.pulse {
+    animation: pulseScale 0.35s ease-out;
+  }
+  #big.done {
+    font-size: min(22vw, 22vh);
+  }
+  @keyframes pulseScale {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.22); }
+    100% { transform: scale(1); }
+  }
+  #sub {
+    font-size: 9vw;
+    color: #ccc;
+    margin-top: 3vh;
+    font-weight: 500;
+  }
+  #setup {
+    font-size: 7vw;
+    display: none;
+    max-height: 94vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 2vw;
+    box-sizing: border-box;
+  }
+  #setupBackLink {
+    display: inline-block;
+    font-size: 5.5vw;
+    font-weight: 700;
+    color: #fff;
+    background: #2a2a2a;
+    border: 1px solid #555;
+    border-radius: 10px;
+    padding: 0.4em 1em;
+    margin-bottom: 1.2em;
+    text-decoration: none;
+  }
+  #setup input {
+    font-size: 7vw;
+    width: 2.5em;
+    text-align: center;
+    margin: 0.3em;
+    background: #222;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 8px;
+  }
+  #setup label.chk {
+    display: block;
+    font-size: 5.5vw;
+    margin-top: 0.8em;
+  }
+  #setup button {
+    font-size: 7vw;
+    margin-top: 1em;
+    padding: 0.4em 1.2em;
+    border-radius: 10px;
+    border: none;
+    background: #2fa84f;
+    color: #fff;
+  }
+  #tapStart {
+    display: none;
+  }
+  #tapStart .msg {
+    font-size: 5.5vw;
+    color: #ccc;
+    margin-bottom: 3vh;
+  }
+  #tapStart button {
+    font-size: 8vw;
+    padding: 0.6em 1.4em;
+    border-radius: 16px;
+    border: none;
+    background: #2fa84f;
+    color: #fff;
+    font-weight: 700;
+  }
+  #setup select {
+    font-size: 4.2vw;
+    max-width: 80vw;
+    margin-top: 0.6em;
+    background: #222;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 0.3em;
+  }
+  #testVoiceBtn {
+    font-size: 4.2vw;
+    background: #4da3ff;
+    padding: 0.3em 0.9em;
+    margin-left: 0.5em;
+  }
+  #countControls {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3vw;
+    margin-bottom: 3vh;
+  }
+  #countControls.active { display: flex; }
+  #exitBtn {
+    font-size: 4.2vw;
+    font-weight: 700;
+    color: #fff;
+    background: #2a2a2a;
+    border: 1px solid #555;
+    border-radius: 10px;
+    padding: 0.4em 1em;
+    text-decoration: none;
+  }
+  #pauseBtn, #resetBtn {
+    font-size: 4vw;
+    padding: 0.5em 1em;
+    border-radius: 10px;
+    border: 1px solid #555;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+  #pauseBtn.paused {
+    background: #4da3ff;
+    border-color: #4da3ff;
+    color: #fff;
+  }
+  .rest { color: #4da3ff; }
+  .go { color: #fff; }
+  .done { color: #2fa84f; }
+  .lastrep { color: #ff5b3d; }
+
+  #flash {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 10;
+  }
+  #flash.rep-flash {
+    background: #ffffff;
+    animation: repFlash 0.25s ease-out;
+  }
+  #flash.set-flash {
+    background: #ffd23f;
+    animation: setFlash 0.7s ease-out;
+  }
+  #flash.last-flash {
+    background: #ff5b3d;
+    animation: lastFlash 0.9s ease-out;
+  }
+  @keyframes repFlash {
+    0% { opacity: 0.45; }
+    100% { opacity: 0; }
+  }
+  @keyframes setFlash {
+    0% { opacity: 0.65; }
+    30% { opacity: 0; }
+    50% { opacity: 0.65; }
+    100% { opacity: 0; }
+  }
+  @keyframes lastFlash {
+    0% { opacity: 0.6; }
+    20% { opacity: 0; }
+    35% { opacity: 0.6; }
+    55% { opacity: 0; }
+    70% { opacity: 0.6; }
+    100% { opacity: 0; }
+  }
+
+  /* Everything above is tuned in vw/vh for a phone screen, where the full
+     viewport width is a reasonable proxy for "how big should this be." On
+     an iPad that assumption breaks - 58vw of a 1180pt landscape screen is a
+     giant, cartoonish digit - so past this width, cap sizes to fixed points
+     and constrain the layout to a centered column instead of stretching
+     edge to edge. */
+  @media (min-width: 700px) {
+    #wrap { width: 100%; max-width: 640px; }
+    #label { font-size: 40px; }
+    #big { font-size: min(260px, 42vh); }
+    #sub { font-size: 36px; }
+    #setup { font-size: 22px; max-width: 480px; margin: 0 auto; }
+    #setupBackLink { font-size: 20px; }
+    #setup input { font-size: 20px; }
+    #setup label.chk { font-size: 20px; }
+    #setup button { font-size: 22px; }
+    #setup select { font-size: 16px; }
+    #testVoiceBtn { font-size: 16px; }
+    #exitBtn { font-size: 18px; }
+    #pauseBtn, #resetBtn { font-size: 16px; }
+    #tapStart .msg { font-size: 20px; }
+    #tapStart button { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+<div id="bgLayer" style="position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background-color:#0a0a0a;z-index:-1;"></div>
+<div id="flash"></div>
+<div id="wrap">
+  <div id="countControls">
+    <a id="exitBtn" href="#" onclick="exitCounting(); return false;">&#10005; Exit</a>
+    <button id="pauseBtn" onclick="togglePause()">&#10074;&#10074; Pause</button>
+    <button id="resetBtn" onclick="resetCurrentRun()">&#8635; Reset</button>
+  </div>
+  <div id="label"></div>
+  <div id="big"></div>
+  <div id="sub"></div>
+  <div id="setup">
+    <a id="setupBackLink" href="index.html">&larr; All exercises</a><br>
+    Sets <input type="number" id="s" value="2"><br>
+    Reps <input type="number" id="r" value="10"><br>
+    Seconds/rep <input type="number" id="d" value="8"><br>
+    Rest (sec) <input type="number" id="rt" value="15"><br>
+    <label class="chk"><input type="checkbox" id="v"> Speak aloud</label>
+    <select id="vn"></select>
+    <button type="button" id="testVoiceBtn" onclick="testSequence()">&#9654; Test Sequence</button><br>
+    <button onclick="startFromForm()">Start</button>
+  </div>
+  <div id="tapStart">
+    <div class="msg">iPhone needs one tap before it can play sound</div>
+    <button onclick="beginFromTap()">Tap to Begin</button>
+  </div>
+</div>
+
+<script>
+// Registering here (and again on index.html) is what makes Airplane Mode
+// work after Add to Home Screen - the SW precaches both pages, the icons,
+// and the manifest on the first successful online load.
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+document.documentElement.style.backgroundColor = '#0a0a0a';
+document.body.style.backgroundColor = '#0a0a0a';
+
+// Read params: ?sets=2&reps=10&seconds=8&rest=15&voice=1
+const params = new URLSearchParams(window.location.search);
+let sets = parseInt(params.get('sets'));
+let reps = parseInt(params.get('reps'));
+let seconds = parseInt(params.get('seconds'));
+let rest = parseInt(params.get('rest')) || 0; // optional rest between sets, in seconds
+// A page can't detect it was opened by Siri, so voice mode is driven by this
+// flag instead: a Siri Shortcut includes &voice=1, a tapped bookmark/icon doesn't.
+let voiceMode = params.get('voice') === '1';
+// Set only when index.html hands off here for a single exercise, so "last
+// done" can still be recorded on this page - it's the one on screen when
+// the count actually finishes.
+const doneSlug = params.get('slug');
+function markDone() {
+  if (!doneSlug) return;
+  try {
+    const map = JSON.parse(localStorage.getItem('repcounter_lastdone') || '{}');
+    map[doneSlug] = Date.now();
+    localStorage.setItem('repcounter_lastdone', JSON.stringify(map));
+  } catch (e) {}
+}
+
+const label = document.getElementById('label');
+const big = document.getElementById('big');
+const sub = document.getElementById('sub');
+const wrap = document.getElementById('wrap');
+const flashEl = document.getElementById('flash');
+const countControlsEl = document.getElementById('countControls');
+const pauseBtnEl = document.getElementById('pauseBtn');
+
+// Every run gets a token; countdown()/run() only keep going while their own
+// token is still current, so Exit/Reset can cleanly stop or restart an
+// in-flight count without any of it racing a fresh one. True while a run
+// was launched from the on-page form (Start or Test Sequence) rather than
+// from URL params/Siri, so Exit knows whether to return to the form (keep
+// testing) or leave the page entirely (back to the exercise list).
+let runToken = 0;
+let runPaused = false;
+let startedFromForm = false;
+function aborted(token) { return token !== runToken; }
+
+async function pausableWait(ms, token) {
+  let remaining = ms;
+  while (remaining > 0 && !aborted(token)) {
+    if (runPaused) {
+      await sleep(150);
+      continue;
+    }
+    const chunk = Math.min(150, remaining);
+    await sleep(chunk);
+    remaining -= chunk;
+  }
+}
+
+function showCountControls(visible) {
+  countControlsEl.classList.toggle('active', visible);
+}
+
+function togglePause() {
+  runPaused = !runPaused;
+  if (runPaused) window.speechSynthesis.cancel();
+  pauseBtnEl.textContent = runPaused ? '▶ Resume' : '❙❙ Pause';
+  pauseBtnEl.classList.toggle('paused', runPaused);
+}
+
+// Stops whatever's running. Where it goes next depends on how this run was
+// reached - back to the settings form if you're mid-test, or back to the
+// exercise list if this page was opened for a real exercise (URL params
+// from index.html or a Siri Shortcut), since there's no back button to
+// rely on once this is installed as a Home Screen app.
+function exitCounting() {
+  runToken++;
+  runPaused = false;
+  window.speechSynthesis.cancel();
+  showCountControls(false);
+  label.textContent = '';
+  big.textContent = '';
+  big.className = '';
+  big.style.color = '';
+  sub.textContent = '';
+  sub.className = '';
+  if (startedFromForm) {
+    showSetupForm();
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+
+function resetCurrentRun() {
+  beginRun(sets, reps, seconds, rest, voiceMode);
+}
+
+// Keep the screen from dimming/locking while this page is open.
+// Re-requested on visibility changes and on the Start tap (a user gesture),
+// since some browsers only honor the request right after user interaction,
+// and the lock can be silently dropped (e.g. app briefly backgrounded).
+let wakeLock = null;
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator && document.visibilityState === 'visible') {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    }
+  } catch (e) {
+    // unsupported browser, Low Power Mode, etc. - fail silently
+  }
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && !wakeLock) requestWakeLock();
+});
+window.addEventListener('load', requestWakeLock);
+requestWakeLock();
+
+function vibrate(pattern) {
+  if (navigator.vibrate) navigator.vibrate(pattern);
+}
+
+// Voice picker: this changes which text-to-speech voice reads the counting
+// out loud - it can't change Siri's own voice, that's a separate iOS setting.
+let voices = [];
+let selectedVoice = null;
+const voiceSelectEl = document.getElementById('vn');
+
+function loadVoices() {
+  const all = window.speechSynthesis.getVoices();
+  voices = all.filter(v => v.lang.startsWith('en'));
+  if (voices.length === 0) voices = all;
+  if (voices.length === 0) return;
+  voiceSelectEl.innerHTML = voices.map(v =>
+    `<option value="${v.voiceURI}">${v.name} (${v.lang})</option>`
+  ).join('');
+  const saved = localStorage.getItem('repcounter_voice');
+  if (saved && voices.some(v => v.voiceURI === saved)) {
+    voiceSelectEl.value = saved;
+  }
+  updateSelectedVoice();
+}
+
+function updateSelectedVoice() {
+  selectedVoice = voices.find(v => v.voiceURI === voiceSelectEl.value) || null;
+}
+
+// Runs the exact same countdown()/run() code a real exercise uses, just
+// with small representative numbers (2 sets, 2 reps each) - about 30
+// seconds to hear every cue type (Set/Go countdown, the first-rep cue,
+// per-second counting, the last-rep cue, rest, and the closing "Done")
+// instead of a disconnected "one two three" that doesn't tell you how the
+// real thing sounds or paces.
+function testSequence() {
+  updateSelectedVoice();
+  if (selectedVoice) localStorage.setItem('repcounter_voice', selectedVoice.voiceURI);
+  setupEl.style.display = 'none';
+  requestWakeLock();
+  startedFromForm = true;
+  beginRun(2, 2, 2, 3, true);
+}
+
+if ('speechSynthesis' in window) {
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+let speechToken = 0;
+function speak(text) {
+  if (!voiceMode || !('speechSynthesis' in window)) return;
+  const myToken = ++speechToken;
+  window.speechSynthesis.cancel(); // drop anything queued so audio can't fall behind
+  const u = new SpeechSynthesisUtterance(text);
+  if (selectedVoice) u.voice = selectedVoice;
+  u.onstart = () => {
+    // iOS Safari doesn't always fully cancel a still-queued utterance; if a
+    // newer speak() has since superseded this one, stop it the instant it
+    // starts instead of letting it play late and sound like a repeated cue.
+    if (myToken !== speechToken) window.speechSynthesis.cancel();
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function flash(type) {
+  flashEl.className = '';
+  void flashEl.offsetWidth; // force reflow so the animation restarts
+  flashEl.className = type === 'set' ? 'set-flash' : (type === 'last' ? 'last-flash' : 'rep-flash');
+}
+
+function pulseBig() {
+  big.classList.remove('pulse');
+  void big.offsetWidth;
+  big.classList.add('pulse');
+}
+
+// The big number progresses from a cool color to a warm one as a rep or a
+// rest period runs out, so progress is visible at a glance, not just at the
+// instant of a flash. Reps start white, rest starts blue, both end at the
+// same warm red-orange "wrapping up" color.
+const WARM = [255, 91, 61];
+const REP_START = [255, 255, 255];
+const REST_START = [77, 163, 255];
+function lerpColor(start, t) {
+  const r = Math.round(start[0] + (WARM[0] - start[0]) * t);
+  const g = Math.round(start[1] + (WARM[1] - start[1]) * t);
+  const b = Math.round(start[2] + (WARM[2] - start[2]) * t);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+const setupEl = document.getElementById('setup');
+
+function showSetupForm() {
+  setupEl.style.display = 'block';
+}
+
+function startFromForm() {
+  updateSelectedVoice();
+  if (selectedVoice) localStorage.setItem('repcounter_voice', selectedVoice.voiceURI);
+  setupEl.style.display = 'none';
+  requestWakeLock(); // re-request from this tap, since it's a direct user gesture
+  startedFromForm = true;
+  beginRun(
+    parseInt(document.getElementById('s').value),
+    parseInt(document.getElementById('r').value),
+    parseInt(document.getElementById('d').value),
+    parseInt(document.getElementById('rt').value) || 0,
+    document.getElementById('v').checked
+  );
+}
+
+// Single entry point for every way a count can start (real Start, Test
+// Sequence, Reset) - assigns the numbers, gets a fresh token so any prior
+// run stops cleanly, and shows the Exit/Pause/Reset controls.
+function beginRun(runSets, runReps, runSeconds, runRest, runVoice) {
+  sets = runSets;
+  reps = runReps;
+  seconds = runSeconds;
+  rest = runRest;
+  voiceMode = runVoice;
+  const myToken = ++runToken;
+  runPaused = false;
+  pauseBtnEl.textContent = '❙❙ Pause';
+  pauseBtnEl.classList.remove('paused');
+  showCountControls(true);
+  run(myToken);
+}
+
+async function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+
+async function countdown(token) {
+  const steps = ['3', '2', '1', 'Go!'];
+  for (const step of steps) {
+    if (aborted(token)) return;
+    label.textContent = '';
+    sub.textContent = '';
+    big.textContent = step;
+    big.className = step === 'Go!' ? 'done' : 'go';
+    big.style.color = '';
+    vibrate(step === 'Go!' ? [80, 40, 80] : 30);
+    speak(step === 'Go!' ? 'Go' : step);
+    await pausableWait(650, token);
+  }
+}
+
+async function run(token) {
+  for (let s = 1; s <= sets && !aborted(token); s++) {
+    // Announce the set, then run a full 3-2-1-Go countdown before every set
+    // (not just the first) - a clear, unmissable "reps start now" cue.
+    // The announcement gets its own pause before the countdown starts so it
+    // isn't cancelled mid-word by the countdown's own speech.
+    label.textContent = `Set ${s} of ${sets}`;
+    big.textContent = '';
+    sub.textContent = '';
+    speak(`Set ${s} of ${sets}`);
+    vibrate([40, 40, 40]);
+    await pausableWait(900, token);
+    if (aborted(token)) return;
+    await countdown(token);
+    if (aborted(token)) return;
+    label.textContent = `Set ${s} of ${sets}`;
+
+    for (let r = 1; r <= reps && !aborted(token); r++) {
+      const isLastRep = r === reps;
+      sub.textContent = isLastRep ? `LAST REP (${r} of ${reps})` : `rep ${r} of ${reps}`;
+      sub.className = isLastRep ? 'lastrep' : '';
+      speak(isLastRep ? 'Last rep!' : `Rep ${r}`);
+      vibrate(isLastRep ? [50, 40, 50, 40, 120] : 40);
+      if (isLastRep) flash('last');
+      // Count through each second of this rep, visually and (in voice mode) aloud.
+      // Second 1 isn't spoken aloud - the "Rep N"/"Last rep!" cue just spoken
+      // already marks the start, and speaking over it would cancel it before
+      // it's heard (same reason the rest countdown below skips its own first tick).
+      for (let sec = 1; sec <= seconds && !aborted(token); sec++) {
+        big.textContent = sec;
+        big.className = 'go';
+        big.style.color = lerpColor(REP_START, seconds > 1 ? (sec - 1) / (seconds - 1) : 1);
+        if (sec > 1) speak(String(sec));
+        if (!wakeLock) requestWakeLock(); // heartbeat: recover a silently-dropped lock
+        await pausableWait(1000, token);
+      }
+      if (aborted(token)) return;
+      // Make the rep boundary obvious even if you're not watching closely
+      pulseBig();
+      flash('rep');
+      vibrate(60);
+    }
+    if (aborted(token)) return;
+    sub.className = '';
+    // Set boundary gets a bigger flash + a distinct vibration pattern
+    flash('set');
+    vibrate([60, 40, 60]);
+    if (s < sets) {
+      // One utterance instead of two back-to-back calls, so "Set complete"
+      // isn't cancelled the instant "Rest, N seconds" starts.
+      speak(rest > 0 ? `Set complete. Rest ${rest} seconds.` : 'Set complete.');
+      await pausableWait(900, token);
+      if (aborted(token)) return;
+      if (rest > 0) {
+        for (let t = rest; t > 0 && !aborted(token); t--) {
+          label.textContent = 'Rest';
+          big.textContent = t;
+          big.className = 'rest';
+          big.style.color = lerpColor(REST_START, rest > 1 ? (rest - t) / (rest - 1) : 1);
+          sub.textContent = `next: set ${s + 1}`;
+          // skip the very first tick's own number - it would otherwise just
+          // repeat the total already spoken in the announcement above
+          if (t !== rest && (t <= 3 || t % 5 === 0)) speak(String(t));
+          await pausableWait(1000, token);
+        }
+      }
+    }
+  }
+  if (aborted(token)) return;
+  markDone();
+  label.textContent = '';
+  big.textContent = 'Done';
+  big.className = 'done';
+  big.style.color = '';
+  sub.textContent = '';
+  flash('set');
+  speak('Done!');
+  vibrate([100, 50, 100, 50, 200]);
+}
+
+const tapStartEl = document.getElementById('tapStart');
+
+function beginFromTap() {
+  tapStartEl.style.display = 'none';
+  requestWakeLock(); // re-request from this tap, since it's a direct user gesture
+  startedFromForm = false;
+  beginRun(sets, reps, seconds, rest, voiceMode);
+}
+
+// If URL params are present, auto-start - unless voice mode is on, in which
+// case iOS Safari silently blocks speech that isn't triggered by a direct
+// tap on this exact page (a link tapped on a *different* page, or a Siri
+// Shortcut opening this URL, doesn't count). So when voice is requested,
+// require one tap first to "unlock" audio, then run() continues unattended.
+if (sets && reps && seconds) {
+  if (voiceMode) {
+    tapStartEl.style.display = 'block';
+  } else {
+    startedFromForm = false;
+    beginRun(sets, reps, seconds, rest, voiceMode);
+  }
+} else {
+  showSetupForm();
+}
+</script>
+</body>
+</html>
