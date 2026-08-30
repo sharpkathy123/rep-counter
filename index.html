@@ -191,6 +191,10 @@
     font-size: 4.2vw;
     text-decoration: none;
   }
+  .back.bottom {
+    margin-top: 3vh;
+    margin-bottom: 0;
+  }
   .detail-icon {
     display: block;
     width: 40vw;
@@ -490,7 +494,7 @@
   <button id="runAllBtn" onclick="startRunAll()" disabled>&#9654; Run Selected</button>
   <a id="voiceSettingsLink" href="counter.html">&#128264; Voice settings &amp; test</a>
 </div>
-<div id="appUpdated">Updated <span id="appUpdatedTime">2026-08-30T03:07:28Z</span></div>
+<div id="appUpdated">Updated <span id="appUpdatedTime">2026-08-30T03:20:50Z</span></div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
@@ -548,6 +552,7 @@
 
   <button id="speakBtn" onclick="speakDescription()">&#128264; Read description aloud</button>
   <button id="startBtn" onclick="startCounting()">Start Counting</button>
+  <a class="back bottom" href="#" onclick="showGrid(); return false;">&larr; All exercises</a>
 </div>
 
 <script>
