@@ -383,6 +383,17 @@
     font-weight: 600;
     max-width: 92vw;
   }
+  /* Shown only while an exercise is being announced/described, before its
+     countdown starts - gone by the time counting begins, since #cBig needs
+     to stay the large, glanceable thing on screen while a rep is running. */
+  #cPhoto {
+    display: none;
+    max-width: 80vw;
+    max-height: 28vh;
+    border-radius: 12px;
+    margin: 0 auto 2vh;
+  }
+  #cPhoto.active { display: block; }
   #cBig {
     font-size: min(58vw, 55vh);
     font-weight: 800;
@@ -461,6 +472,7 @@
     #startBtn { font-size: 22px; }
     #speakBtn { font-size: 16px; }
     #cLabel { font-size: 42px; }
+    #cPhoto { max-width: 420px; max-height: 320px; }
     #cBig { font-size: min(260px, 42vh); }
     #cSub { font-size: 34px; }
     #pauseBtn, #resetBtn, #repeatBtn, #skipBtn { font-size: 16px; }
@@ -506,6 +518,7 @@
     <button id="skipBtn" class="hidden" onclick="skipExercise()">&#9197; Skip</button>
   </div>
   <div id="cLabel"></div>
+  <img id="cPhoto" alt="">
   <div id="cBig"></div>
   <div id="cSub"></div>
 </div>
@@ -1145,8 +1158,23 @@ function vibrate(pattern) {
 
 const countWrapEl = document.getElementById('countWrap');
 const cLabelEl = document.getElementById('cLabel');
+const cPhotoEl = document.getElementById('cPhoto');
 const cBigEl = document.getElementById('cBig');
 const cSubEl = document.getElementById('cSub');
+
+function showExercisePhoto(ex) {
+  if (!ex.startImage) {
+    cPhotoEl.classList.remove('active');
+    return;
+  }
+  cPhotoEl.src = ex.startImage;
+  cPhotoEl.alt = ex.finishImage ? 'Start position' : 'Exercise photo';
+  cPhotoEl.classList.add('active');
+}
+
+function hideExercisePhoto() {
+  cPhotoEl.classList.remove('active');
+}
 const cFlashEl = document.getElementById('cFlash');
 const pauseBtnEl = document.getElementById('pauseBtn');
 const repeatBtnEl = document.getElementById('repeatBtn');
@@ -1270,6 +1298,7 @@ function cancelCount() {
   repeatRequested = false;
   setRunAllControlsVisible(false);
   window.speechSynthesis.cancel();
+  hideExercisePhoto();
   countWrapEl.classList.remove('active');
   gridEl.classList.remove('hidden');
   titleEl.classList.remove('hidden');
@@ -1406,9 +1435,13 @@ function startCounting() {
   cLabelEl.textContent = 'Get ready...';
   cBigEl.textContent = '';
   cSubEl.textContent = '';
+  showExercisePhoto(currentExercise);
   requestWakeLock();
 
-  const beginCounting = () => runCount(sets, reps, seconds, rest, true, myToken, currentExercise.slug);
+  const beginCounting = () => {
+    hideExercisePhoto(); // #cBig needs that space back once counting starts
+    return runCount(sets, reps, seconds, rest, true, myToken, currentExercise.slug);
+  };
 
   if (!('speechSynthesis' in window)) {
     beginCounting();
@@ -1445,6 +1478,7 @@ async function runAllExercises(list, voiceOn, token) {
     cBigEl.className = '';
     cBigEl.style.color = '';
     cSubEl.textContent = ex.name;
+    showExercisePhoto(ex);
     const p = getExerciseParams(ex);
 
     if (voiceOn && 'speechSynthesis' in window) {
@@ -1457,6 +1491,9 @@ async function runAllExercises(list, voiceOn, token) {
     // Skip pressed during the intro: runCount below sees skipRequested
     // already set and returns immediately without counting anything, so
     // this exercise is effectively skipped without any special-casing here.
+    // The photo comes down here too, whether skipped or not - #cBig needs
+    // that space back once counting is actually about to start.
+    hideExercisePhoto();
     await runCount(p.sets, p.reps, p.seconds, p.rest, voiceOn, token, ex.slug);
     if (token !== runToken) return;
 
