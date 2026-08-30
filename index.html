@@ -191,6 +191,10 @@
     font-size: 4.2vw;
     text-decoration: none;
   }
+  .back.bottom {
+    margin-top: 3vh;
+    margin-bottom: 0;
+  }
   .detail-icon {
     display: block;
     width: 40vw;
@@ -548,6 +552,7 @@
 
   <button id="speakBtn" onclick="speakDescription()">&#128264; Read description aloud</button>
   <button id="startBtn" onclick="startCounting()">Start Counting</button>
+  <a class="back bottom" href="#" onclick="showGrid(); return false;">&larr; All exercises</a>
 </div>
 
 <script>
