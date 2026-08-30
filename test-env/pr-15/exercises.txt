@@ -1,0 +1,321 @@
+# Rep Counter -- Exercise Data
+#
+# Edit this file to add, remove, or change exercises. No coding needed --
+# just keep the "Field: value" shape below. Lines starting with # are
+# comments and are ignored. Save the file and refresh the app to see your
+# changes (the app also picks this up automatically the next time you're
+# online, even after Add to Home Screen).
+#
+# One exercise per block, separated by a blank line. Fields can be in any
+# order; you can leave optional fields blank.
+#
+# Required fields:
+#   Slug          A short unique id: lowercase letters, numbers, and
+#                 hyphens only, no spaces (e.g. hip-abduction). The app
+#                 uses this to remember your sets/reps and "last done"
+#                 history for this exercise -- once you've used an
+#                 exercise, try not to change its Slug, or that history
+#                 starts over. If you leave Slug blank, the app makes one
+#                 up from Name, which is fine for a brand new exercise.
+#   Name          The exercise name shown in the app.
+#   Category      A short label to group exercises for filtering, e.g.
+#                 hip, core, back-shoulder, arms, balance-legs. You can
+#                 invent a new one just by typing it here -- a filter chip
+#                 for it appears automatically.
+#   Equipment     band, dumbbell, or bodyweight (also just a label -- a
+#                 new one you invent gets its own filter chip too).
+#   Sets / Reps / Seconds / Rest
+#                 Starting numbers (Seconds = per rep, Rest = seconds
+#                 between sets). These are just the defaults shown when
+#                 you first open the exercise -- you can always change
+#                 them per-exercise right in the app too.
+#   Description   One sentence: what this exercise is for.
+#   Setup         How to get into position.
+#   Movement      How to do one rep.
+#   Tip           A coaching cue or common mistake to avoid.
+#
+# Optional fields:
+#   StartImage / FinishImage
+#                 Filename of a photo in this same folder (e.g.
+#                 IMG_0306.jpeg). Leave both blank to use a built-in
+#                 line-drawing icon instead. Two common ways to fill these
+#                 in:
+#                   - One photo per position: put the start photo in
+#                     StartImage and the finish photo in FinishImage -
+#                     they're shown side by side.
+#                   - One combined photo: if you already have a single
+#                     photo showing both the start and finish position
+#                     (e.g. a "before/after" side-by-side shot), just put
+#                     its filename in StartImage and leave FinishImage
+#                     blank - it's shown at full size instead of being
+#                     cropped in half.
+
+Slug: hip-abduction
+Name: Hip Abduction - Standing
+Category: hip
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Strengthens the outer hip and glute muscles that stabilize your pelvis while standing and walking.
+Setup: Loop the exercise band just below knees. Stand sideways next to a wall or chair and hold on for balance.
+Movement: Keeping your leg straight and toes pointing forward, lift your working leg out to the side against the band, hold momentarily, then return with control.
+Tip: Keep your hips level - don’t let your body lean or your toes turn upward as you lift.
+StartImage:
+FinishImage:
+
+Slug: hip-extension
+Name: Hip Extension - Standing
+Category: hip
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Strengthens the glutes and hamstrings used to push your leg backward, important for walking and stairs.
+Setup: Loop the exercise band just below knees. Face something stable for balance.
+Movement: Keeping your knee straight and toes forward, extend your working leg backward and slightly outward against the band, squeeze your glute, then return with control.
+Tip: Keep your torso upright - avoid arching your lower back to get extra range.
+StartImage:
+FinishImage:
+
+Slug: pnf-d2
+Name: PNF D2 - Standing
+Category: back-shoulder
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 5
+Rest: 6
+Description: A diagonal arm pattern that trains the shoulder and trunk to work together through a full range, mimicking reaching-and-rotating movements.
+Setup: Hold one end of the resistance band low, at your side opposite your working arm. Hold the other end of the band with your working hand near the other hand.
+Movement: Sweep your working arm in one smooth diagonal, up and out, finishing overhead and out to the side with your palm turning to face away from you. Keep wrist neutral. The whole movement is like removing a sword from a scabbard and pointing it upward. Reverse slowly to return.
+Tip: Move through the whole diagonal smoothly - don’t just raise your arm straight up.
+StartImage:
+FinishImage:
+
+Slug: bicep-curl
+Name: Bicep Curls
+Category: arms
+Equipment: dumbbell
+Sets: 2
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: Strengthens the biceps at the front of the upper arm, used for lifting and carrying.
+Setup: Stand or sit with arms straight down at your sides, holding a dumbbell in each hand, gripping dumbbells with palms facing forward.
+Movement: Curl one or both dumbbells up toward your shoulder while keeping your elbow tucked at your side, lower with control, then alternate arms.
+Tip: Keep your elbow still and close to your body - don’t swing your back or shoulders to help lift. Keep wrist neutral throughout movement; dumbbell doesn’t need to touch shoulder.
+StartImage:
+FinishImage:
+
+Slug: bridge
+Name: Bridge
+Category: hip
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Strengthens the glutes and lower back while supporting the spine in a neutral, controlled position.
+Setup: Lie on your back with your knees bent and feet flat on the floor, hip-width apart.
+Movement: Squeeze your glutes and lift your hips toward the ceiling until your body forms a straight line from knees to shoulders. Hold 5 seconds, then lower with control.
+Tip: Drive through your heels and avoid over-arching your lower back at the top.
+StartImage: IMG_0313.jpeg
+FinishImage:
+
+Slug: clamshell
+Name: Clamshell - Side Lying
+Category: hip
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 2
+Rest: 6
+Description: Targets the outer hip (glute medius) to improve hip stability without straining the lower back.
+Setup: Lie on your side with knees bent about 45 degrees, hips stacked, and the band looped around your thighs just above the knees.
+Movement: Keeping your feet together, open your top knee upward like a clamshell, then lower it with control.
+Tip: Keep your hips stacked and still - don’t let your top hip roll backward as you open your knee.
+StartImage: IMG_0312.jpeg
+FinishImage:
+
+Slug: abdominal-bracing-marches
+Name: Abdominal Bracing - Marches
+Category: core
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 2
+Rest: 6
+Description: Trains your core to stay braced and your spine to stay steady while your legs move - a foundation for safe lifting and walking.
+Setup: Lie on your back, exercise band around legs just above knees, knees bent, feet flat on the floor. Gently brace your abdominals as if about to be poked in the stomach.
+Movement: Keeping the brace and your low back still, lift one foot off the floor to a tabletop position, then lower with control and switch legs.
+Tip: Keep your low back gently pressed to the floor the whole time - don’t let your pelvis rock side to side.
+StartImage: IMG_0311.jpeg
+FinishImage:
+
+Slug: sit-to-stand
+Name: Sit to Stand - Arms Crossed
+Category: balance-legs
+Equipment: bodyweight
+Sets: 2
+Reps: 12
+Seconds: 2
+Rest: 6
+Description: Builds functional leg and core strength for getting up from a chair without using your hands or momentum.
+Setup: Sit toward the front edge of a sturdy chair, feet flat on the floor, arms crossed over your chest.
+Movement: Lean slightly forward and push through your feet to stand up fully, then lower back down to the chair with control.
+Tip: Keep your chest up and avoid rocking or using your arms to help you up.
+StartImage: IMG_0310.jpeg
+FinishImage:
+
+Slug: no-money
+Name: No Money - Scapular Retraction
+Category: back-shoulder
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Strengthens the mid-back and rotator cuff muscles that support good shoulder posture.
+Setup: Hold the band with both hands, shoulder-width apart. Bend your elbows 90 degrees and tuck them at your sides, forearms pointing forward, palms up.
+Movement: Keeping your elbows glued to your sides, rotate your forearms outward away from each other while squeezing your shoulder blades together, then return with control.
+Tip: Keep your elbows pinned to your sides the whole time - the motion happens at the shoulder, not by flaring the elbows out.
+StartImage: IMG_0307.jpeg
+FinishImage:
+
+Slug: shoulder-horizontal-abduction
+Name: Shoulder Horizontal Abduction
+Category: back-shoulder
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Strengthens the mid-back and rear shoulder muscles that pull the shoulders into good posture.
+Setup: Hold the band in front of you in each hand with arms extended forward at shoulder height, palms down.
+Movement: Keeping your arms roughly straight and at shoulder height, pull both arms out to the sides, squeezing your shoulder blades together, then return with control.
+Tip: Keep your shoulders down, away from your ears, throughout the movement.
+StartImage: IMG_0309.jpeg
+FinishImage:
+
+Slug: rows
+Name: Rows with Resistance Bands
+Category: back-shoulder
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Strengthens the mid-back muscles that pull your shoulder blades together, countering a forward-slumped posture.
+Setup: Anchor the band in front of you at chest height and step back for tension. Start with arms extended forward.
+Movement: Pull your elbows straight back, squeezing your shoulder blades together and keeping elbows close to your body, hold momentarily, then return with control.
+Tip: Keep your chest up and avoid shrugging your shoulders toward your ears as you pull.
+StartImage: IMG_0306.jpeg
+FinishImage:
+
+Slug: shoulder-extension
+Name: Shoulder Extension
+Category: back-shoulder
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Strengthens the back of the shoulder and lat muscles used to pull your arm down and back.
+Setup: Anchor the band in front of you at shoulder height. Hold the band ends with your arms extended forward. Step back for tension.
+Movement: Keeping your elbow straight, pull your arm down and back past your hip against the band, hold momentarily, then return with control.
+Tip: Keep your torso still and upright - avoid leaning back to generate extra range.
+StartImage: IMG_0319.jpeg
+FinishImage:
+
+Slug: scapular-retraction-prone-arms-side
+Name: Scapular Retraction - Prone (Arms at Side)
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Strengthens the mid-back and lower trapezius muscles that hold your shoulder blades down and back - the foundation for the other prone versions.
+Setup: Lie face down on a bed, table, or the floor, forehead resting down, arms resting straight alongside your body, palms facing in or up.
+Movement: Without lifting your arms, squeeze your shoulder blades down and together, hold 5 seconds, then release with control.
+Tip: Keep your neck relaxed and avoid shrugging your shoulders up toward your ears.
+StartImage:
+FinishImage:
+
+Slug: scapular-retraction-prone-arms-side-lift
+Name: Scapular Retraction - Prone (Arms at Side, Lift)
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Builds on the arms-at-side version by adding a small arm lift, increasing the demand on the mid-back and rear shoulder muscles.
+Setup: Lie face down, forehead resting down, arms resting straight alongside your body, palms facing in or up.
+Movement: Squeeze your shoulder blades together and lift both arms a few inches off the surface, hold 5 seconds, then lower with control.
+Tip: Lift from your shoulder blades, not by arching your lower back.
+StartImage:
+FinishImage:
+
+Slug: scapular-retraction-prone-arms-overhead-lift
+Name: Scapular Retraction - Prone (Arms Overhead, Lift)
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: The most demanding version, challenging the mid and lower trapezius through a full overhead range against gravity.
+Setup: Lie face down, forehead resting down, arms extended straight overhead in a "Y" position, thumbs pointing up.
+Movement: Squeeze your shoulder blades down and together and lift both arms up off the surface, hold 5 seconds, then lower with control.
+Tip: Keep your arms in line with your ears rather than letting them drift out to the sides.
+StartImage:
+FinishImage:
+
+Slug: bent-over-rows-dumbbell
+Name: Bent Over Rows - Dumbbell
+Category: back-shoulder
+Equipment: dumbbell
+Sets: 2
+Reps: 12
+Seconds: 2
+Rest: 6
+Description: Strengthens the mid-back and rear shoulder muscles used to pull your shoulder blades together and support good posture.
+Setup: Holding a dumbbell in one hand, support yourself with your other hand on the back of a chair and hinge forward from your hips with a flat back.
+Movement: Pull the dumbbell straight up toward your hip, leading with your elbow and squeezing your shoulder blade back, then lower with control.
+Tip: Keep your back flat and avoid twisting your torso to help lift the weight.
+StartImage:
+FinishImage:
+
+Slug: sit-to-stand-lower-extremity-bias
+Name: Sit to Stand - Lower Extremity Bias
+Category: balance-legs
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: A variation of Sit to Stand that puts more of the demand on the legs alone. Do one set per foot in front.
+Setup: Sit toward the front edge of a sturdy chair, feet flat on the floor, with one foot further away than the other.
+Movement: Push through your feet to stand up fully using your legs, then lower back down to the chair with control, keeping both feet flat on the floor.
+Tip: Move slowly on the way down - control on the descent is what builds leg strength, not just standing up quickly.
+StartImage:
+FinishImage:
+
+Slug: heel-raise-single-leg
+Name: Heel Raise - Single Leg
+Category: balance-legs
+Equipment: bodyweight
+Sets: 4
+Reps: 12
+Seconds: 2
+Rest: 6
+Description: Strengthens the calf muscles on one leg at a time, important for push-off during walking and for balance. Do two sets per foot.
+Setup: Stand on one leg near a wall or counter for light balance support, with your other foot lifted slightly off the floor. You can tuck the lifted foot behind the standing leg.
+Movement: Rise up onto the ball of your standing foot as high as comfortable, hold, then lower your heel back down with control.
+Tip: Rise straight up on ball of foot - don’t let your ankle roll inward or outward as you lift.
+StartImage:
+FinishImage:
