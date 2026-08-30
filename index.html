@@ -169,6 +169,11 @@
     width: 6vw;
     height: 6vw;
   }
+  .estTime {
+    font-size: 3vw;
+    font-weight: 500;
+    color: #6a9fd4;
+  }
   .lastDone {
     font-size: 3vw;
     font-weight: 500;
@@ -344,6 +349,13 @@
     margin-bottom: 4vh;
   }
   .countControls .back { margin-bottom: 0; }
+  #sessionTimer {
+    font-size: 3.6vw;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: #888;
+    margin-bottom: 3vh;
+  }
   #pauseBtn {
     font-size: 4vw;
     padding: 0.5em 1em;
@@ -452,6 +464,7 @@
     .card svg { width: 90px; height: 90px; }
     .card img { width: 90px; height: 90px; }
     .cardCheck { width: 26px; height: 26px; top: 10px; right: 10px; }
+    .estTime { font-size: 13px; }
     .lastDone { font-size: 13px; }
     #selectCount { font-size: 18px; }
     .selectBtnRow button { font-size: 16px; padding: 10px; }
@@ -476,6 +489,7 @@
     #cBig { font-size: min(260px, 42vh); }
     #cSub { font-size: 34px; }
     #pauseBtn, #resetBtn, #repeatBtn, #skipBtn { font-size: 16px; }
+    #sessionTimer { font-size: 16px; }
   }
   @media (min-width: 1000px) {
     #grid { grid-template-columns: repeat(4, 1fr); }
@@ -506,7 +520,7 @@
   <button id="runAllBtn" onclick="startRunAll()" disabled>&#9654; Run Selected</button>
   <a id="voiceSettingsLink" href="counter.html">&#128264; Voice settings &amp; test</a>
 </div>
-<div id="appUpdated">Updated <span id="appUpdatedTime">2026-08-30T03:49:12Z</span></div>
+<div id="appUpdated">Updated <span id="appUpdatedTime">2026-08-30T03:49:21Z</span></div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
@@ -517,6 +531,7 @@
     <button id="repeatBtn" class="hidden" onclick="repeatExercise()">&#128257; Repeat</button>
     <button id="skipBtn" class="hidden" onclick="skipExercise()">&#9197; Skip</button>
   </div>
+  <div id="sessionTimer">&#9201; 0:00</div>
   <div id="cLabel"></div>
   <img id="cPhoto" alt="">
   <div id="cBig"></div>
@@ -558,6 +573,7 @@
     <div class="row"><span>Reps</span><input type="number" id="f-reps"></div>
     <div class="row"><span>Seconds / rep</span><input type="number" id="f-seconds"></div>
     <div class="row"><span>Rest (sec)</span><input type="number" id="f-rest"></div>
+    <div class="row"><span>Estimated time</span><span id="f-estimate"></span></div>
     <div class="hint">Starting numbers are placeholders - edit to match what your PT prescribed. Changes are saved on this device, including for Run All.</div>
   </div>
 
@@ -896,6 +912,31 @@ function lastDoneClass(slug) {
   return '';
 }
 
+// Rough estimate, not a stopwatch-accurate one: counting time for every
+// rep, rest between sets, plus a few seconds per set for the "Set N of M"
+// announcement and the 3-2-1-Go countdown that precedes it.
+const SET_OVERHEAD_SEC = 3;
+function estimateSeconds(p) {
+  return p.sets * (p.reps * p.seconds + SET_OVERHEAD_SEC) + Math.max(0, p.sets - 1) * p.rest;
+}
+
+// Rough allowance for the "Exercise N of M" transition between exercises
+// in a multi-exercise session (Run Selected) - on top of each exercise's
+// own estimateSeconds().
+const TRANSITION_OVERHEAD_SEC = 5;
+function estimateTotalSeconds(list) {
+  return list.reduce((sum, ex) => sum + estimateSeconds(getExerciseParams(ex)), 0)
+    + list.length * TRANSITION_OVERHEAD_SEC;
+}
+
+function formatDuration(totalSeconds) {
+  const s = Math.round(totalSeconds / 5) * 5; // round to the nearest 5s - it's an estimate, not a stopwatch
+  if (s < 60) return `~${s}s`;
+  const m = Math.floor(s / 60);
+  const rem = s % 60;
+  return rem === 0 ? `~${m} min` : `~${m}m ${rem}s`;
+}
+
 function resolvedIcon(ex, suffix) {
   // Each icon can define an arrowhead marker; give it a unique id per
   // rendering so duplicate SVG ids on the page don't make icons borrow
@@ -945,6 +986,7 @@ function buildGrid() {
       <input type="checkbox" class="cardCheck" onclick="event.stopPropagation()" onchange="toggleSelected('${ex.slug}', this.checked)" ${selectedSlugs.has(ex.slug) ? 'checked' : ''}>
       ${cardVisual(ex)}
       <div>${ex.name}</div>
+      <div class="estTime">${formatDuration(estimateSeconds(getExerciseParams(ex)))}</div>
       <div class="lastDone ${lastDoneClass(ex.slug)}">${formatLastDone(ex.slug)}</div>
     </div>
   `).join('');
@@ -958,7 +1000,12 @@ function toggleSelected(slug, checked) {
 
 function updateSelectBar() {
   const n = selectedSlugs.size;
-  selectCountEl.textContent = n === 0 ? 'No exercises selected' : `${n} selected`;
+  if (n === 0) {
+    selectCountEl.textContent = 'No exercises selected';
+  } else {
+    const list = EXERCISES.filter(ex => selectedSlugs.has(ex.slug));
+    selectCountEl.textContent = `${n} selected · ${formatDuration(estimateTotalSeconds(list))}`;
+  }
   selectCountEl.classList.toggle('overLimit', n > 6);
   if (n > 6) selectCountEl.textContent += ' - more than a typical 5-6 exercise session';
   runAllBtnEl.disabled = n === 0;
@@ -1054,6 +1101,11 @@ function saveCurrentExerciseParams() {
     rest: parseInt(document.getElementById('f-rest').value) || 0
   };
   localStorage.setItem('params_' + currentExercise.slug, JSON.stringify(params));
+  updateEstimateDisplay(params);
+}
+
+function updateEstimateDisplay(params) {
+  document.getElementById('f-estimate').textContent = formatDuration(estimateSeconds(params));
 }
 
 let currentExercise = null;
@@ -1116,6 +1168,7 @@ function openDetail(slug) {
   document.getElementById('f-reps').value = savedParams.reps;
   document.getElementById('f-seconds').value = savedParams.seconds;
   document.getElementById('f-rest').value = savedParams.rest;
+  updateEstimateDisplay(savedParams);
 
   const params = new URLSearchParams(window.location.search);
   const voiceMode = params.get('voice') === '1';
@@ -1161,6 +1214,7 @@ const cLabelEl = document.getElementById('cLabel');
 const cPhotoEl = document.getElementById('cPhoto');
 const cBigEl = document.getElementById('cBig');
 const cSubEl = document.getElementById('cSub');
+const sessionTimerEl = document.getElementById('sessionTimer');
 
 function showExercisePhoto(ex) {
   if (!ex.startImage) {
@@ -1214,6 +1268,57 @@ let lastRunStarter = null; // re-invoking this is what "Reset" does
 // exercise and a Run All sequence, without any complex resume bookkeeping.
 let runPaused = false;
 
+// Elapsed time for the whole session (not per-rep/per-set) - counts up
+// rather than down against the estimate, since a countdown gets thrown off
+// the moment you pause, skip, or repeat, while elapsed time is always
+// simply correct. sessionPausedAccum tracks total time spent paused so
+// far, and sessionPauseStartedAt (while non-null) tracks the current pause
+// in progress, so the displayed elapsed time freezes exactly while paused.
+let sessionStartTime = null;
+let sessionPausedAccum = 0;
+let sessionPauseStartedAt = null;
+let sessionTimerInterval = null;
+
+function startSessionTimer() {
+  sessionStartTime = Date.now();
+  sessionPausedAccum = 0;
+  sessionPauseStartedAt = null;
+  updateSessionTimerDisplay();
+  if (sessionTimerInterval) clearInterval(sessionTimerInterval);
+  sessionTimerInterval = setInterval(updateSessionTimerDisplay, 1000);
+}
+
+function stopSessionTimer() {
+  if (sessionTimerInterval) clearInterval(sessionTimerInterval);
+  sessionTimerInterval = null;
+  sessionStartTime = null;
+}
+
+function pauseSessionTimer() {
+  if (sessionStartTime && !sessionPauseStartedAt) sessionPauseStartedAt = Date.now();
+}
+
+function resumeSessionTimer() {
+  if (sessionPauseStartedAt) {
+    sessionPausedAccum += Date.now() - sessionPauseStartedAt;
+    sessionPauseStartedAt = null;
+  }
+}
+
+function formatElapsed(ms) {
+  const totalSec = Math.max(0, Math.floor(ms / 1000));
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+function updateSessionTimerDisplay() {
+  if (!sessionStartTime) return;
+  const pausedNow = sessionPauseStartedAt ? Date.now() - sessionPauseStartedAt : 0;
+  const elapsedMs = Date.now() - sessionStartTime - sessionPausedAccum - pausedNow;
+  sessionTimerEl.textContent = '⏱ ' + formatElapsed(elapsedMs);
+}
+
 // Skip/Repeat only make sense mid-sequence (Run All), so they're a separate
 // signal from runToken: bumping runToken would also invalidate the outer
 // runAllExercises loop and end the whole workout, not just the current
@@ -1248,7 +1353,12 @@ async function pausableWait(ms, token) {
 
 function togglePause() {
   runPaused = !runPaused;
-  if (runPaused) window.speechSynthesis.cancel();
+  if (runPaused) {
+    window.speechSynthesis.cancel();
+    pauseSessionTimer();
+  } else {
+    resumeSessionTimer();
+  }
   pauseBtnEl.textContent = runPaused ? '▶ Resume' : '❙❙ Pause';
   pauseBtnEl.classList.toggle('paused', runPaused);
 }
@@ -1299,6 +1409,7 @@ function cancelCount() {
   setRunAllControlsVisible(false);
   window.speechSynthesis.cancel();
   hideExercisePhoto();
+  stopSessionTimer();
   countWrapEl.classList.remove('active');
   gridEl.classList.remove('hidden');
   titleEl.classList.remove('hidden');
@@ -1436,11 +1547,12 @@ function startCounting() {
   cBigEl.textContent = '';
   cSubEl.textContent = '';
   showExercisePhoto(currentExercise);
+  startSessionTimer();
   requestWakeLock();
 
   const beginCounting = () => {
     hideExercisePhoto(); // #cBig needs that space back once counting starts
-    return runCount(sets, reps, seconds, rest, true, myToken, currentExercise.slug);
+    return runCount(sets, reps, seconds, rest, true, myToken, currentExercise.slug).then(stopSessionTimer);
   };
 
   if (!('speechSynthesis' in window)) {
@@ -1507,6 +1619,7 @@ async function runAllExercises(list, voiceOn, token) {
 
   if (token !== runToken) return;
   setRunAllControlsVisible(false);
+  stopSessionTimer();
   cLabelEl.textContent = '';
   cBigEl.textContent = 'All Done!';
   cBigEl.className = 'c-done';
@@ -1539,6 +1652,7 @@ function startRunAll() {
   cLabelEl.textContent = 'Get ready...';
   cBigEl.textContent = '';
   cSubEl.textContent = '';
+  startSessionTimer();
   requestWakeLock();
 
   runAllExercises(list, voiceOn, myToken);

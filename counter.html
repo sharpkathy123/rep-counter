@@ -154,6 +154,13 @@
     margin-bottom: 3vh;
   }
   #countControls.active { display: flex; }
+  #sessionTimer {
+    font-size: 3.6vw;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: #888;
+    margin-bottom: 3vh;
+  }
   #exitBtn {
     font-size: 4.2vw;
     font-weight: 700;
@@ -240,6 +247,7 @@
     #testVoiceBtn { font-size: 16px; }
     #exitBtn { font-size: 18px; }
     #pauseBtn, #resetBtn { font-size: 16px; }
+    #sessionTimer { font-size: 16px; }
     #tapStart .msg { font-size: 20px; }
     #tapStart button { font-size: 26px; }
   }
@@ -254,6 +262,7 @@
     <button id="pauseBtn" onclick="togglePause()">&#10074;&#10074; Pause</button>
     <button id="resetBtn" onclick="resetCurrentRun()">&#8635; Reset</button>
   </div>
+  <div id="sessionTimer">&#9201; 0:00</div>
   <div id="label"></div>
   <div id="big"></div>
   <div id="sub"></div>
@@ -314,6 +323,7 @@ const wrap = document.getElementById('wrap');
 const flashEl = document.getElementById('flash');
 const countControlsEl = document.getElementById('countControls');
 const pauseBtnEl = document.getElementById('pauseBtn');
+const sessionTimerEl = document.getElementById('sessionTimer');
 
 // Every run gets a token; countdown()/run() only keep going while their own
 // token is still current, so Exit/Reset can cleanly stop or restart an
@@ -325,6 +335,57 @@ let runToken = 0;
 let runPaused = false;
 let startedFromForm = false;
 function aborted(token) { return token !== runToken; }
+
+// Elapsed time for the whole session (not per-rep/per-set) - counts up
+// rather than down against an estimate, since a countdown gets thrown off
+// the moment you pause, while elapsed time is always simply correct.
+// sessionPausedAccum tracks total time spent paused so far, and
+// sessionPauseStartedAt (while non-null) tracks the current pause in
+// progress, so the displayed elapsed time freezes exactly while paused.
+let sessionStartTime = null;
+let sessionPausedAccum = 0;
+let sessionPauseStartedAt = null;
+let sessionTimerInterval = null;
+
+function startSessionTimer() {
+  sessionStartTime = Date.now();
+  sessionPausedAccum = 0;
+  sessionPauseStartedAt = null;
+  updateSessionTimerDisplay();
+  if (sessionTimerInterval) clearInterval(sessionTimerInterval);
+  sessionTimerInterval = setInterval(updateSessionTimerDisplay, 1000);
+}
+
+function stopSessionTimer() {
+  if (sessionTimerInterval) clearInterval(sessionTimerInterval);
+  sessionTimerInterval = null;
+  sessionStartTime = null;
+}
+
+function pauseSessionTimer() {
+  if (sessionStartTime && !sessionPauseStartedAt) sessionPauseStartedAt = Date.now();
+}
+
+function resumeSessionTimer() {
+  if (sessionPauseStartedAt) {
+    sessionPausedAccum += Date.now() - sessionPauseStartedAt;
+    sessionPauseStartedAt = null;
+  }
+}
+
+function formatElapsed(ms) {
+  const totalSec = Math.max(0, Math.floor(ms / 1000));
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+function updateSessionTimerDisplay() {
+  if (!sessionStartTime) return;
+  const pausedNow = sessionPauseStartedAt ? Date.now() - sessionPauseStartedAt : 0;
+  const elapsedMs = Date.now() - sessionStartTime - sessionPausedAccum - pausedNow;
+  sessionTimerEl.textContent = '⏱ ' + formatElapsed(elapsedMs);
+}
 
 async function pausableWait(ms, token) {
   let remaining = ms;
@@ -345,7 +406,12 @@ function showCountControls(visible) {
 
 function togglePause() {
   runPaused = !runPaused;
-  if (runPaused) window.speechSynthesis.cancel();
+  if (runPaused) {
+    window.speechSynthesis.cancel();
+    pauseSessionTimer();
+  } else {
+    resumeSessionTimer();
+  }
   pauseBtnEl.textContent = runPaused ? '▶ Resume' : '❙❙ Pause';
   pauseBtnEl.classList.toggle('paused', runPaused);
 }
@@ -359,6 +425,7 @@ function exitCounting() {
   runToken++;
   runPaused = false;
   window.speechSynthesis.cancel();
+  stopSessionTimer();
   showCountControls(false);
   label.textContent = '';
   big.textContent = '';
@@ -524,6 +591,7 @@ function beginRun(runSets, runReps, runSeconds, runRest, runVoice) {
   pauseBtnEl.textContent = '❙❙ Pause';
   pauseBtnEl.classList.remove('paused');
   showCountControls(true);
+  startSessionTimer();
   run(myToken);
 }
 
@@ -614,6 +682,7 @@ async function run(token) {
   }
   if (aborted(token)) return;
   markDone();
+  stopSessionTimer();
   label.textContent = '';
   big.textContent = 'Done';
   big.className = 'done';
