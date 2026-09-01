@@ -54,7 +54,7 @@ Slug: hip-abduction
 Name: Hip Abduction - Standing
 Category: hip
 Equipment: band
-Sets: 2
+Sets: 4
 Reps: 10
 Seconds: 3
 Rest: 6
@@ -69,7 +69,7 @@ Slug: hip-extension
 Name: Hip Extension - Standing
 Category: hip
 Equipment: band
-Sets: 2
+Sets: 4
 Reps: 10
 Seconds: 3
 Rest: 6
@@ -84,7 +84,7 @@ Slug: pnf-d2
 Name: PNF D2 - Standing
 Category: back-shoulder
 Equipment: band
-Sets: 2
+Sets: 4
 Reps: 10
 Seconds: 5
 Rest: 6
@@ -129,7 +129,7 @@ Slug: clamshell
 Name: Clamshell - Side Lying
 Category: hip
 Equipment: band
-Sets: 2
+Sets: 4
 Reps: 10
 Seconds: 2
 Rest: 6
@@ -161,7 +161,7 @@ Category: balance-legs
 Equipment: bodyweight
 Sets: 2
 Reps: 12
-Seconds: 2
+Seconds: 4
 Rest: 6
 Description: Builds functional leg and core strength for getting up from a chair without using your hands or momentum.
 Setup: Sit toward the front edge of a sturdy chair, feet flat on the floor, arms crossed over your chest.
@@ -296,7 +296,7 @@ Category: balance-legs
 Equipment: bodyweight
 Sets: 2
 Reps: 10
-Seconds: 3
+Seconds: 4
 Rest: 6
 Description: A variation of Sit to Stand that puts more of the demand on the legs alone. Do one set per foot in front.
 Setup: Sit toward the front edge of a sturdy chair, feet flat on the floor, with one foot further away than the other.
