@@ -279,9 +279,9 @@ Slug: bent-over-rows-dumbbell
 Name: Bent Over Rows - Dumbbell
 Category: back-shoulder
 Equipment: dumbbell
-Sets: 2
+Sets: 4
 Reps: 12
-Seconds: 2
+Seconds: 3
 Rest: 6
 Description: Strengthens the mid-back and rear shoulder muscles used to pull your shoulder blades together and support good posture.
 Setup: Holding a dumbbell in one hand, support yourself with your other hand on the back of a chair and hinge forward from your hips with a flat back.
