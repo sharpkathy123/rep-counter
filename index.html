@@ -536,7 +536,7 @@
     <a class="back" href="#" onclick="cancelCount(); return false;">&#10005; Exit</a>
     <button id="pauseBtn" onclick="togglePause()">&#10074;&#10074; Pause</button>
     <button id="resetBtn" onclick="resetCurrentRun()">&#8635; Reset</button>
-    <button id="repeatBtn" class="hidden" onclick="repeatExercise()">&#128257; Repeat</button>
+    <button id="repeatBtn" class="hidden" onclick="repeatExercise()">&#128257; Repeat Exercise</button>
     <button id="skipBtn" class="hidden" onclick="skipExercise()">&#9197; Skip</button>
   </div>
   <div id="sessionTimer">&#9201; 0:00</div>
@@ -1307,6 +1307,7 @@ function hideExercisePhoto() {
 }
 const cFlashEl = document.getElementById('cFlash');
 const pauseBtnEl = document.getElementById('pauseBtn');
+const resetBtnEl = document.getElementById('resetBtn');
 const repeatBtnEl = document.getElementById('repeatBtn');
 const skipBtnEl = document.getElementById('skipBtn');
 
@@ -1408,8 +1409,14 @@ function aborted(token) {
   return token !== runToken || skipRequested || repeatRequested;
 }
 
+// "Reset" is ambiguous once there's a sequence: does it redo just the
+// exercise in progress, or the whole selection from #1? During Run All,
+// Repeat Exercise covers the former (see repeatExercise() below), so Reset
+// is relabeled to make clear it's the latter - restarting the entire
+// sequence, same as resetCurrentRun() -> lastRunStarter() always did.
 function setRunAllControlsVisible(visible) {
   runAllActive = visible;
+  resetBtnEl.textContent = visible ? '↺ Restart All' : '↺ Reset';
   repeatBtnEl.classList.toggle('hidden', !visible);
   skipBtnEl.classList.toggle('hidden', !visible);
 }
@@ -1455,6 +1462,10 @@ function skipExercise() {
   window.speechSynthesis.cancel();
 }
 
+// Redoes the current exercise - all its sets, from its own intro - without
+// moving the sequence position or touching the session timer, so it's also
+// what covers a one-sided exercise written in exercises.txt for a single
+// side: tap it after finishing to go again for the other side.
 function repeatExercise() {
   if (!runAllActive) return;
   repeatRequested = true;
