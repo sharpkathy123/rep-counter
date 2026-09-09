@@ -319,3 +319,64 @@ Movement: Rise up onto the ball of your standing foot as high as comfortable, ho
 Tip: Rise straight up on ball of foot - don’t let your ankle roll inward or outward as you lift.
 StartImage:
 FinishImage:
+
+
+Slug: bridge-alternating-march
+Name: Bridge + Alternating March - Supine
+Category: hip
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Combines a hip bridge with alternating leg marches to challenge core and hip stability together.
+Setup: Lie on your back with knees bent, feet flat on the floor, hip-width apart.
+Movement: Lift your hips into a bridge, then alternate lifting one foot at a time into a tabletop position while keeping your hips level, then lower hips.
+Tip: Keep your hips level and steady - don't let them dip or rotate as you lift each foot.
+StartImage:
+FinishImage:
+
+Slug: bridge-single-leg
+Name: Bridge - Single Leg
+Category: hip
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: A more advanced bridge variation that challenges one hip and leg at a time for greater glute and stability demand.
+Setup: Lie on your back with knees bent, feet flat on the floor. Extend one leg straight out, knees level.
+Movement: Squeeze your glute and lift your hips using only the leg on the ground, hold, then lower with control. Repeat other side.
+Tip: Keep your hips level - don't let the lifted-leg side drop as you press up.
+StartImage:
+FinishImage:
+
+Slug: squat-ue-support
+Name: Squat with Upper Extremity Support
+Category: balance-legs
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: Builds leg and hip strength for sitting, standing, and stairs, using arm support for balance.
+Setup: Stand facing a stable surface like a counter or chair back, feet shoulder-width apart, holding on lightly.
+Movement: Bend knees and hips to lower into a squat, chest up, then push through your feet to stand back up.
+Tip: Keep weight through your heels and avoid letting your knees cave inward.
+StartImage:
+FinishImage:
+
+Slug: scapular-retraction-prone-arms-out-t
+Name: Scapular Retraction - Prone (Arms Out, "T")
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 5
+Rest: 6
+Description: Targets the mid-trapezius by lifting arms out to the sides in a "T" position, completing the I/T/Y set.
+Setup: Lie face down, forehead resting down, arms extended straight out to the sides at shoulder height, thumbs up.
+Movement: Squeeze your shoulder blades together and lift both arms slightly off the surface, hold 5 seconds, lower with control.
+Tip: Keep arms level with shoulders - don't lift too high or strain your neck.
+StartImage:
+FinishImage:
