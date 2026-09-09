@@ -66,6 +66,10 @@
     border-color: #2fa84f;
     color: #fff;
   }
+  .chipCount {
+    opacity: 0.65;
+    font-weight: 400;
+  }
   #selectBar {
     margin-bottom: 4vh;
   }
@@ -524,7 +528,7 @@
   <button id="runAllBtn" onclick="startRunAll()" disabled>&#9654; Run Selected</button>
   <a id="voiceSettingsLink" href="counter.html">&#128264; Voice settings &amp; test</a>
 </div>
-<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-09T05:28:11Z</span></div>
+<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-09T05:35:05Z</span></div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
@@ -810,17 +814,29 @@ function autoLabel(key) {
   return key.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
 
-function orderedFacet(present, preferredOrder, labels) {
+function orderedFacet(counts, preferredOrder, labels) {
+  const present = new Set(counts.keys());
   const known = preferredOrder.filter(k => present.has(k));
   const unknown = [...present].filter(k => !preferredOrder.includes(k)).sort();
-  return [...known, ...unknown].map(key => ({ key, label: labels[key] || autoLabel(key) }));
+  return [...known, ...unknown].map(key => ({ key, label: labels[key] || autoLabel(key), count: counts.get(key) }));
+}
+
+function countBy(list, keyFn) {
+  const counts = new Map();
+  for (const item of list) {
+    const key = keyFn(item);
+    counts.set(key, (counts.get(key) || 0) + 1);
+  }
+  return counts;
 }
 
 function computeFacets() {
-  const presentCategories = new Set(EXERCISES.map(e => e.category));
-  const presentEquipment = new Set(EXERCISES.map(e => e.type));
-  CATEGORIES = orderedFacet(presentCategories, CATEGORY_ORDER, CATEGORY_LABELS);
-  EQUIPMENT = orderedFacet(presentEquipment, EQUIPMENT_ORDER, EQUIPMENT_LABELS);
+  const categoryCounts = countBy(EXERCISES, e => e.category);
+  const equipmentCounts = countBy(EXERCISES, e => e.type);
+  CATEGORIES = orderedFacet(categoryCounts, CATEGORY_ORDER, CATEGORY_LABELS);
+  EQUIPMENT = orderedFacet(equipmentCounts, EQUIPMENT_ORDER, EQUIPMENT_LABELS);
+  const presentCategories = new Set(categoryCounts.keys());
+  const presentEquipment = new Set(equipmentCounts.keys());
   // Drop any saved filter selection that no longer matches a real category/
   // equipment (e.g. it was renamed or removed in exercises.txt).
   activeCategories = new Set([...activeCategories].filter(k => presentCategories.has(k)));
@@ -985,10 +1001,10 @@ function filteredExercises() {
 
 function buildChips() {
   categoryChipsEl.innerHTML = CATEGORIES.map(c => `
-    <button class="chip ${activeCategories.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeCategories, '${c.key}', 'repcounter_categories')">${c.label}</button>
+    <button class="chip ${activeCategories.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeCategories, '${c.key}', 'repcounter_categories')">${c.label} <span class="chipCount">${c.count}</span></button>
   `).join('');
   equipmentChipsEl.innerHTML = EQUIPMENT.map(c => `
-    <button class="chip ${activeEquipment.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeEquipment, '${c.key}', 'repcounter_equipment')">${c.label}</button>
+    <button class="chip ${activeEquipment.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeEquipment, '${c.key}', 'repcounter_equipment')">${c.label} <span class="chipCount">${c.count}</span></button>
   `).join('');
 }
 
