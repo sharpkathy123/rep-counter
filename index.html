@@ -66,6 +66,10 @@
     border-color: #2fa84f;
     color: #fff;
   }
+  .chipCount {
+    opacity: 0.65;
+    font-weight: 400;
+  }
   #selectBar {
     margin-bottom: 4vh;
   }
@@ -508,6 +512,10 @@
     <div class="filterLabel">Equipment</div>
     <div class="chips" id="equipmentChips"></div>
   </div>
+  <div class="filterGroup">
+    <div class="filterLabel">Sort by</div>
+    <div class="chips" id="sortChips"></div>
+  </div>
 </div>
 <div id="grid"></div>
 <div id="selectBar">
@@ -520,7 +528,7 @@
   <button id="runAllBtn" onclick="startRunAll()" disabled>&#9654; Run Selected</button>
   <a id="voiceSettingsLink" href="counter.html">&#128264; Voice settings &amp; test</a>
 </div>
-<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-09T05:04:02Z</span></div>
+<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-09T05:39:12Z</span></div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
@@ -785,6 +793,7 @@ const titleEl = document.getElementById('pageTitle');
 const filterBarEl = document.getElementById('filterBar');
 const categoryChipsEl = document.getElementById('categoryChips');
 const equipmentChipsEl = document.getElementById('equipmentChips');
+const sortChipsEl = document.getElementById('sortChips');
 const selectBarEl = document.getElementById('selectBar');
 const selectCountEl = document.getElementById('selectCount');
 const runAllBtnEl = document.getElementById('runAllBtn');
@@ -805,17 +814,29 @@ function autoLabel(key) {
   return key.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
 
-function orderedFacet(present, preferredOrder, labels) {
+function orderedFacet(counts, preferredOrder, labels) {
+  const present = new Set(counts.keys());
   const known = preferredOrder.filter(k => present.has(k));
   const unknown = [...present].filter(k => !preferredOrder.includes(k)).sort();
-  return [...known, ...unknown].map(key => ({ key, label: labels[key] || autoLabel(key) }));
+  return [...known, ...unknown].map(key => ({ key, label: labels[key] || autoLabel(key), count: counts.get(key) }));
+}
+
+function countBy(list, keyFn) {
+  const counts = new Map();
+  for (const item of list) {
+    const key = keyFn(item);
+    counts.set(key, (counts.get(key) || 0) + 1);
+  }
+  return counts;
 }
 
 function computeFacets() {
-  const presentCategories = new Set(EXERCISES.map(e => e.category));
-  const presentEquipment = new Set(EXERCISES.map(e => e.type));
-  CATEGORIES = orderedFacet(presentCategories, CATEGORY_ORDER, CATEGORY_LABELS);
-  EQUIPMENT = orderedFacet(presentEquipment, EQUIPMENT_ORDER, EQUIPMENT_LABELS);
+  const categoryCounts = countBy(EXERCISES, e => e.category);
+  const equipmentCounts = countBy(EXERCISES, e => e.type);
+  CATEGORIES = orderedFacet(categoryCounts, CATEGORY_ORDER, CATEGORY_LABELS);
+  EQUIPMENT = orderedFacet(equipmentCounts, EQUIPMENT_ORDER, EQUIPMENT_LABELS);
+  const presentCategories = new Set(categoryCounts.keys());
+  const presentEquipment = new Set(equipmentCounts.keys());
   // Drop any saved filter selection that no longer matches a real category/
   // equipment (e.g. it was renamed or removed in exercises.txt).
   activeCategories = new Set([...activeCategories].filter(k => presentCategories.has(k)));
@@ -883,6 +904,21 @@ function saveStringSet(key, set) {
 let activeCategories = loadStringSet('repcounter_categories');
 let activeEquipment = loadStringSet('repcounter_equipment');
 let selectedSlugs = loadStringSet('repcounter_selected');
+
+// "Default" leaves the list in exercises.txt order (whatever the file's
+// author intended); the other modes each re-sort filteredExercises() before
+// buildGrid() renders it. Category/Equipment sort follows the same
+// preferred-order-first grouping as the filter chips themselves, so the
+// grouping reads the same way in both places.
+const SORT_OPTIONS = [
+  { key: 'default', label: 'Default' },
+  { key: 'name', label: 'A–Z' },
+  { key: 'lastdone', label: 'Last done' },
+  { key: 'category', label: 'Category' },
+  { key: 'equipment', label: 'Equipment' }
+];
+let sortMode = localStorage.getItem('repcounter_sort') || 'default';
+
 let lastDoneMap = {};
 try { lastDoneMap = JSON.parse(localStorage.getItem('repcounter_lastdone') || '{}'); } catch (e) {}
 
@@ -965,10 +1001,10 @@ function filteredExercises() {
 
 function buildChips() {
   categoryChipsEl.innerHTML = CATEGORIES.map(c => `
-    <button class="chip ${activeCategories.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeCategories, '${c.key}', 'repcounter_categories')">${c.label}</button>
+    <button class="chip ${activeCategories.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeCategories, '${c.key}', 'repcounter_categories')">${c.label} <span class="chipCount">${c.count}</span></button>
   `).join('');
   equipmentChipsEl.innerHTML = EQUIPMENT.map(c => `
-    <button class="chip ${activeEquipment.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeEquipment, '${c.key}', 'repcounter_equipment')">${c.label}</button>
+    <button class="chip ${activeEquipment.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeEquipment, '${c.key}', 'repcounter_equipment')">${c.label} <span class="chipCount">${c.count}</span></button>
   `).join('');
 }
 
@@ -979,8 +1015,47 @@ function toggleChip(set, key, storageKey) {
   buildGrid();
 }
 
+function buildSortChips() {
+  sortChipsEl.innerHTML = SORT_OPTIONS.map(o => `
+    <button class="chip ${sortMode === o.key ? 'active' : ''}" onclick="setSortMode('${o.key}')">${o.label}</button>
+  `).join('');
+}
+
+function setSortMode(key) {
+  sortMode = key;
+  localStorage.setItem('repcounter_sort', key);
+  buildSortChips();
+  buildGrid();
+}
+
+function facetRank(key, order) {
+  const i = order.indexOf(key);
+  return i === -1 ? order.length : i;
+}
+
+function sortedExercises(list) {
+  const arr = [...list];
+  switch (sortMode) {
+    case 'name':
+      arr.sort((a, b) => a.name.localeCompare(b.name));
+      break;
+    case 'lastdone':
+      // Oldest/never-done first, same ordering "Pick 6 Least Recent" uses -
+      // it's the list of what's most overdue.
+      arr.sort((a, b) => (lastDoneMap[a.slug] || 0) - (lastDoneMap[b.slug] || 0));
+      break;
+    case 'category':
+      arr.sort((a, b) => facetRank(a.category, CATEGORY_ORDER) - facetRank(b.category, CATEGORY_ORDER) || a.name.localeCompare(b.name));
+      break;
+    case 'equipment':
+      arr.sort((a, b) => facetRank(a.type, EQUIPMENT_ORDER) - facetRank(b.type, EQUIPMENT_ORDER) || a.name.localeCompare(b.name));
+      break;
+  }
+  return arr;
+}
+
 function buildGrid() {
-  const list = filteredExercises();
+  const list = sortedExercises(filteredExercises());
   gridEl.innerHTML = list.map(ex => `
     <div class="card ${ex.type}" onclick="openDetail('${ex.slug}')">
       <input type="checkbox" class="cardCheck" onclick="event.stopPropagation()" onchange="toggleSelected('${ex.slug}', this.checked)" ${selectedSlugs.has(ex.slug) ? 'checked' : ''}>
@@ -1050,6 +1125,7 @@ async function init() {
   if (!(await loadExercises())) return;
   computeFacets();
   buildChips();
+  buildSortChips();
   buildGrid();
   updateSelectBar();
 
