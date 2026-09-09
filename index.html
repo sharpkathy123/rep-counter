@@ -936,7 +936,8 @@ const SORT_OPTIONS = [
   { key: 'name', label: 'A–Z' },
   { key: 'lastdone', label: 'Last done' },
   { key: 'category', label: 'Category' },
-  { key: 'equipment', label: 'Equipment' }
+  { key: 'equipment', label: 'Equipment' },
+  { key: 'time', label: 'Time' }
 ];
 let sortMode = localStorage.getItem('repcounter_sort') || 'default';
 
@@ -1078,6 +1079,11 @@ function sortedExercises(list) {
       break;
     case 'equipment':
       arr.sort((a, b) => facetRank(a.type, EQUIPMENT_ORDER) - facetRank(b.type, EQUIPMENT_ORDER) || a.name.localeCompare(b.name));
+      break;
+    case 'time':
+      // Quickest first - each exercise's own current sets/reps/seconds/rest
+      // (whatever's saved for it, same numbers its card's time estimate shows).
+      arr.sort((a, b) => estimateSeconds(getExerciseParams(a)) - estimateSeconds(getExerciseParams(b)) || a.name.localeCompare(b.name));
       break;
   }
   return arr;
