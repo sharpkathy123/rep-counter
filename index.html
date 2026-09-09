@@ -166,12 +166,31 @@
   .card.band { border-color: #3d6f9e; }
   .card.bodyweight { border-color: #3d7a4a; }
   .card.dumbbell { border-color: #8a6a2f; }
-  .cardCheck {
+  .cardCheckWrap {
     position: absolute;
     top: 2vw;
     right: 2vw;
+    display: flex;
+    align-items: center;
+    gap: 1.5vw;
+  }
+  .cardCheck {
     width: 6vw;
     height: 6vw;
+  }
+  .orderBadge {
+    background: #4da3ff;
+    color: #fff;
+    font-size: 3.2vw;
+    font-weight: 700;
+    line-height: 1;
+    border-radius: 999px;
+    min-width: 5vw;
+    height: 5vw;
+    padding: 0 1vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .estTime {
     font-size: 3vw;
@@ -467,7 +486,9 @@
     .card { font-size: 16px; padding: 20px 14px; gap: 8px; }
     .card svg { width: 90px; height: 90px; }
     .card img { width: 90px; height: 90px; }
-    .cardCheck { width: 26px; height: 26px; top: 10px; right: 10px; }
+    .cardCheckWrap { top: 10px; right: 10px; gap: 6px; }
+    .cardCheck { width: 26px; height: 26px; }
+    .orderBadge { font-size: 13px; min-width: 20px; height: 20px; }
     .estTime { font-size: 13px; }
     .lastDone { font-size: 13px; }
     #selectCount { font-size: 18px; }
@@ -999,6 +1020,14 @@ function filteredExercises() {
   );
 }
 
+// The order Run Selected actually counts through - exercises.txt order
+// among whatever's currently checked, independent of any grid sort/filter.
+// buildGrid() shows this as a numbered badge on each checked card so
+// there's no guessing which exercise comes when.
+function runOrderList() {
+  return EXERCISES.filter(ex => selectedSlugs.has(ex.slug));
+}
+
 function buildChips() {
   categoryChipsEl.innerHTML = CATEGORIES.map(c => `
     <button class="chip ${activeCategories.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeCategories, '${c.key}', 'repcounter_categories')">${c.label} <span class="chipCount">${c.count}</span></button>
@@ -1056,20 +1085,29 @@ function sortedExercises(list) {
 
 function buildGrid() {
   const list = sortedExercises(filteredExercises());
-  gridEl.innerHTML = list.map(ex => `
+  const order = runOrderList();
+  gridEl.innerHTML = list.map(ex => {
+    const orderIndex = order.findIndex(o => o.slug === ex.slug);
+    const badge = orderIndex === -1 ? '' : `<span class="orderBadge">${orderIndex + 1}</span>`;
+    return `
     <div class="card ${ex.type}" onclick="openDetail('${ex.slug}')">
-      <input type="checkbox" class="cardCheck" onclick="event.stopPropagation()" onchange="toggleSelected('${ex.slug}', this.checked)" ${selectedSlugs.has(ex.slug) ? 'checked' : ''}>
+      <div class="cardCheckWrap">
+        ${badge}
+        <input type="checkbox" class="cardCheck" onclick="event.stopPropagation()" onchange="toggleSelected('${ex.slug}', this.checked)" ${selectedSlugs.has(ex.slug) ? 'checked' : ''}>
+      </div>
       ${cardVisual(ex)}
       <div>${ex.name}</div>
       <div class="estTime">${formatDuration(estimateSeconds(getExerciseParams(ex)))}</div>
       <div class="lastDone ${lastDoneClass(ex.slug)}">${formatLastDone(ex.slug)}</div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function toggleSelected(slug, checked) {
   if (checked) selectedSlugs.add(slug); else selectedSlugs.delete(slug);
   saveStringSet('repcounter_selected', selectedSlugs);
+  buildGrid(); // renumber order badges - checking/unchecking anything can shift them all
   updateSelectBar();
 }
 
@@ -1707,7 +1745,7 @@ async function runAllExercises(list, voiceOn, token) {
 }
 
 function startRunAll() {
-  const list = EXERCISES.filter(ex => selectedSlugs.has(ex.slug));
+  const list = runOrderList();
   if (list.length === 0) return; // Run Selected is disabled at 0, but guard anyway
   const voiceOn = document.getElementById('runAllVoice').checked;
 
