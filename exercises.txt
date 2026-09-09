@@ -340,14 +340,14 @@ Slug: bridge-single-leg
 Name: Bridge - Single Leg
 Category: hip
 Equipment: bodyweight
-Sets: 1
+Sets: 2
 Reps: 10
 Seconds: 8
 Rest: 6
 Description: A more advanced bridge variation that challenges one hip and leg at a time for greater glute and stability demand.
-Setup: Lie on your back with knees bent, feet flat on the floor. Extend one leg straight out, knees level.
+Setup: Lie on your back with knees bent, feet flat on the floor. Cross one ankle over the opposite knee.
 Movement: Squeeze your glute and lift your hips using only the leg on the ground, hold, then lower with control. Repeat other side.
-Tip: Keep your hips level - don't let the lifted-leg side drop as you press up.
+Tip: Keep your hips level - don't let the crossed-leg side drop as you press up.
 StartImage:
 FinishImage:
 
