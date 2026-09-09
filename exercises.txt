@@ -372,11 +372,11 @@ Category: back-shoulder
 Equipment: bodyweight
 Sets: 1
 Reps: 10
-Seconds: 5
+Seconds: 8
 Rest: 6
 Description: Targets the mid-trapezius by lifting arms out to the sides in a "T" position, completing the I/T/Y set.
-Setup: Lie face down, forehead resting down, arms extended straight out to the sides at shoulder height, thumbs up.
-Movement: Squeeze your shoulder blades together and lift both arms slightly off the surface, hold 5 seconds, lower with control.
+Setup: Lie face down, forehead resting down, arms extended straight out to the sides at shoulder height, palms down.
+Movement: Squeeze your shoulder blades together and lift both arms slightly off the surface, hold 8 seconds, lower with control.
 Tip: Keep arms level with shoulders - don't lift too high or strain your neck.
 StartImage:
 FinishImage:
