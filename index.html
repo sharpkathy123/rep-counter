@@ -1427,11 +1427,30 @@ function formatElapsed(ms) {
   return `${m}:${String(s).padStart(2, '0')}`;
 }
 
+// Same math the display timer uses, but callable on demand - e.g. to speak
+// the final total right before stopSessionTimer() clears sessionStartTime.
+function getElapsedMs() {
+  if (!sessionStartTime) return 0;
+  const pausedNow = sessionPauseStartedAt ? Date.now() - sessionPauseStartedAt : 0;
+  return Date.now() - sessionStartTime - sessionPausedAccum - pausedNow;
+}
+
 function updateSessionTimerDisplay() {
   if (!sessionStartTime) return;
-  const pausedNow = sessionPauseStartedAt ? Date.now() - sessionPauseStartedAt : 0;
-  const elapsedMs = Date.now() - sessionStartTime - sessionPausedAccum - pausedNow;
-  sessionTimerEl.textContent = '⏱ ' + formatElapsed(elapsedMs);
+  sessionTimerEl.textContent = '⏱ ' + formatElapsed(getElapsedMs());
+}
+
+// A spoken-friendly duration, distinct from formatDuration()'s "~2m 30s" -
+// that reads badly aloud (a screen reader/TTS voice sounds out "tilde" and
+// "m"), so this spells minutes/seconds out in words instead.
+function formatDurationSpoken(totalSeconds) {
+  const s = Math.max(0, Math.round(totalSeconds));
+  const m = Math.floor(s / 60);
+  const rem = s % 60;
+  if (m === 0) return `${rem} second${rem === 1 ? '' : 's'}`;
+  const minutePart = `${m} minute${m === 1 ? '' : 's'}`;
+  if (rem === 0) return minutePart;
+  return `${minutePart} and ${rem} second${rem === 1 ? '' : 's'}`;
 }
 
 // Skip/Repeat only make sense mid-sequence (Run All), so they're a separate
@@ -1743,6 +1762,7 @@ async function runAllExercises(list, voiceOn, token) {
   }
 
   if (token !== runToken) return;
+  const elapsedMs = getElapsedMs();
   setRunAllControlsVisible(false);
   stopSessionTimer();
   cLabelEl.textContent = '';
@@ -1751,7 +1771,7 @@ async function runAllExercises(list, voiceOn, token) {
   cBigEl.style.color = '';
   cSubEl.textContent = '';
   cFlash('set');
-  if (voiceOn) speakCount('Workout complete.');
+  if (voiceOn) speakCount(`Workout complete. That took ${formatDurationSpoken(elapsedMs / 1000)}.`);
   vibrate([100, 50, 100, 50, 100, 50, 200]);
 }
 
