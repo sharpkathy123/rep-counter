@@ -380,3 +380,139 @@ Movement: Squeeze your shoulder blades together and lift both arms slightly off 
 Tip: Keep arms level with shoulders - don't lift too high or strain your neck.
 StartImage:
 FinishImage:
+
+
+Slug: bridge-single-leg
+Name: Bridge - Single Leg
+Category: hip
+Equipment: bodyweight
+Sets: 3
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Builds glute and hip strength on one leg at a time while training your core to keep your pelvis level.
+Setup: Lie on your back with knees bent, feet flat on the floor, hip-width apart. Straighten one leg out or lift it toward your chest.
+Movement: Keeping your pelvis level, drive through your grounded heel to lift your hips off the floor, hold briefly, then lower with control. Complete all reps on one side before switching.
+Tip: Don't let your hips tilt or rotate toward the lifted leg - keep both hip points facing the ceiling.
+StartImage:
+FinishImage:
+
+Slug: ta-activation-supine
+Name: TA Activation - Supine Holds
+Category: core
+Equipment: bodyweight
+Sets: 10
+Reps: 1
+Seconds: 10
+Rest: 6
+Description: Trains the deep transversus abdominis muscle to brace and support the spine without engaging the larger outer abdominal muscles.
+Setup: Lie on your back with knees bent, feet flat on the floor, arms resting at your sides.
+Movement: Gently draw your lower belly in and up, as if snugging a belt in one notch, without flattening or arching your low back. Hold, breathing normally, then release.
+Tip: Keep breathing throughout the hold - don't hold your breath or let your ribs flare up.
+StartImage:
+FinishImage:
+
+Slug: 90-90-marching-ta
+Name: 90/90 Marching with TA Activation
+Category: core
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Challenges your deep core to keep your spine and pelvis stable while your hips move through a marching pattern.
+Setup: Lie on your back with hips and knees bent to 90 degrees, shins parallel to the floor. Engage your deep abdominal brace as in TA Activation.
+Movement: Keeping the brace on and your low back still, lower one foot to lightly tap the floor, then return to the 90/90 position and switch sides.
+Tip: Keep your low back pressed evenly to the floor - don't let your pelvis rock or your back arch as your leg lowers.
+StartImage:
+FinishImage:
+
+Slug: slr-ta-activation
+Name: Straight Leg Raise with TA Activation
+Category: core
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Combines a deep core brace with a straight-leg lift to train hip flexor strength without letting the low back or pelvis move.
+Setup: Lie on your back with one knee bent, foot flat on the floor, and the other leg straight. Engage your deep abdominal brace.
+Movement: Keeping the working knee straight and the brace on, lift the straight leg to the height of the opposite bent knee, then lower with control.
+Tip: Stop the lift as soon as your low back starts to arch off the floor - range of motion matters less than keeping the brace intact.
+StartImage:
+FinishImage:
+
+Slug: dead-bug
+Name: Dead Bug
+Category: core
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: A classic core stability drill that trains your midsection to resist movement while your arms and legs move independently.
+Setup: Lie on your back with arms reaching straight up toward the ceiling and hips and knees bent to 90 degrees, shins parallel to the floor.
+Movement: Keeping your low back flat against the floor, slowly lower one arm overhead and the opposite leg down toward the floor, then return and switch sides.
+Tip: Only lower as far as you can go without your low back arching off the floor.
+StartImage:
+FinishImage:
+
+Slug: 90-90-ltr
+Name: 90/90 Lower Trunk Rotation
+Category: core
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Mobilizes and controls rotation through the lower trunk and hips while keeping the upper body still.
+Setup: Lie on your back with hips and knees bent to 90 degrees, knees together, arms out to the sides for stability.
+Movement: Keeping your shoulders flat on the floor, slowly rotate your knees to one side as far as comfortable, then return to center and rotate to the other side.
+Tip: Move slowly and stop before your opposite shoulder lifts off the floor.
+StartImage:
+FinishImage:
+
+Slug: bird-dog
+Name: Bird Dog - Quadruped
+Category: core
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Builds core and back stability by training the trunk to stay steady while the opposite arm and leg move.
+Setup: Start on your hands and knees, hands under shoulders and knees under hips, spine in a neutral position.
+Movement: Extend one arm forward and the opposite leg straight back until both are in line with your torso, hold briefly, then return and switch sides.
+Tip: Keep your hips and shoulders level and facing the floor - don't let your low back sag or your hips rotate open.
+StartImage:
+FinishImage:
+
+Slug: pallof-press-standing
+Name: Pallof Press - Standing
+Category: core
+Equipment: band
+Sets: 2
+Reps: 15
+Seconds: 3
+Rest: 6
+Description: An anti-rotation exercise that trains your core to resist the band's pull rather than to actively bend or twist.
+Setup: Anchor the band at chest height to your side and stand sideways to the anchor, holding the band with both hands at your breastbone.
+Movement: Press the band straight out in front of your chest, keeping your torso facing forward, hold briefly, then return with control.
+Tip: Don't let your torso rotate toward the anchor as you press out or return - your hips and shoulders should stay square the whole time.
+StartImage:
+FinishImage:
+
+Slug: squats-multidirectional
+Name: Squats - Multi-Directional Stance (No Arm Support)
+Category: balance-legs
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Builds leg strength and balance through squats performed in different stance variations without using your arms for support.
+Setup: Stand with feet in the prescribed stance (facing forward, weight shifted right, or weight shifted left, per your therapist's instruction), arms free at your sides or crossed over your chest.
+Movement: Bend your hips and knees to lower into a squat, keeping your chest up and knees tracking over your toes, then push back up to standing.
+Tip: Keep your weight balanced on your whole foot and avoid letting your knees cave inward, especially in the weight-shifted stance.
+StartImage:
+FinishImage:
