@@ -1,0 +1,467 @@
+# Rep Counter -- Exercise Data
+#
+# Edit this file to add, remove, or change exercises. No coding needed --
+# just keep the "Field: value" shape below. Lines starting with # are
+# comments and are ignored. Save the file and refresh the app to see your
+# changes (the app also picks this up automatically the next time you're
+# online, even after Add to Home Screen).
+#
+# One exercise per block, separated by a blank line. Fields can be in any
+# order; you can leave optional fields blank.
+#
+# Required fields:
+#   Slug        A short unique id: lowercase letters, numbers, and
+#               hyphens only, no spaces (e.g. hip-abduction). The app
+#               uses this to remember your sets/reps and "last done"
+#               history for this exercise -- once you've used an
+#               exercise, try not to change its Slug, or that history
+#               starts over. If you leave Slug blank, the app makes one
+#               up from Name, which is fine for a brand new exercise.
+#   Name        The exercise name shown in the app.
+#   Category    A short label to group exercises for filtering, e.g.
+#               hip, core, back-shoulder, arms, balance-legs. You can
+#               invent a new one just by typing it here -- a filter chip
+#               for it appears automatically.
+#   Equipment   band, dumbbell, or bodyweight (also just a label -- a
+#               new one you invent gets its own filter chip too).
+#   Sets / Reps / Seconds / Rest
+#               Starting numbers (Seconds = per rep, Rest = seconds
+#               between sets). These are just the defaults shown when
+#               you first open the exercise -- you can always change
+#               them per-exercise right in the app too.
+#   Description One sentence: what this exercise is for.
+#   Setup       How to get into position.
+#   Movement    How to do one rep.
+#   Tip         A coaching cue or common mistake to avoid.
+#
+# Optional fields:
+#   StartImage / FinishImage
+#               Filename of a photo in this same folder (e.g.
+#               IMG_0306.jpeg). Leave both blank to use a built-in
+#               line-drawing icon instead. Two common ways to fill these
+#               in:
+#               - One photo per position: put the start photo in
+#                 StartImage and the finish photo in FinishImage -
+#                 they're shown side by side.
+#               - One combined photo: if you already have a single
+#                 photo showing both the start and finish position
+#                 (e.g. a "before/after" side-by-side shot), just put
+#                 its filename in StartImage and leave FinishImage
+#                 blank - it's shown at full size instead of being
+#                 cropped in half.
+#
+# Note on this version: descriptions, setup, movement, and tip text
+# below have been adapted for someone with osteoporosis of the spine,
+# based on guidance from the Bone Health & Osteoporosis Foundation, the
+# International Osteoporosis Foundation, and Mayo Clinic. The general
+# principles applied: avoid forward spinal flexion (rounding forward at
+# the waist), especially under load; avoid combined bending-and-twisting
+# and forceful or sudden rotation; avoid deep backbends; keep movements
+# slow and controlled rather than jerky or high-impact; and favor
+# exercises that build the back extensors, deep core, hips, and balance,
+# since these support the spine and reduce fall/fracture risk.
+
+Slug: hip-abduction
+Name: Hip Abduction - Standing
+Category: hip
+Equipment: band
+Sets: 4
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: Strengthens the outer hip and glute muscles that stabilize your pelvis while standing and walking - safe, spine-neutral strengthening for osteoporosis.
+Setup: Loop the exercise band just below knees. Stand tall next to a wall or chair and hold on for balance, keeping your spine upright rather than leaning on the support.
+Movement: Keeping your leg straight, torso tall, and toes pointing forward, lift your working leg out to the side against the band, hold momentarily, then return with control.
+Tip: Keep your spine tall and hips level throughout - don't lean your torso sideways or forward to help lift the leg.
+StartImage:
+FinishImage:
+
+Slug: hip-extension
+Name: Hip Extension - Standing
+Category: hip
+Equipment: band
+Sets: 4
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: Strengthens the glutes and hamstrings used to push your leg backward, important for walking and stairs, while keeping the spine in a safe, neutral position.
+Setup: Loop the exercise band just below knees. Face something stable for balance, standing tall with a neutral spine.
+Movement: Keeping your knee straight, toes forward, and spine tall, extend your working leg backward and slightly outward against the band, squeeze your glute, then return with control.
+Tip: Keep your torso upright and still - avoid arching or overextending your lower back to get extra range; the motion should come from the hip, not the spine.
+StartImage:
+FinishImage:
+
+Slug: pnf-d2
+Name: PNF D2 - Standing
+Category: back-shoulder
+Equipment: band
+Sets: 4
+Reps: 10
+Seconds: 6
+Rest: 6
+Description: A diagonal arm pattern that trains the shoulder and trunk to work together through a full range, mimicking reaching-and-rotating movements, while keeping the spine still and supported.
+Setup: Stand tall with a neutral spine. Hold one end of the resistance band low, at your side opposite your working arm. Hold the other end of the band with your working hand near the other hand.
+Movement: Sweep your working arm in one smooth diagonal, up and out, finishing overhead and out to the side with your palm turning to face away from you. Keep your wrist neutral and your torso facing forward the whole time. Reverse slowly to return.
+Tip: Let the movement happen at your shoulder and arm - keep your hips and spine facing forward and still, without twisting or leaning your trunk to help the reach.
+StartImage:
+FinishImage:
+
+Slug: bicep-curl
+Name: Bicep Curls
+Category: arms
+Equipment: dumbbell
+Sets: 2
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: Strengthens the biceps at the front of the upper arm, used for lifting and carrying, while reinforcing a tall, spine-safe standing posture.
+Setup: Stand tall with your spine in a neutral position, arms straight down at your sides, holding a dumbbell in each hand, palms facing forward.
+Movement: Curl one or both dumbbells up toward your shoulder while keeping your elbow tucked at your side and your torso upright, lower with control, then alternate arms.
+Tip: Keep your chest lifted and spine tall throughout - don't lean back or round forward to swing the weight up.
+StartImage:
+FinishImage:
+
+Slug: bridge
+Name: Bridge
+Category: hip
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Strengthens the glutes and lower back extensors while keeping the spine in a supported, neutral position - a good spine-safe alternative to flexion-based ab exercises.
+Setup: Lie on your back with your knees bent and feet flat on the floor, hip-width apart.
+Movement: Squeeze your glutes and lift your hips toward the ceiling until your body forms a straight line from knees to shoulders. Hold 5 seconds, then lower with control.
+Tip: Drive through your heels and keep the lift moderate - avoid pushing into a deep arch or over-extending your lower back at the top.
+StartImage: IMG_0313.jpeg
+FinishImage:
+
+Slug: clamshell
+Name: Clamshell - Side Lying
+Category: hip
+Equipment: band
+Sets: 4
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Targets the outer hip (glute medius) to improve hip stability, done fully supported lying on your side so there's no bending or twisting load on the spine.
+Setup: Lie on your side with knees bent about 45 degrees, hips stacked, spine in a straight line from head to hips, and the band looped around your thighs just above the knees.
+Movement: Keeping your feet together and your spine still, open your top knee upward like a clamshell, then lower it with control.
+Tip: Keep your hips and spine stacked and still - don't let your top hip or your trunk roll backward as you open your knee.
+StartImage: IMG_0312.jpeg
+FinishImage:
+
+Slug: abdominal-bracing-marches
+Name: Abdominal Bracing - Marches
+Category: core
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Trains your deep core to brace and keep your spine steady and neutral while your legs move - a spine-safe alternative to crunches or sit-ups for people with osteoporosis.
+Setup: Lie on your back, exercise band around legs just above knees, knees bent, feet flat on the floor. Gently brace your abdominals as if about to be poked in the stomach, without flattening or arching your low back.
+Movement: Keeping the brace and your low back still and neutral, lift one foot off the floor to a tabletop position, then lower with control and switch legs.
+Tip: Keep your low back in its natural neutral position the whole time - don't flatten it hard into the floor or let your pelvis rock side to side.
+StartImage: IMG_0311.jpeg
+FinishImage:
+
+Slug: sit-to-stand
+Name: Sit to Stand - Arms Crossed
+Category: balance-legs
+Equipment: bodyweight
+Sets: 2
+Reps: 12
+Seconds: 4
+Rest: 6
+Description: Builds functional leg and core strength for getting up from a chair without using your hands, momentum, or rounding your back forward.
+Setup: Sit toward the front edge of a sturdy chair, feet flat on the floor, arms crossed over your chest, spine tall.
+Movement: Keeping your chest lifted and spine long, hinge slightly forward from your hips and push through your feet to stand up fully, then lower back down to the chair with control.
+Tip: Keep your chest up and back straight the whole time - avoid rounding your back forward or rocking to gain momentum.
+StartImage: IMG_0310.jpeg
+FinishImage:
+
+Slug: no-money
+Name: No Money - Scapular Retraction
+Category: back-shoulder
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Strengthens the mid-back and rotator cuff muscles that support upright, spine-friendly posture and help counter the forward-rounded posture common with osteoporosis.
+Setup: Stand or sit tall. Hold the band with both hands, shoulder-width apart. Bend your elbows 90 degrees and tuck them at your sides, forearms pointing forward, palms up.
+Movement: Keeping your elbows glued to your sides and your spine tall, rotate your forearms outward away from each other while squeezing your shoulder blades together, then return with control.
+Tip: Keep your elbows pinned to your sides and your chest lifted - the motion happens at the shoulder, not by flaring the elbows out or slumping forward.
+StartImage: IMG_0307.jpeg
+FinishImage:
+
+Slug: shoulder-horizontal-abduction
+Name: Shoulder Horizontal Abduction
+Category: back-shoulder
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Strengthens the mid-back and rear shoulder muscles that pull the shoulders into good, spine-supportive posture.
+Setup: Stand or sit tall, holding the band in front of you in each hand with arms extended forward at shoulder height, palms down.
+Movement: Keeping your arms roughly straight, at shoulder height, and your spine tall, pull both arms out to the sides, squeezing your shoulder blades together, then return with control.
+Tip: Keep your shoulders down, away from your ears, and your chest lifted throughout the movement - don't let your upper back round forward.
+StartImage: IMG_0309.jpeg
+FinishImage:
+
+Slug: rows
+Name: Rows with Resistance Bands
+Category: back-shoulder
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 5
+Rest: 6
+Description: Strengthens the mid-back muscles that pull your shoulder blades together, countering the forward-slumped, flexed posture that osteoporosis can worsen.
+Setup: Anchor the band in front of you at chest height and step back for tension. Stand tall with your spine neutral, starting with arms extended forward.
+Movement: Pull your elbows straight back, squeezing your shoulder blades together and keeping your spine tall and elbows close to your body, hold momentarily, then return with control.
+Tip: Keep your chest up and spine tall - avoid shrugging your shoulders toward your ears or leaning your trunk forward as you pull.
+StartImage: IMG_0306.jpeg
+FinishImage:
+
+Slug: shoulder-extension
+Name: Shoulder Extension
+Category: back-shoulder
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 5
+Rest: 6
+Description: Strengthens the back of the shoulder and lat muscles used to pull your arm down and back, performed with a tall, supported spine.
+Setup: Anchor the band in front of you at shoulder height. Stand tall with a neutral spine. Hold the band ends with your arms extended forward. Step back for tension.
+Movement: Keeping your elbow straight and your torso still, pull your arm down and back past your hip against the band, hold momentarily, then return with control.
+Tip: Keep your torso upright and still - avoid leaning back or arching your lower back to generate extra range.
+StartImage: IMG_0319.jpeg
+FinishImage:
+
+Slug: scapular-retraction-prone-arms-side
+Name: Scapular Retraction - Prone (Arms at Side)
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Strengthens the mid-back and lower trapezius muscles that hold your shoulder blades down and back - gentle back-extensor work that's specifically recommended for people with osteoporosis to support upright posture.
+Setup: Lie face down on a bed, table, or the floor, forehead resting down, arms resting straight alongside your body, palms facing in or up.
+Movement: Without lifting your arms, squeeze your shoulder blades down and together, hold 5 seconds, then release with control.
+Tip: Keep your neck relaxed and the effort in your shoulder blades - avoid shrugging your shoulders up toward your ears or pushing into a deep backward arch.
+StartImage:
+FinishImage:
+
+Slug: scapular-retraction-prone-arms-side-lift
+Name: Scapular Retraction - Prone (Arms at Side, Lift)
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Builds on the arms-at-side version with a small arm lift, adding gentle back-extensor strengthening that's beneficial for spinal support in osteoporosis.
+Setup: Lie face down, forehead resting down, arms resting straight alongside your body, palms facing in or up.
+Movement: Squeeze your shoulder blades together and lift both arms a few inches off the surface, hold 5 seconds, then lower with control.
+Tip: Lift from your shoulder blades with a small, controlled range - avoid pushing into a deep backward arch through your lower back.
+StartImage:
+FinishImage:
+
+Slug: scapular-retraction-prone-arms-overhead-lift
+Name: Scapular Retraction - Prone (Arms Overhead, Lift)
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: The most demanding version, challenging the mid and lower trapezius through an overhead range - keep this one gentle, since deep backward bending should be avoided with osteoporosis.
+Setup: Lie face down, forehead resting down, arms extended straight overhead in a "Y" position, thumbs pointing up.
+Movement: Squeeze your shoulder blades down and together and lift both arms a small amount off the surface, hold 5 seconds, then lower with control.
+Tip: Keep the lift small and pain-free rather than reaching for maximum height - this is meant to be a gentle extensor exercise, not a deep backbend.
+StartImage:
+FinishImage:
+
+Slug: bent-over-rows-dumbbell
+Name: Supported Row - Dumbbell (Spine-Safe)
+Category: back-shoulder
+Equipment: dumbbell
+Sets: 4
+Reps: 12
+Seconds: 3
+Rest: 6
+Description: Strengthens the mid-back and rear shoulder muscles used for good posture, using a supported, minimal-hinge position to avoid the forward spinal bending that a traditional bent-over row involves.
+Setup: Holding a dumbbell in one hand, support yourself firmly with your other hand on the back of a sturdy chair or a counter. Keep your spine straight and only hinge slightly forward from your hips - much less than a traditional bent-over row - so your back stays flat and close to upright.
+Movement: Pull the dumbbell straight up toward your hip, leading with your elbow and squeezing your shoulder blade back, then lower with control.
+Tip: Keep your back flat and your forward lean minimal - never round your spine forward to reach the weight, and stop if this position isn't comfortable for your spine.
+StartImage:
+FinishImage:
+
+Slug: sit-to-stand-lower-extremity-bias
+Name: Sit to Stand - Lower Extremity Bias
+Category: balance-legs
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: A variation of Sit to Stand that puts more of the demand on the legs alone, with a tall, spine-safe posture. Do one set per foot in front.
+Setup: Sit toward the front edge of a sturdy chair, feet flat on the floor, with one foot further away than the other, spine tall.
+Movement: Keeping your chest lifted and spine long, push through your feet to stand up fully using your legs, then lower back down to the chair with control, keeping both feet flat on the floor.
+Tip: Move slowly on the way down and keep your back straight rather than rounding forward - control on the descent is what builds leg strength, not just standing up quickly.
+StartImage:
+FinishImage:
+
+Slug: heel-raise-single-leg
+Name: Heel Raise - Single Leg
+Category: balance-legs
+Equipment: bodyweight
+Sets: 4
+Reps: 12
+Seconds: 2
+Rest: 6
+Description: Strengthens the calf muscles on one leg at a time, important for push-off during walking and for balance. This weight-bearing exercise is spine-neutral and good for bone health. Do two sets per foot.
+Setup: Stand tall on one leg near a wall or counter for light balance support, with your other foot lifted slightly off the floor. You can tuck the lifted foot behind the standing leg.
+Movement: Keeping your spine tall, rise up onto the ball of your standing foot as high as comfortable, hold, then lower your heel back down with control.
+Tip: Rise straight up on the ball of your foot without leaning your torso forward or letting your ankle roll inward or outward.
+StartImage:
+FinishImage:
+
+Slug: bridge-single-leg
+Name: Bridge - Single Leg
+Category: hip
+Equipment: bodyweight
+Sets: 3
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Builds glute and hip strength on one leg at a time while training your core to keep your pelvis level - a spine-neutral extensor exercise well suited to osteoporosis.
+Setup: Lie on your back with knees bent, feet flat on the floor, hip-width apart. Straighten one leg out or lift it toward your chest.
+Movement: Keeping your pelvis level and your low back neutral, drive through your grounded heel to lift your hips off the floor, hold briefly, then lower with control. Complete all reps on one side before switching.
+Tip: Don't let your hips tilt or rotate toward the lifted leg, and avoid pushing into a deep arch at the top - keep both hip points facing the ceiling.
+StartImage:
+FinishImage:
+
+Slug: ta-activation-supine
+Name: Abdominal Bracing - Transverse Abdominis Activation
+Category: core
+Equipment: bodyweight
+Sets: 10
+Reps: 1
+Seconds: 10
+Rest: 6
+Description: Trains the deep transversus abdominis muscle to brace and support the spine in a neutral position, without the forward bending of traditional ab exercises - one of the safest and most recommended core exercises for osteoporosis.
+Setup: Lie on your back with knees bent, feet flat on the floor, arms resting at your sides, spine in a comfortable neutral position.
+Movement: Gently draw your belly towards your spine. Hold, breathing normally, then release.
+Tip: Keep breathing throughout the hold - don't hold your breath, flatten your low back hard into the floor, or let your ribs flare up.
+StartImage:
+FinishImage:
+
+Slug: 90-90-marching-ta
+Name: Abdominal Bracing - Supine Marches Up/Up Down/Down
+Category: core
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Challenges your deep core to keep your spine steady and neutral while your hips move through a marching pattern - a spine-safe way to build core control for osteoporosis.
+Setup: Lie on your back with hips and knees bent. Engage your deep abdominal brace as in TA Activation.
+Movement: Keeping the brace on and your low back still and neutral, raise one knee straight up with shin parallel to floor, then raise the other knee similarly, then return each in turn to the original position, and switch sides.
+Tip: Keep your low back in its natural neutral curve the whole time - don't let your pelvis rock or your back arch or flatten as your leg lowers.
+StartImage:
+FinishImage:
+
+Slug: slr-ta-activation
+Name: Straight Leg Raise with TA Activation
+Category: core
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Combines a deep core brace with a straight-leg lift to train hip flexor strength without letting the low back or pelvis move out of a safe, neutral position.
+Setup: Lie on your back with one knee bent, foot flat on the floor, and the other leg straight. Engage your deep abdominal brace.
+Movement: Keeping the working knee straight and the brace on, lift the straight leg to the height of the opposite bent knee, then lower with control.
+Tip: Stop the lift as soon as your low back starts to arch off the floor - keeping your spine neutral matters more than how high the leg goes.
+StartImage:
+FinishImage:
+
+Slug: dead-bug
+Name: Dead Bug
+Category: core
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: A core stability drill that trains your midsection to keep your spine still and neutral while your arms and legs move independently - a good flexion-free alternative to crunches for osteoporosis.
+Setup: Lie on your back with arms reaching straight up toward the ceiling and hips and knees bent to 90 degrees, shins parallel to the floor.
+Movement: Keeping your low back in a neutral position against the floor, slowly lower one arm overhead and the opposite leg down toward the floor, then return and switch sides.
+Tip: Only lower as far as you can go without your low back arching up off the floor or flattening hard into it.
+StartImage:
+FinishImage:
+
+Slug: 90-90-ltr
+Name: 90/90 Lower Trunk Rotation (Gentle Range)
+Category: core
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 10
+Rest: 6
+Description: A gentle, supported mobility exercise for the lower trunk and hips. Rotation should always be done slowly and within a small, comfortable range for osteoporosis, rather than forced to full range.
+Setup: Lie on your back with hips and knees up and bent to 90 degrees, knees together, arms out to the sides for stability.
+Movement: Keeping your shoulders flat on the floor, slowly rotate your knees a small, comfortable distance to one side, then return to center and rotate gently to the other side.
+Tip: Move slowly and only as far as is pain-free - never force the rotation or let it feel like a twisting stretch, and stop if it causes any spinal discomfort.
+StartImage:
+FinishImage:
+
+Slug: bird-dog
+Name: Bird Dog - Quadruped
+Category: core
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 10
+Rest: 6
+Description: Builds core and back extensor stability by training the trunk to stay steady and neutral while the opposite arm and leg move - one of the most commonly recommended core exercises for people with osteoporosis.
+Setup: Start on your hands and knees, hands under shoulders and knees under hips, spine in a neutral position (not sagging or rounding).
+Movement: Extend one arm forward and the opposite leg straight back until both are in line with your torso, hold briefly, then return and switch sides.
+Tip: Keep your spine still and level throughout - don't let your low back sag, round, or overarch, and don't let your hips rotate open.
+StartImage:
+FinishImage:
+
+Slug: pallof-press-standing
+Name: Pallof Press - Standing
+Category: core
+Equipment: band
+Sets: 2
+Reps: 15
+Seconds: 4
+Rest: 6
+Description: An anti-rotation exercise that trains your core to resist the band's pull rather than to actively bend or twist - an ideal spine-safe core exercise for osteoporosis, since it strengthens the trunk without ever flexing or rotating the spine.
+Setup: Anchor the band at chest height to your side and stand tall, sideways to the anchor, holding the band with both hands at your breastbone, knees bent.
+Movement: Press the band straight out in front of your chest, keeping your torso facing forward and your spine tall, hold briefly, then return with control.
+Tip: Don't let your torso rotate toward the anchor as you press out or return - your hips, shoulders, and spine should stay square and still the whole time.
+StartImage:
+FinishImage:
+
+Slug: squats-multidirectional
+Name: Squats - Multi-Directional Stance (No Arm Support)
+Category: balance-legs
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Builds leg strength and balance through squats performed in different stance variations without arm support - weight-bearing exercise that's good for bone health, done with an upright spine.
+Setup: Stand with feet facing forward, hip width apart, one toe across from the other heel, arms free at your sides or crossed over your chest, spine tall.
+Movement: Keeping your chest lifted and spine upright, bend your hips and knees to lower into a squat, knees tracking over your toes, then push back up to standing. Do one set per side.
+Tip: Keep your chest up and back straight rather than leaning your torso forward, and avoid letting your knees cave inward, especially in the weight-shifted stance.
+StartImage:
+FinishImage:
