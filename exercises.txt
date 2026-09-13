@@ -362,7 +362,7 @@ StartImage:
 FinishImage:
 
 Slug: ta-activation-supine
-Name: Abdominal Bracing - Transverse Abdominis Activation
+Name: Abdominal Bracing - Activate Transverse Abdominis
 Category: core
 Equipment: bodyweight
 Sets: 10
@@ -470,14 +470,14 @@ Slug: squats-multidirectional
 Name: Squats - Multi-Directional Stance (No Arm Support)
 Category: balance-legs
 Equipment: bodyweight
-Sets: 2
+Sets: 3
 Reps: 10
 Seconds: 3
 Rest: 6
-Description: Builds leg strength and balance through squats performed in different stance variations without arm support - weight-bearing exercise that's good for bone health, done with an upright spine.
-Setup: Stand with feet facing forward, hip width apart, one toe across from the other heel, arms free at your sides or crossed over your chest, spine tall.
-Movement: Keeping your chest lifted and spine upright, bend your hips and knees to lower into a squat, knees tracking over your toes, then push back up to standing. Do one set per side.
-Tip: Keep your chest up and back straight rather than leaning your torso forward, and avoid letting your knees cave inward, especially in the weight-shifted stance.
+Description: Builds leg strength and balance through squats performed in three stance variations without arm support - weight-bearing exercise that's good for bone health, done with an upright spine.
+Setup: Stand with feet facing forward, hip width apart, arms free at your sides or crossed over your chest, spine tall.
+Movement: Keeping your chest lifted and spine upright, bend your hips and knees to lower into a squat, knees tracking over your toes, then push back up to standing. Do the first set with your feet aligned side by side, the second set with your left foot staggered forward, and the third set with your right foot staggered forward.
+Tip: Keep your chest up and back straight rather than leaning your torso forward, and avoid letting your knees cave inward, especially during the staggered-stance sets.
 StartImage:
 FinishImage:
 
