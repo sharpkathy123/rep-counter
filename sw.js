@@ -28,7 +28,8 @@ const APP_SHELL = [
   './IMG_0310.jpeg',
   './IMG_0311.jpeg',
   './IMG_0312.jpeg',
-  './IMG_0313.jpeg'
+  './IMG_0313.jpeg',
+  './IMG_0319.jpeg'
 ];
 
 self.addEventListener('install', (event) => {
