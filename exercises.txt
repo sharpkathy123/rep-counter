@@ -271,6 +271,36 @@ Tip: Lift from your shoulder blades with a small, controlled range - avoid pushi
 StartImage:
 FinishImage:
 
+Slug: scapular-retraction-prone-arms-out-t
+Name: Scapular Retraction - Prone (Arms Out, "T")
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Targets the mid-trapezius through a "T" arm position, part of the I/T/Y set of gentle back-extensor exercises recommended for osteoporosis.
+Setup: Lie face down, forehead resting down, arms extended straight out to the sides at shoulder height, palms down.
+Movement: Squeeze your shoulder blades together and lift both arms a small amount off the surface, hold 5 seconds, then lower with control.
+Tip: Keep your arms level with your shoulders and the lift small - avoid raising your arms higher than your back or straining your neck.
+StartImage:
+FinishImage:
+
+Slug: scapular-retraction-prone-arms-overhead-i
+Name: Scapular Retraction - Prone (Arms Overhead, "I")
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Targets the lower trapezius through a fully overhead "I" arm position, part of the I/T/Y set of gentle back-extensor exercises recommended for osteoporosis.
+Setup: Lie face down, forehead resting down, arms extended straight overhead and together, thumbs pointing up.
+Movement: Squeeze your shoulder blades down and together and lift both arms a small amount off the surface, hold 5 seconds, then lower with control.
+Tip: Keep your arms together overhead and the lift small and pain-free - this is meant to be a gentle extensor exercise, not a reach for maximum height.
+StartImage:
+FinishImage:
+
 Slug: scapular-retraction-prone-arms-overhead-lift
 Name: Scapular Retraction - Prone (Arms Overhead, Lift)
 Category: back-shoulder
@@ -463,5 +493,50 @@ Description: Builds leg strength and balance through squats performed in differe
 Setup: Stand with feet facing forward, hip width apart, one toe across from the other heel, arms free at your sides or crossed over your chest, spine tall.
 Movement: Keeping your chest lifted and spine upright, bend your hips and knees to lower into a squat, knees tracking over your toes, then push back up to standing. Do one set per side.
 Tip: Keep your chest up and back straight rather than leaning your torso forward, and avoid letting your knees cave inward, especially in the weight-shifted stance.
+StartImage:
+FinishImage:
+
+Slug: squats-multidirectional-ue-support
+Name: Squats - Multi-Directional Stance (with Upper Extremity Support)
+Category: balance-legs
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: The same multi-directional squat pattern as a light hand-supported version - a good stepping stone while building the strength and confidence to progress to squats without arm support.
+Setup: Stand facing a sturdy chair or counter, feet facing forward hip-width apart, one toe across from the other heel, holding on lightly with one or both hands for balance, spine tall.
+Movement: Keeping your chest lifted and spine upright, bend your hips and knees to lower into a squat, knees tracking over your toes, using your hands only as needed for balance, then push back up to standing. Do one set per side.
+Tip: Use the support for balance, not to pull yourself up - let your legs do the work, and avoid letting your knees cave inward.
+StartImage:
+FinishImage:
+
+Slug: bridge-alternating-march
+Name: Supine Bridge + Alternating March
+Category: hip
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Builds on the basic bridge by adding an alternating single-leg march at the top, challenging hip and core stability while keeping the spine supported and neutral.
+Setup: Lie on your back with your knees bent and feet flat on the floor, hip-width apart.
+Movement: Squeeze your glutes and lift your hips into a bridge, then, keeping your hips level and still, lift one knee toward your chest and lower it back down, then alternate to the other side without dropping your hips.
+Tip: Keep both hip points facing the ceiling and level throughout - don't let your hips dip or rotate toward the lifted leg.
+StartImage:
+FinishImage:
+
+Slug: bicep-curl-seated
+Name: Seated Bicep Curls
+Category: arms
+Equipment: dumbbell
+Sets: 2
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: Strengthens the biceps at the front of the upper arm from a stable seated position, reducing balance demand while reinforcing a tall, spine-safe posture.
+Setup: Sit tall in a sturdy chair with your feet flat on the floor and your back supported, holding a dumbbell in each hand with arms straight down at your sides, palms facing forward.
+Movement: Curl one or both dumbbells up toward your shoulder while keeping your elbow tucked at your side and your spine tall, lower with control, then alternate arms.
+Tip: Keep your back against the chair and chest lifted throughout - don't lean back or round forward to swing the weight up.
 StartImage:
 FinishImage:
