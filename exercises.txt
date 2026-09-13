@@ -67,7 +67,7 @@ Category: hip
 Equipment: band
 Sets: 4
 Reps: 10
-Seconds: 3
+Seconds: 4
 Rest: 6
 Description: Strengthens the outer hip and glute muscles that stabilize your pelvis while standing and walking - safe, spine-neutral strengthening for osteoporosis.
 Setup: Loop the exercise band just below knees. Stand tall next to a wall or chair and hold on for balance, keeping your spine upright rather than leaning on the support.
@@ -82,7 +82,7 @@ Category: hip
 Equipment: band
 Sets: 4
 Reps: 10
-Seconds: 3
+Seconds: 4
 Rest: 6
 Description: Strengthens the glutes and hamstrings used to push your leg backward, important for walking and stairs, while keeping the spine in a safe, neutral position.
 Setup: Loop the exercise band just below knees. Face something stable for balance, standing tall with a neutral spine.
@@ -97,7 +97,7 @@ Category: back-shoulder
 Equipment: band
 Sets: 4
 Reps: 10
-Seconds: 5
+Seconds: 6
 Rest: 6
 Description: A diagonal arm pattern that trains the shoulder and trunk to work together through a full range, mimicking reaching-and-rotating movements, while keeping the spine still and supported.
 Setup: Stand tall with a neutral spine. Hold one end of the resistance band low, at your side opposite your working arm. Hold the other end of the band with your working hand near the other hand.
@@ -142,7 +142,7 @@ Category: hip
 Equipment: band
 Sets: 4
 Reps: 10
-Seconds: 2
+Seconds: 3
 Rest: 6
 Description: Targets the outer hip (glute medius) to improve hip stability, done fully supported lying on your side so there's no bending or twisting load on the spine.
 Setup: Lie on your side with knees bent about 45 degrees, hips stacked, spine in a straight line from head to hips, and the band looped around your thighs just above the knees.
@@ -157,7 +157,7 @@ Category: core
 Equipment: band
 Sets: 2
 Reps: 10
-Seconds: 2
+Seconds: 8
 Rest: 6
 Description: Trains your deep core to brace and keep your spine steady and neutral while your legs move - a spine-safe alternative to crunches or sit-ups for people with osteoporosis.
 Setup: Lie on your back, exercise band around legs just above knees, knees bent, feet flat on the floor. Gently brace your abdominals as if about to be poked in the stomach, without flattening or arching your low back.
@@ -217,7 +217,7 @@ Category: back-shoulder
 Equipment: band
 Sets: 2
 Reps: 10
-Seconds: 3
+Seconds: 5
 Rest: 6
 Description: Strengthens the mid-back muscles that pull your shoulder blades together, countering the forward-slumped, flexed posture that osteoporosis can worsen.
 Setup: Anchor the band in front of you at chest height and step back for tension. Stand tall with your spine neutral, starting with arms extended forward.
@@ -232,7 +232,7 @@ Category: back-shoulder
 Equipment: band
 Sets: 2
 Reps: 10
-Seconds: 3
+Seconds: 5
 Rest: 6
 Description: Strengthens the back of the shoulder and lat muscles used to pull your arm down and back, performed with a tall, supported spine.
 Setup: Anchor the band in front of you at shoulder height. Stand tall with a neutral spine. Hold the band ends with your arms extended forward. Step back for tension.
@@ -347,7 +347,7 @@ StartImage:
 FinishImage:
 
 Slug: ta-activation-supine
-Name: TA Activation - Supine Holds
+Name: Abdominal Bracing - Transverse Abdominis Activation
 Category: core
 Equipment: bodyweight
 Sets: 10
@@ -356,13 +356,13 @@ Seconds: 10
 Rest: 6
 Description: Trains the deep transversus abdominis muscle to brace and support the spine in a neutral position, without the forward bending of traditional ab exercises - one of the safest and most recommended core exercises for osteoporosis.
 Setup: Lie on your back with knees bent, feet flat on the floor, arms resting at your sides, spine in a comfortable neutral position.
-Movement: Gently draw your lower belly in and up, as if snugging a belt in one notch, without flattening or arching your low back. Hold, breathing normally, then release.
+Movement: Gently draw your belly towards your spine. Hold, breathing normally, then release.
 Tip: Keep breathing throughout the hold - don't hold your breath, flatten your low back hard into the floor, or let your ribs flare up.
 StartImage:
 FinishImage:
 
 Slug: 90-90-marching-ta
-Name: 90/90 Marching with TA Activation
+Name: Abdominal Bracing - Supine Marches Up/Up Down/Down
 Category: core
 Equipment: bodyweight
 Sets: 2
@@ -370,8 +370,8 @@ Reps: 10
 Seconds: 3
 Rest: 6
 Description: Challenges your deep core to keep your spine steady and neutral while your hips move through a marching pattern - a spine-safe way to build core control for osteoporosis.
-Setup: Lie on your back with hips and knees bent to 90 degrees, shins parallel to the floor. Engage your deep abdominal brace as in TA Activation.
-Movement: Keeping the brace on and your low back still and neutral, lower one foot to lightly tap the floor, then return to the 90/90 position and switch sides.
+Setup: Lie on your back with hips and knees bent. Engage your deep abdominal brace as in TA Activation.
+Movement: Keeping the brace on and your low back still and neutral, raise one knee straight up with shin parallel to floor, then raise the other knee similarly, then return each in turn to the original position, and switch sides.
 Tip: Keep your low back in its natural neutral curve the whole time - don't let your pelvis rock or your back arch or flatten as your leg lowers.
 StartImage:
 FinishImage:
@@ -397,7 +397,7 @@ Category: core
 Equipment: bodyweight
 Sets: 1
 Reps: 10
-Seconds: 3
+Seconds: 8
 Rest: 6
 Description: A core stability drill that trains your midsection to keep your spine still and neutral while your arms and legs move independently - a good flexion-free alternative to crunches for osteoporosis.
 Setup: Lie on your back with arms reaching straight up toward the ceiling and hips and knees bent to 90 degrees, shins parallel to the floor.
@@ -412,10 +412,10 @@ Category: core
 Equipment: bodyweight
 Sets: 2
 Reps: 10
-Seconds: 3
+Seconds: 10
 Rest: 6
 Description: A gentle, supported mobility exercise for the lower trunk and hips. Rotation should always be done slowly and within a small, comfortable range for osteoporosis, rather than forced to full range.
-Setup: Lie on your back with hips and knees bent to 90 degrees, knees together, arms out to the sides for stability.
+Setup: Lie on your back with hips and knees up and bent to 90 degrees, knees together, arms out to the sides for stability.
 Movement: Keeping your shoulders flat on the floor, slowly rotate your knees a small, comfortable distance to one side, then return to center and rotate gently to the other side.
 Tip: Move slowly and only as far as is pain-free - never force the rotation or let it feel like a twisting stretch, and stop if it causes any spinal discomfort.
 StartImage:
@@ -427,7 +427,7 @@ Category: core
 Equipment: bodyweight
 Sets: 1
 Reps: 10
-Seconds: 3
+Seconds: 10
 Rest: 6
 Description: Builds core and back extensor stability by training the trunk to stay steady and neutral while the opposite arm and leg move - one of the most commonly recommended core exercises for people with osteoporosis.
 Setup: Start on your hands and knees, hands under shoulders and knees under hips, spine in a neutral position (not sagging or rounding).
@@ -442,10 +442,10 @@ Category: core
 Equipment: band
 Sets: 2
 Reps: 15
-Seconds: 3
+Seconds: 4
 Rest: 6
 Description: An anti-rotation exercise that trains your core to resist the band's pull rather than to actively bend or twist - an ideal spine-safe core exercise for osteoporosis, since it strengthens the trunk without ever flexing or rotating the spine.
-Setup: Anchor the band at chest height to your side and stand tall, sideways to the anchor, holding the band with both hands at your breastbone.
+Setup: Anchor the band at chest height to your side and stand tall, sideways to the anchor, holding the band with both hands at your breastbone, knees bent.
 Movement: Press the band straight out in front of your chest, keeping your torso facing forward and your spine tall, hold briefly, then return with control.
 Tip: Don't let your torso rotate toward the anchor as you press out or return - your hips, shoulders, and spine should stay square and still the whole time.
 StartImage:
@@ -455,13 +455,13 @@ Slug: squats-multidirectional
 Name: Squats - Multi-Directional Stance (No Arm Support)
 Category: balance-legs
 Equipment: bodyweight
-Sets: 1
+Sets: 2
 Reps: 10
 Seconds: 3
 Rest: 6
 Description: Builds leg strength and balance through squats performed in different stance variations without arm support - weight-bearing exercise that's good for bone health, done with an upright spine.
-Setup: Stand with feet in the prescribed stance (facing forward, weight shifted right, or weight shifted left, per your therapist's instruction), arms free at your sides or crossed over your chest, spine tall.
-Movement: Keeping your chest lifted and spine upright, bend your hips and knees to lower into a squat, knees tracking over your toes, then push back up to standing.
+Setup: Stand with feet facing forward, hip width apart, one toe across from the other heel, arms free at your sides or crossed over your chest, spine tall.
+Movement: Keeping your chest lifted and spine upright, bend your hips and knees to lower into a squat, knees tracking over your toes, then push back up to standing. Do one set per side.
 Tip: Keep your chest up and back straight rather than leaning your torso forward, and avoid letting your knees cave inward, especially in the weight-shifted stance.
 StartImage:
 FinishImage:
