@@ -549,7 +549,7 @@
   <button id="runAllBtn" onclick="startRunAll()" disabled>&#9654; Run Selected</button>
   <a id="voiceSettingsLink" href="counter.html">&#128264; Voice settings &amp; test</a>
 </div>
-<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-13T01:04:18Z</span></div>
+<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-13T01:30:33Z</span></div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
@@ -1593,7 +1593,7 @@ async function runCount(sets, reps, seconds, rest, voiceOn, token, slug) {
     cLabelEl.textContent = `Set ${s} of ${sets}`;
     cBigEl.textContent = '';
     cSubEl.textContent = '';
-    speakFn(`Set ${s} of ${sets}`);
+    speakFn(`Starting set ${s} in`);
     vibrate([40, 40, 40]);
     await pausableWait(900, token);
     if (aborted(token)) return;
@@ -1631,7 +1631,11 @@ async function runCount(sets, reps, seconds, rest, voiceOn, token, slug) {
     vibrate([60, 40, 60]);
     if (s < sets) {
       // One utterance instead of two back-to-back calls, so "Set complete"
-      // isn't cancelled the instant "Rest, N seconds" starts.
+      // isn't cancelled the instant "Rest, N seconds" starts. Rest itself is
+      // silent after that - just this one announcement, no per-second
+      // ticking - so it doesn't compete with the "Starting set N in" +
+      // 3-2-1-Go cue that kicks off the next set. The on-screen number still
+      // counts down visually.
       speakFn(rest > 0 ? `Set complete. Rest ${rest} seconds.` : 'Set complete.');
       await pausableWait(900, token);
       if (aborted(token)) return;
@@ -1642,9 +1646,6 @@ async function runCount(sets, reps, seconds, rest, voiceOn, token, slug) {
           cBigEl.className = 'c-rest';
           cBigEl.style.color = lerpColor(REST_START, rest > 1 ? (rest - t) / (rest - 1) : 1);
           cSubEl.textContent = `next: set ${s + 1}`;
-          // skip the very first tick's own number - it would otherwise just
-          // repeat the total already spoken in the announcement above
-          if (t !== rest && (t <= 3 || t % 5 === 0)) speakFn(String(t));
           await pausableWait(1000, token);
         }
       }
