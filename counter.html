@@ -597,9 +597,10 @@ function beginRun(runSets, runReps, runSeconds, runRest, runVoice) {
 
 async function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 
-async function countdown(token) {
+async function countdown(token, introText) {
   const steps = ['3', '2', '1', 'Go!'];
-  for (const step of steps) {
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
     if (aborted(token)) return;
     label.textContent = '';
     sub.textContent = '';
@@ -607,25 +608,31 @@ async function countdown(token) {
     big.className = step === 'Go!' ? 'done' : 'go';
     big.style.color = '';
     vibrate(step === 'Go!' ? [80, 40, 80] : 30);
-    speak(step === 'Go!' ? 'Go' : step);
-    await pausableWait(650, token);
+    const spoken = step === 'Go!' ? 'Go' : step;
+    // introText ("Starting set N in") is merged into the first step's own
+    // utterance rather than spoken beforehand as its own call - two
+    // separate speak() calls back to back had the countdown's own "3"
+    // cancel the intro mid-sentence before it finished (speak() cancels
+    // whatever's still playing when a new utterance starts).
+    speak(i === 0 && introText ? `${introText} ${spoken}` : spoken);
+    // That merged first utterance is a full sentence, not just a digit, so
+    // it needs longer to finish speaking than the plain-digit steps after it.
+    await pausableWait(i === 0 && introText ? 1900 : 650, token);
   }
 }
 
 async function run(token) {
   for (let s = 1; s <= sets && !aborted(token); s++) {
-    // Announce the set, then run a full 3-2-1-Go countdown before every set
-    // (not just the first) - a clear, unmissable "reps start now" cue.
-    // The announcement gets its own pause before the countdown starts so it
-    // isn't cancelled mid-word by the countdown's own speech.
+    // Run a full 3-2-1-Go countdown before every set (not just the first) -
+    // a clear, unmissable "reps start now" cue. The "Starting set N in"
+    // announcement is spoken as part of countdown()'s first step (see its
+    // comment) rather than as its own call here first.
     label.textContent = `Set ${s} of ${sets}`;
     big.textContent = '';
     sub.textContent = '';
-    speak(`Starting set ${s} in`);
     vibrate([40, 40, 40]);
-    await pausableWait(900, token);
     if (aborted(token)) return;
-    await countdown(token);
+    await countdown(token, `Starting set ${s} in`);
     if (aborted(token)) return;
     label.textContent = `Set ${s} of ${sets}`;
 

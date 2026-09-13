@@ -549,7 +549,7 @@
   <button id="runAllBtn" onclick="startRunAll()" disabled>&#9654; Run Selected</button>
   <a id="voiceSettingsLink" href="counter.html">&#128264; Voice settings &amp; test</a>
 </div>
-<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-13T01:30:33Z</span></div>
+<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-13T01:38:05Z</span></div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
@@ -1568,9 +1568,10 @@ function cancelCount() {
   buildGrid(); // refresh last-done badges for whatever completed before cancelling
 }
 
-async function countdownStart(token, speakFn) {
+async function countdownStart(token, speakFn, introText) {
   const steps = ['3', '2', '1', 'Go!'];
-  for (const step of steps) {
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
     if (aborted(token)) return;
     cLabelEl.textContent = '';
     cSubEl.textContent = '';
@@ -1578,26 +1579,32 @@ async function countdownStart(token, speakFn) {
     cBigEl.className = step === 'Go!' ? 'c-done' : 'c-go';
     cBigEl.style.color = '';
     vibrate(step === 'Go!' ? [80, 40, 80] : 30);
-    speakFn(step === 'Go!' ? 'Go' : step);
-    await pausableWait(650, token);
+    const spoken = step === 'Go!' ? 'Go' : step;
+    // introText ("Starting set N in") is merged into the first step's own
+    // utterance rather than spoken beforehand as its own call - two
+    // separate speakFn() calls back to back had the countdown's own "3"
+    // cancel the intro mid-sentence before it finished (speakCount()
+    // cancels whatever's still playing when a new utterance starts).
+    speakFn(i === 0 && introText ? `${introText} ${spoken}` : spoken);
+    // That merged first utterance is a full sentence, not just a digit, so
+    // it needs longer to finish speaking than the plain-digit steps after it.
+    await pausableWait(i === 0 && introText ? 1900 : 650, token);
   }
 }
 
 async function runCount(sets, reps, seconds, rest, voiceOn, token, slug) {
   const speakFn = voiceOn ? speakCount : () => {};
   for (let s = 1; s <= sets && !aborted(token); s++) {
-    // Announce the set, then run a full 3-2-1-Go countdown before every set
-    // (not just the first) - a clear, unmissable "reps start now" cue.
-    // The announcement gets its own pause before the countdown starts so it
-    // isn't cancelled mid-word by the countdown's own speech.
+    // Run a full 3-2-1-Go countdown before every set (not just the first) -
+    // a clear, unmissable "reps start now" cue. The "Starting set N in"
+    // announcement is spoken as part of countdownStart()'s first step (see
+    // its comment) rather than as its own call here first.
     cLabelEl.textContent = `Set ${s} of ${sets}`;
     cBigEl.textContent = '';
     cSubEl.textContent = '';
-    speakFn(`Starting set ${s} in`);
     vibrate([40, 40, 40]);
-    await pausableWait(900, token);
     if (aborted(token)) return;
-    await countdownStart(token, speakFn);
+    await countdownStart(token, speakFn, `Starting set ${s} in`);
     if (aborted(token)) return;
     cLabelEl.textContent = `Set ${s} of ${sets}`;
 
