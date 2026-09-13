@@ -350,13 +350,13 @@ Slug: bridge-single-leg
 Name: Bridge - Single Leg
 Category: hip
 Equipment: bodyweight
-Sets: 3
+Sets: 6
 Reps: 10
 Seconds: 3
 Rest: 6
 Description: Builds glute and hip strength on one leg at a time while training your core to keep your pelvis level - a spine-neutral extensor exercise well suited to osteoporosis.
 Setup: Lie on your back with knees bent, feet flat on the floor, hip-width apart. Straighten one leg out or lift it toward your chest.
-Movement: Keeping your pelvis level and your low back neutral, drive through your grounded heel to lift your hips off the floor, hold briefly, then lower with control. Complete all reps on one side before switching.
+Movement: Keeping your pelvis level and your low back neutral, drive through your grounded heel to lift your hips off the floor, hold briefly, then lower with control. Do the first three sets on one leg, then switch and do the last three sets on the other leg.
 Tip: Don't let your hips tilt or rotate toward the lifted leg, and avoid pushing into a deep arch at the top - keep both hip points facing the ceiling.
 StartImage:
 FinishImage:
