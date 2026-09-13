@@ -621,7 +621,7 @@ async function run(token) {
     label.textContent = `Set ${s} of ${sets}`;
     big.textContent = '';
     sub.textContent = '';
-    speak(`Set ${s} of ${sets}`);
+    speak(`Starting set ${s} in`);
     vibrate([40, 40, 40]);
     await pausableWait(900, token);
     if (aborted(token)) return;
@@ -661,7 +661,11 @@ async function run(token) {
     vibrate([60, 40, 60]);
     if (s < sets) {
       // One utterance instead of two back-to-back calls, so "Set complete"
-      // isn't cancelled the instant "Rest, N seconds" starts.
+      // isn't cancelled the instant "Rest, N seconds" starts. Rest itself is
+      // silent after that - just this one announcement, no per-second
+      // ticking - so it doesn't compete with the "Starting set N in" +
+      // 3-2-1-Go cue that kicks off the next set. The on-screen number still
+      // counts down visually.
       speak(rest > 0 ? `Set complete. Rest ${rest} seconds.` : 'Set complete.');
       await pausableWait(900, token);
       if (aborted(token)) return;
@@ -672,9 +676,6 @@ async function run(token) {
           big.className = 'rest';
           big.style.color = lerpColor(REST_START, rest > 1 ? (rest - t) / (rest - 1) : 1);
           sub.textContent = `next: set ${s + 1}`;
-          // skip the very first tick's own number - it would otherwise just
-          // repeat the total already spoken in the announcement above
-          if (t !== rest && (t <= 3 || t % 5 === 0)) speak(String(t));
           await pausableWait(1000, token);
         }
       }
