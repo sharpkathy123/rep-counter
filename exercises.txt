@@ -242,7 +242,7 @@ StartImage: IMG_0319.jpeg
 FinishImage:
 
 Slug: scapular-retraction-prone-arms-side
-Name: Scapular Retraction - Prone (Arms at Side)
+Name: Scapular Retraction - Prone
 Category: back-shoulder
 Equipment: bodyweight
 Sets: 1
@@ -257,7 +257,7 @@ StartImage:
 FinishImage:
 
 Slug: scapular-retraction-prone-arms-side-lift
-Name: Scapular Retraction - Prone (Arms at Side, Lift)
+Name: Scapular Retraction - Prone, I
 Category: back-shoulder
 Equipment: bodyweight
 Sets: 1
@@ -271,8 +271,23 @@ Tip: Lift from your shoulder blades with a small, controlled range - avoid pushi
 StartImage:
 FinishImage:
 
+Slug: scapular-retraction-prone-arms-out-t
+Name: Scapular Retraction - Prone, T
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Targets the mid-trapezius through a "T" arm position, part of the I/T/Y set of gentle back-extensor exercises recommended for osteoporosis.
+Setup: Lie face down, forehead resting down, arms extended straight out to the sides at shoulder height, palms down.
+Movement: Squeeze your shoulder blades together and lift both arms a small amount off the surface, hold 5 seconds, then lower with control.
+Tip: Keep your arms level with your shoulders and the lift small - avoid raising your arms higher than your back or straining your neck.
+StartImage:
+FinishImage:
+
 Slug: scapular-retraction-prone-arms-overhead-lift
-Name: Scapular Retraction - Prone (Arms Overhead, Lift)
+Name: Scapular Retraction - Prone, Y
 Category: back-shoulder
 Equipment: bodyweight
 Sets: 1
@@ -335,19 +350,19 @@ Slug: bridge-single-leg
 Name: Bridge - Single Leg
 Category: hip
 Equipment: bodyweight
-Sets: 3
+Sets: 6
 Reps: 10
 Seconds: 3
 Rest: 6
 Description: Builds glute and hip strength on one leg at a time while training your core to keep your pelvis level - a spine-neutral extensor exercise well suited to osteoporosis.
 Setup: Lie on your back with knees bent, feet flat on the floor, hip-width apart. Straighten one leg out or lift it toward your chest.
-Movement: Keeping your pelvis level and your low back neutral, drive through your grounded heel to lift your hips off the floor, hold briefly, then lower with control. Complete all reps on one side before switching.
+Movement: Keeping your pelvis level and your low back neutral, drive through your grounded heel to lift your hips off the floor, hold briefly, then lower with control. Do the first three sets on one leg, then switch and do the last three sets on the other leg.
 Tip: Don't let your hips tilt or rotate toward the lifted leg, and avoid pushing into a deep arch at the top - keep both hip points facing the ceiling.
 StartImage:
 FinishImage:
 
 Slug: ta-activation-supine
-Name: Abdominal Bracing - Transverse Abdominis Activation
+Name: Abdominal Bracing - Activate Transverse Abdominis
 Category: core
 Equipment: bodyweight
 Sets: 10
@@ -415,8 +430,8 @@ Reps: 10
 Seconds: 10
 Rest: 6
 Description: A gentle, supported mobility exercise for the lower trunk and hips. Rotation should always be done slowly and within a small, comfortable range for osteoporosis, rather than forced to full range.
-Setup: Lie on your back with hips and knees up and bent to 90 degrees, knees together, arms out to the sides for stability.
-Movement: Keeping your shoulders flat on the floor, slowly rotate your knees a small, comfortable distance to one side, then return to center and rotate gently to the other side.
+Setup: Do a round of Abdominal Bracing - Activate Transverse Abdominis first to engage your deep core. Lie on your back with hips and knees up and bent to 90 degrees, knees together, arms out to the sides for stability.
+Movement: Keeping your shoulders flat on the floor and your deep core braced, slowly rotate your knees a small, comfortable distance to one side, then return to center and rotate gently to the other side.
 Tip: Move slowly and only as far as is pain-free - never force the rotation or let it feel like a twisting stretch, and stop if it causes any spinal discomfort.
 StartImage:
 FinishImage:
@@ -455,13 +470,28 @@ Slug: squats-multidirectional
 Name: Squats - Multi-Directional Stance (No Arm Support)
 Category: balance-legs
 Equipment: bodyweight
-Sets: 2
+Sets: 3
 Reps: 10
 Seconds: 3
 Rest: 6
-Description: Builds leg strength and balance through squats performed in different stance variations without arm support - weight-bearing exercise that's good for bone health, done with an upright spine.
-Setup: Stand with feet facing forward, hip width apart, one toe across from the other heel, arms free at your sides or crossed over your chest, spine tall.
-Movement: Keeping your chest lifted and spine upright, bend your hips and knees to lower into a squat, knees tracking over your toes, then push back up to standing. Do one set per side.
-Tip: Keep your chest up and back straight rather than leaning your torso forward, and avoid letting your knees cave inward, especially in the weight-shifted stance.
+Description: Builds leg strength and balance through squats performed in three stance variations without arm support - weight-bearing exercise that's good for bone health, done with an upright spine.
+Setup: Stand with feet facing forward, hip width apart, arms free at your sides or crossed over your chest, spine tall.
+Movement: Keeping your chest lifted and spine upright, bend your hips and knees to lower into a squat, knees tracking over your toes, then push back up to standing. Do the first set with your feet aligned side by side, the second set with your left foot staggered forward, and the third set with your right foot staggered forward.
+Tip: Keep your chest up and back straight rather than leaning your torso forward, and avoid letting your knees cave inward, especially during the staggered-stance sets.
+StartImage:
+FinishImage:
+
+Slug: bridge-alternating-march
+Name: Bridge + Alternating March
+Category: hip
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Builds on the basic bridge by adding an alternating single-leg march at the top, challenging hip and core stability while keeping the spine supported and neutral.
+Setup: Lie on your back with your knees bent and feet flat on the floor, hip-width apart.
+Movement: Squeeze your glutes and lift your hips into a bridge, then, keeping your hips level and still, lift one knee toward your chest and lower it back down, then alternate to the other side without dropping your hips.
+Tip: Keep both hip points facing the ceiling and level throughout - don't let your hips dip or rotate toward the lifted leg.
 StartImage:
 FinishImage:
