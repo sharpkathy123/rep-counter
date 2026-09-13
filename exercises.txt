@@ -430,8 +430,8 @@ Reps: 10
 Seconds: 10
 Rest: 6
 Description: A gentle, supported mobility exercise for the lower trunk and hips. Rotation should always be done slowly and within a small, comfortable range for osteoporosis, rather than forced to full range.
-Setup: Lie on your back with hips and knees up and bent to 90 degrees, knees together, arms out to the sides for stability.
-Movement: Keeping your shoulders flat on the floor, slowly rotate your knees a small, comfortable distance to one side, then return to center and rotate gently to the other side.
+Setup: Do a round of Abdominal Bracing - Activate Transverse Abdominis first to engage your deep core. Lie on your back with hips and knees up and bent to 90 degrees, knees together, arms out to the sides for stability.
+Movement: Keeping your shoulders flat on the floor and your deep core braced, slowly rotate your knees a small, comfortable distance to one side, then return to center and rotate gently to the other side.
 Tip: Move slowly and only as far as is pain-free - never force the rotation or let it feel like a twisting stretch, and stop if it causes any spinal discomfort.
 StartImage:
 FinishImage:
