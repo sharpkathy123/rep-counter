@@ -321,6 +321,13 @@
     font-size: 3.3vw;
     margin-top: 1vh;
   }
+  .resetParamsLink {
+    display: inline-block;
+    margin-top: 1.5vh;
+    font-size: 3.3vw;
+    color: #4da3ff;
+    text-decoration: none;
+  }
   .chk-row {
     display: flex;
     align-items: center;
@@ -507,6 +514,7 @@
     .params .row { font-size: 17px; }
     .params input[type=number] { font-size: 18px; }
     .params .hint { font-size: 13px; }
+    .resetParamsLink { font-size: 13px; }
     .chk-row { font-size: 17px; }
     #startBtn { font-size: 22px; }
     #speakBtn { font-size: 16px; }
@@ -606,6 +614,7 @@
     <div class="row"><span>Estimated time</span><span id="f-estimate"></span></div>
     <div class="row"><span>With narration</span><span id="f-estimate-narrated"></span></div>
     <div class="hint">Starting numbers are placeholders - edit to match what your PT prescribed. Changes are saved on this device, including for Run All.</div>
+    <a href="#" class="resetParamsLink" onclick="resetExerciseParams(); return false;">&#8635; Reset to defaults</a>
   </div>
 
   <label class="chk-row"><input type="checkbox" id="f-voice"> Speak aloud during counting</label>
@@ -1252,6 +1261,20 @@ function updateEstimateDisplay(params) {
   }
 }
 
+// Clears whatever sets/reps/seconds/rest you've locally tweaked for this
+// exercise, back to exercises.txt's numbers - handy after testing with
+// throwaway values.
+function resetExerciseParams() {
+  if (!currentExercise) return;
+  localStorage.removeItem('params_' + currentExercise.slug);
+  const defaults = currentExercise.defaults;
+  document.getElementById('f-sets').value = defaults.sets;
+  document.getElementById('f-reps').value = defaults.reps;
+  document.getElementById('f-seconds').value = defaults.seconds;
+  document.getElementById('f-rest').value = defaults.rest;
+  updateEstimateDisplay(defaults);
+}
+
 let currentExercise = null;
 
 // The full picture for an exercise: what it is, how to set it up and do it,
@@ -1735,7 +1758,20 @@ function startCounting() {
   startSessionTimer();
   requestWakeLock();
 
+  // Guards against beginCounting() running twice for the same run: u.onend
+  // and u.onerror both point here, and some browsers (iOS Safari's speech
+  // engine in particular, per its own known unreliability elsewhere in this
+  // file) can fire both for the same utterance instead of just one. Without
+  // this guard that starts two full, unsynchronized runCount() loops over
+  // the same exercise at once - both speaking, each cancelling the other's
+  // in-flight utterance - which sounds like exactly the garbled, doubled-up
+  // audio this was reported as. runAllExercises()'s equivalent intro speech
+  // (speakAndWait) doesn't need this: it resolves a Promise, which is
+  // naturally a no-op on a second call.
+  let introHandled = false;
   const beginCounting = () => {
+    if (introHandled) return;
+    introHandled = true;
     hideExercisePhoto(); // #cBig needs that space back once counting starts
     return runCount(sets, reps, seconds, rest, true, myToken, currentExercise.slug).then(stopSessionTimer);
   };
