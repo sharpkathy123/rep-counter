@@ -18,6 +18,8 @@ All exercise content lives in **[`exercises.txt`](exercises.txt)**: one exercise
 
 Category and equipment aren't a fixed list — typing a new one into the file gets it its own filter chip automatically.
 
+**Want your own private list instead, without editing this repo?** Use **Import exercises.txt** at the bottom of the exercise list to load a file in the same format from your device. It's read entirely client-side and stays in that browser's local storage — never uploaded anywhere — and persists across visits, including offline. Switch back with **Use built-in list** at any time; nothing is deleted, so switching back and forth doesn't require re-importing.
+
 ## What's in this repo
 
 | File | What it's for |

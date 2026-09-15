@@ -122,6 +122,16 @@
     color: #888;
     text-decoration: none;
   }
+  #exerciseSourceBar {
+    margin-top: 3vh;
+  }
+  #useBuiltInBtn.hidden, #importExercisesInput.hidden { display: none; }
+  #exerciseSourceStatus {
+    text-align: center;
+    font-size: 3.3vw;
+    color: #888;
+    margin-bottom: 1.5vh;
+  }
   #appUpdated {
     text-align: center;
     margin-top: 3vh;
@@ -500,6 +510,7 @@
     .lastDone { font-size: 13px; }
     #selectCount { font-size: 18px; }
     .selectBtnRow button { font-size: 16px; padding: 10px; }
+    #exerciseSourceStatus { font-size: 13px; }
     #runAllBtn { font-size: 20px; padding: 16px; }
     #voiceSettingsLink { font-size: 15px; }
     #appUpdated { font-size: 12px; }
@@ -557,6 +568,14 @@
   </div>
   <button id="runAllBtn" onclick="startRunAll()" disabled>&#9654; Run Selected</button>
   <a id="voiceSettingsLink" href="counter.html">&#128264; Voice settings &amp; test</a>
+</div>
+<div id="exerciseSourceBar">
+  <div id="exerciseSourceStatus"></div>
+  <div class="selectBtnRow">
+    <button id="importExercisesBtn" onclick="document.getElementById('importExercisesInput').click()">&#128193; Import exercises.txt</button>
+    <button id="useBuiltInBtn" class="hidden" onclick="useBuiltInExercises()">Use built-in list</button>
+  </div>
+  <input type="file" id="importExercisesInput" accept=".txt,text/plain" class="hidden" onchange="handleImportFile(event)">
 </div>
 <div id="appUpdated">Updated <span id="appUpdatedTime">__BUILD_TIME__</span></div>
 
@@ -1182,7 +1201,29 @@ function pickLeastRecent() {
 
 const startParams = new URLSearchParams(window.location.search);
 
+// A user can import their own exercises.txt-formatted file instead of the
+// built-in list - read entirely client-side (FileReader, no upload
+// anywhere) and kept in localStorage, so it works offline and never leaves
+// the device. CUSTOM_EXERCISES_KEY holds the raw text as imported;
+// EXERCISE_SOURCE_KEY tracks which list is active so switching back to the
+// built-in one doesn't require re-importing later.
+const CUSTOM_EXERCISES_KEY = 'repcounter_custom_exercises_text';
+const EXERCISE_SOURCE_KEY = 'repcounter_exercise_source';
+function usingCustomExercises() {
+  return localStorage.getItem(EXERCISE_SOURCE_KEY) === 'custom' && !!localStorage.getItem(CUSTOM_EXERCISES_KEY);
+}
+
 async function loadExercises() {
+  if (usingCustomExercises()) {
+    const parsed = parseExercisesText(localStorage.getItem(CUSTOM_EXERCISES_KEY));
+    if (parsed.length > 0) {
+      EXERCISES = parsed;
+      return true;
+    }
+    // Somehow empty/unparseable - don't get stuck on a blank list, fall
+    // back to the built-in one below instead.
+    localStorage.removeItem(EXERCISE_SOURCE_KEY);
+  }
   try {
     const res = await fetch('exercises.txt', { cache: 'no-store' });
     if (!res.ok) throw new Error('fetch failed: ' + res.status);
@@ -1194,6 +1235,60 @@ async function loadExercises() {
   }
 }
 
+function updateExerciseSourceUI() {
+  const custom = usingCustomExercises();
+  document.getElementById('exerciseSourceStatus').textContent = custom
+    ? 'Using your imported exercise list'
+    : 'Using the built-in exercise list';
+  document.getElementById('useBuiltInBtn').classList.toggle('hidden', !custom);
+}
+
+function handleImportFile(event) {
+  const file = event.target.files[0];
+  event.target.value = ''; // so importing the same filename again still fires 'change'
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const text = String(reader.result || '');
+    if (parseExercisesText(text).length === 0) {
+      alert('That file didn\'t have any exercises in it. Make sure it uses the same "Field: value" format as exercises.txt, then try again.');
+      return;
+    }
+    localStorage.setItem(CUSTOM_EXERCISES_KEY, text);
+    localStorage.setItem(EXERCISE_SOURCE_KEY, 'custom');
+    switchExerciseSource();
+  };
+  reader.onerror = () => alert('Couldn\'t read that file - please try again.');
+  reader.readAsText(file);
+}
+
+function useBuiltInExercises() {
+  localStorage.setItem(EXERCISE_SOURCE_KEY, 'built-in');
+  switchExerciseSource();
+}
+
+// Selections, category/equipment filters, and even sort-by-category order
+// are all specific to whichever list is active - a slug from the old list
+// selected/filtered doesn't mean anything once the exercises themselves
+// have changed, so this starts that state fresh rather than leaving stale
+// selections lying around.
+async function switchExerciseSource() {
+  selectedSlugs = new Set();
+  saveStringSet('repcounter_selected', selectedSlugs);
+  activeCategories = new Set();
+  saveStringSet('repcounter_categories', activeCategories);
+  activeEquipment = new Set();
+  saveStringSet('repcounter_equipment', activeEquipment);
+  gridEl.innerHTML = '<div style="text-align:center;color:#888;padding:6vh 2vw;">Loading exercises…</div>';
+  if (!(await loadExercises())) { updateExerciseSourceUI(); return; }
+  computeFacets();
+  buildChips();
+  buildSortChips();
+  buildGrid();
+  updateSelectBar();
+  updateExerciseSourceUI();
+}
+
 async function init() {
   gridEl.innerHTML = '<div style="text-align:center;color:#888;padding:6vh 2vw;">Loading exercises…</div>';
   if (!(await loadExercises())) return;
@@ -1202,6 +1297,7 @@ async function init() {
   buildSortChips();
   buildGrid();
   updateSelectBar();
+  updateExerciseSourceUI();
 
   // Deep link: index.html?ex=bridge&voice=1 opens straight to that
   // exercise's description (and speaks it if voice=1), skipping the grid -
