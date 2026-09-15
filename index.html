@@ -321,6 +321,13 @@
     font-size: 3.3vw;
     margin-top: 1vh;
   }
+  .resetParamsLink {
+    display: inline-block;
+    margin-top: 1.5vh;
+    font-size: 3.3vw;
+    color: #4da3ff;
+    text-decoration: none;
+  }
   .chk-row {
     display: flex;
     align-items: center;
@@ -507,6 +514,7 @@
     .params .row { font-size: 17px; }
     .params input[type=number] { font-size: 18px; }
     .params .hint { font-size: 13px; }
+    .resetParamsLink { font-size: 13px; }
     .chk-row { font-size: 17px; }
     #startBtn { font-size: 22px; }
     #speakBtn { font-size: 16px; }
@@ -550,7 +558,7 @@
   <button id="runAllBtn" onclick="startRunAll()" disabled>&#9654; Run Selected</button>
   <a id="voiceSettingsLink" href="counter.html">&#128264; Voice settings &amp; test</a>
 </div>
-<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-13T03:44:41Z</span></div>
+<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-15T07:13:00Z</span></div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
@@ -604,7 +612,9 @@
     <div class="row"><span>Seconds / rep</span><input type="number" id="f-seconds"></div>
     <div class="row"><span>Rest (sec)</span><input type="number" id="f-rest"></div>
     <div class="row"><span>Estimated time</span><span id="f-estimate"></span></div>
+    <div class="row"><span>With narration</span><span id="f-estimate-narrated"></span></div>
     <div class="hint">Starting numbers are placeholders - edit to match what your PT prescribed. Changes are saved on this device, including for Run All.</div>
+    <a href="#" class="resetParamsLink" onclick="resetExerciseParams(); return false;">&#8635; Reset to defaults</a>
   </div>
 
   <label class="chk-row"><input type="checkbox" id="f-voice"> Speak aloud during counting</label>
@@ -988,6 +998,24 @@ function estimateTotalSeconds(list) {
     + list.length * TRANSITION_OVERHEAD_SEC;
 }
 
+// A second, more realistic estimate that also counts the time actually
+// spent listening to the spoken intro (description/setup/movement/tip,
+// the numbers, and "Get in position now.") before counting even starts -
+// estimateSeconds() alone only covers the counting itself, which
+// undersells how long a voice-guided session actually takes.
+const WORDS_PER_SECOND = 2.5; // rough average spoken-word rate
+function estimateNarrationSeconds(ex, p) {
+  const text = buildFullInfoText(ex, p) + ' Get in position now.';
+  return text.trim().split(/\s+/).length / WORDS_PER_SECOND;
+}
+function estimateSecondsWithNarration(ex, p) {
+  return estimateSeconds(p) + estimateNarrationSeconds(ex, p);
+}
+function estimateTotalSecondsWithNarration(list) {
+  return list.reduce((sum, ex) => sum + estimateSecondsWithNarration(ex, getExerciseParams(ex)), 0)
+    + list.length * TRANSITION_OVERHEAD_SEC;
+}
+
 function formatDuration(totalSeconds) {
   const s = Math.round(totalSeconds / 5) * 5; // round to the nearest 5s - it's an estimate, not a stopwatch
   if (s < 60) return `~${s}s`;
@@ -1124,7 +1152,8 @@ function updateSelectBar() {
     selectCountEl.textContent = 'No exercises selected';
   } else {
     const list = EXERCISES.filter(ex => selectedSlugs.has(ex.slug));
-    selectCountEl.textContent = `${n} selected · ${formatDuration(estimateTotalSeconds(list))}`;
+    const withNarration = formatDuration(estimateTotalSecondsWithNarration(list));
+    selectCountEl.textContent = `${n} selected · ${formatDuration(estimateTotalSeconds(list))} (${withNarration} with narration)`;
   }
   selectCountEl.classList.toggle('overLimit', n > 6);
   if (n > 6) selectCountEl.textContent += ' - more than a typical 5-6 exercise session';
@@ -1227,6 +1256,23 @@ function saveCurrentExerciseParams() {
 
 function updateEstimateDisplay(params) {
   document.getElementById('f-estimate').textContent = formatDuration(estimateSeconds(params));
+  if (currentExercise) {
+    document.getElementById('f-estimate-narrated').textContent = formatDuration(estimateSecondsWithNarration(currentExercise, params));
+  }
+}
+
+// Clears whatever sets/reps/seconds/rest you've locally tweaked for this
+// exercise, back to exercises.txt's numbers - handy after testing with
+// throwaway values.
+function resetExerciseParams() {
+  if (!currentExercise) return;
+  localStorage.removeItem('params_' + currentExercise.slug);
+  const defaults = currentExercise.defaults;
+  document.getElementById('f-sets').value = defaults.sets;
+  document.getElementById('f-reps').value = defaults.reps;
+  document.getElementById('f-seconds').value = defaults.seconds;
+  document.getElementById('f-rest').value = defaults.rest;
+  updateEstimateDisplay(defaults);
 }
 
 let currentExercise = null;
@@ -1235,9 +1281,12 @@ let currentExercise = null;
 // the coaching cue, and the numbers - especially seconds per rep, so the
 // pace of the movement can be thought through before starting.
 function buildFullInfoText(ex, p) {
+  // A single set never actually rests (runCount only rests between sets,
+  // when s < sets), so mentioning a rest length here would just be a
+  // number that never comes up - only include that clause for 2+ sets.
+  const restClause = p.sets === 1 ? '' : ` with ${p.rest} second${p.rest === 1 ? '' : 's'} rest between sets`;
   return `${ex.name}. ${ex.description} ${ex.setup} ${ex.movement} ${ex.tip} `
-    + `${p.sets} set${p.sets === 1 ? '' : 's'} of ${p.reps} rep${p.reps === 1 ? '' : 's'}, ${p.seconds} second${p.seconds === 1 ? '' : 's'} per rep, `
-    + `with ${p.rest} second${p.rest === 1 ? '' : 's'} rest between sets.`;
+    + `${p.sets} set${p.sets === 1 ? '' : 's'} of ${p.reps} rep${p.reps === 1 ? '' : 's'}, ${p.seconds} second${p.seconds === 1 ? '' : 's'} per rep${restClause}.`;
 }
 
 function speakDescription() {
@@ -1709,7 +1758,20 @@ function startCounting() {
   startSessionTimer();
   requestWakeLock();
 
+  // Guards against beginCounting() running twice for the same run: u.onend
+  // and u.onerror both point here, and some browsers (iOS Safari's speech
+  // engine in particular, per its own known unreliability elsewhere in this
+  // file) can fire both for the same utterance instead of just one. Without
+  // this guard that starts two full, unsynchronized runCount() loops over
+  // the same exercise at once - both speaking, each cancelling the other's
+  // in-flight utterance - which sounds like exactly the garbled, doubled-up
+  // audio this was reported as. runAllExercises()'s equivalent intro speech
+  // (speakAndWait) doesn't need this: it resolves a Promise, which is
+  // naturally a no-op on a second call.
+  let introHandled = false;
   const beginCounting = () => {
+    if (introHandled) return;
+    introHandled = true;
     hideExercisePhoto(); // #cBig needs that space back once counting starts
     return runCount(sets, reps, seconds, rest, true, myToken, currentExercise.slug).then(stopSessionTimer);
   };

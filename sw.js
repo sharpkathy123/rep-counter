@@ -22,14 +22,14 @@ const APP_SHELL = [
   './icon-180.png',
   './icon-192.png',
   './icon-512.png',
-  './IMG_0306.jpeg',
-  './IMG_0307.jpeg',
-  './IMG_0309.jpeg',
-  './IMG_0310.jpeg',
-  './IMG_0311.jpeg',
-  './IMG_0312.jpeg',
-  './IMG_0313.jpeg',
-  './IMG_0319.jpeg'
+  './images/IMG_0306.jpeg',
+  './images/IMG_0307.jpeg',
+  './images/IMG_0309.jpeg',
+  './images/IMG_0310.jpeg',
+  './images/IMG_0311.jpeg',
+  './images/IMG_0312.jpeg',
+  './images/IMG_0313.jpeg',
+  './images/IMG_0319.jpeg'
 ];
 
 self.addEventListener('install', (event) => {

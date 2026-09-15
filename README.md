@@ -14,7 +14,7 @@ A voice-guided rep/set counter and exercise library for phone or iPad, built as 
 
 ## Editing exercises — no code needed
 
-All exercise content lives in **[`exercises.txt`](exercises.txt)**: one exercise per block, plain `Field: value` lines, with the format documented in a comment header at the top of that file itself. Edit it directly on GitHub (or any text editor) — no need to touch any `.html` file. Covers name, category, equipment, sets/reps/seconds/rest, description/setup/movement/tip text, and optional `StartImage`/`FinishImage` photo filenames (drop a `.jpeg`/`.png` in this same folder and reference it by filename — a single photo already showing both positions works too, just leave `FinishImage` blank).
+All exercise content lives in **[`exercises.txt`](exercises.txt)**: one exercise per block, plain `Field: value` lines, with the format documented in a comment header at the top of that file itself. Edit it directly on GitHub (or any text editor) — no need to touch any `.html` file. Covers name, category, equipment, sets/reps/seconds/rest, description/setup/movement/tip text, and optional `StartImage`/`FinishImage` photo filenames (drop a `.jpeg`/`.png` in **[`images/`](images/)** and reference it as `images/whatever-you-named-it.jpeg` — a single photo already showing both positions works too, just leave `FinishImage` blank).
 
 Category and equipment aren't a fixed list — typing a new one into the file gets it its own filter chip automatically.
 
@@ -25,7 +25,7 @@ Category and equipment aren't a fixed list — typing a new one into the file ge
 | `index.html` | Landing page: exercise list, category/equipment filters, multi-select, Run Selected, exercise detail view |
 | `counter.html` | Single-exercise counter, voice settings/test, and the target for Siri Shortcuts / silent-mode links |
 | `exercises.txt` | All exercise content — the file you actually edit day to day |
-| `*.jpeg` / `*.png` | Exercise photos referenced from `exercises.txt`, plus the app icon source images |
+| `images/` | Exercise photos referenced from `exercises.txt` |
 | `manifest.json`, `icon-*.png` | Home Screen install metadata and icon |
 | `sw.js` | Service worker — caches everything needed for offline/Airplane Mode use |
 | `.github/workflows/deploy.yml` | Deploys `main` to the live site and posts a preview link on every PR (see below) |
