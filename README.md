@@ -13,7 +13,7 @@ A voice-guided rep/set counter and exercise library for phone or iPad, built as 
 
 ## Making it your own — no coding, no account needed
 
-Two things anyone can do right from their phone, no GitHub account or coding involved:
+Three things anyone can do right from their phone, no GitHub account or coding involved:
 
 ### 1. Install it to your Home Screen
 
@@ -32,6 +32,13 @@ Scroll to the very bottom of the exercise list and you'll see **Import exercises
 - **The file needs a specific format.** Open **[`exercises.txt`](exercises.txt)** in this repo to see it — the format is explained in plain English right at the top of that file. The easiest way to get started: open that file, select all the text, copy it into a new document on your computer or phone, edit it to match your own exercises, save it as a `.txt` file, then import that.
 - **Switch back anytime** with the **Use built-in list** button that appears once you've imported something — your imported file stays saved, so switching back and forth doesn't mean re-importing every time.
 - **📷 Photos won't show up in your imported list.** Two fields in the format, `StartImage` and `FinishImage`, point to photo files that live inside this app itself — there's no way to bring your own photos along through Import. Leave those two fields blank for every exercise in your file (any filename you put there just won't load a picture). With no images anywhere in your list, the app just skips the icon/photo space entirely rather than showing a placeholder — everything still works perfectly fine, your cards and exercise details just go straight to the text.
+
+### 3. Export your list as a spreadsheet
+
+Underneath Import, at the very bottom of the exercise list, **Export as CSV** downloads whichever list is currently active (built-in or your own imported one) as a `.csv` file, with the same fields as `exercises.txt` — one exercise per row. Open it in Excel, Google Sheets, Numbers, or any spreadsheet app to review, sort, or print your list, or to make bulk edits somewhere more comfortable than a phone keyboard before copying the results back into a `.txt` file to re-import.
+
+- **Nothing is uploaded here either** — the file is built and downloaded entirely on your device.
+- **This is one-way.** The CSV is for viewing/editing elsewhere; the app only reads the `.txt` "Field: value" format back in through Import, so save any edits as `.txt` (matching that format) before importing them again.
 
 ## Editing exercises — no code needed
 
