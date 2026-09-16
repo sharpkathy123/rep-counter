@@ -35,7 +35,7 @@ Scroll to the very bottom of the exercise list and you'll see **Import exercises
 
 ## Editing exercises — no code needed
 
-If you're working directly in this repo (rather than importing your own file as above): all exercise content lives in **[`exercises.txt`](exercises.txt)**: one exercise per block, plain `Field: value` lines, with the format documented in a comment header at the top of that file itself. Edit it directly on GitHub (or any text editor) — no need to touch any `.html` file. Covers name, category, equipment, sets/reps/seconds/rest, description/setup/movement/tip text, and optional `StartImage`/`FinishImage` photo filenames (drop a `.jpeg`/`.png` in **[`images/`](images/)** and reference it as `images/whatever-you-named-it.jpeg` — a single photo already showing both positions works too, just leave `FinishImage` blank).
+If you're working directly in this repo (rather than importing your own file as above): all exercise content lives in **[`exercises.txt`](exercises.txt)**: one exercise per block, plain `Field: value` lines, with the format documented in a comment header at the top of that file itself. Edit it directly on GitHub (or any text editor) — no need to touch any `.html` file. Covers name, category, equipment, sets/reps/seconds/rest, description/setup/movement/tip text, and optional `StartImage`/`FinishImage` photo filenames — drop a `.jpeg`/`.png` in **[`images/`](images/)** named after that exercise's `Slug` (e.g. `images/bridge.jpeg` for `Slug: bridge`) so it's easy to tell which photo belongs to which exercise; a single photo already showing both positions works too, just leave `FinishImage` blank.
 
 Category and equipment aren't a fixed list — typing a new one into the file gets it its own filter chip automatically.
 
