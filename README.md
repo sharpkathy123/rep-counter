@@ -35,9 +35,11 @@ Scroll to the very bottom of the exercise list and you'll see **Import exercises
 
 ## Editing exercises — no code needed
 
-If you're working directly in this repo (rather than importing your own file as above): all exercise content lives in **[`exercises.txt`](exercises.txt)**: one exercise per block, plain `Field: value` lines, with the format documented in a comment header at the top of that file itself. Edit it directly on GitHub (or any text editor) — no need to touch any `.html` file. Covers name, category, equipment, sets/reps/seconds/rest, description/setup/movement/tip text, and optional `StartImage`/`FinishImage` photo filenames (drop a `.jpeg`/`.png` in **[`images/`](images/)** and reference it as `images/whatever-you-named-it.jpeg` — a single photo already showing both positions works too, just leave `FinishImage` blank).
+If you're working directly in this repo (rather than importing your own file as above): all exercise content lives in **[`exercises.txt`](exercises.txt)**: one exercise per block, plain `Field: value` lines, with the format documented in a comment header at the top of that file itself. Edit it directly on GitHub (or any text editor) — no need to touch any `.html` file. Covers name, category, equipment, sets/reps/seconds/rest, description/setup/movement/tip text, and optional `StartImage`/`FinishImage` photo filenames — drop a `.jpeg`/`.png` in **[`images/`](images/)** named after that exercise's `Slug` (e.g. `images/bridge.jpeg` for `Slug: bridge`) so it's easy to tell which photo belongs to which exercise; a single photo already showing both positions works too, just leave `FinishImage` blank.
 
 Category and equipment aren't a fixed list — typing a new one into the file gets it its own filter chip automatically.
+
+**Setting a run order:** when you check off several exercises and tap **Run Selected**, they run in the same order their blocks appear in `exercises.txt` — not the order you tapped them in. So if one exercise should always happen before another whenever both are picked (a basic version before a harder progression, say), just put its block earlier in the file. `exercises.txt` already does this for a few groups (the Bridge variants, the Scapular Retraction I/T/Y progression, and TA Activation before 90/90 Lower Trunk Rotation) — look for a comment above those blocks.
 
 ## What's in this repo
 
@@ -46,7 +48,7 @@ Category and equipment aren't a fixed list — typing a new one into the file ge
 | `index.html` | Landing page: exercise list, category/equipment filters, multi-select, Run Selected, exercise detail view |
 | `counter.html` | Single-exercise counter, voice settings/test, and the target for Siri Shortcuts / silent-mode links |
 | `exercises.txt` | All exercise content — the file you actually edit day to day |
-| `images/` | Exercise photos referenced from `exercises.txt` |
+| `images/` | Exercise photos and hand-drawn start/finish SVG diagrams referenced from `exercises.txt` |
 | `manifest.json`, `icon-*.png` | Home Screen install metadata and icon |
 | `sw.js` | Service worker — caches everything needed for offline/Airplane Mode use |
 | `.github/workflows/deploy.yml` | Deploys `main` to the live site and posts a preview link on every PR (see below) |
