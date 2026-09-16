@@ -36,20 +36,20 @@
 #
 # Optional fields:
 #   StartImage / FinishImage
-#               Filename of a photo in the images/ folder (e.g.
-#               images/IMG_0306.jpeg - drop the photo in that folder and
-#               reference it as images/whatever-you-named-it.jpeg). Leave
-#               both blank to use a built-in line-drawing icon instead.
-#               Two common ways to fill these in:
-#               - One photo per position: put the start photo in
-#                 StartImage and the finish photo in FinishImage -
-#                 they're shown side by side.
+#               Filename of a photo in the images/ folder, named after
+#               this exercise's Slug so it's easy to tell which photo
+#               belongs to which exercise - e.g. for Slug: bridge,
+#               images/bridge.jpeg. Leave both blank to use a built-in
+#               line-drawing icon instead. Two common ways to fill
+#               these in:
+#               - One photo per position: name them images/<slug>-start.jpeg
+#                 and images/<slug>-finish.jpeg - they're shown side by side.
 #               - One combined photo: if you already have a single
 #                 photo showing both the start and finish position
-#                 (e.g. a "before/after" side-by-side shot), just put
-#                 its filename in StartImage and leave FinishImage
-#                 blank - it's shown at full size instead of being
-#                 cropped in half.
+#                 (e.g. a "before/after" side-by-side shot), just name
+#                 it images/<slug>.jpeg and put that in StartImage,
+#                 leaving FinishImage blank - it's shown at full size
+#                 instead of being cropped in half.
 #
 # Note on this version: descriptions, setup, movement, and tip text
 # below have been adapted for someone with osteoporosis of the spine,
@@ -134,7 +134,7 @@ Description: Strengthens the glutes and lower back extensors while keeping the s
 Setup: Lie on your back with your knees bent and feet flat on the floor, hip-width apart.
 Movement: Squeeze your glutes and lift your hips toward the ceiling until your body forms a straight line from knees to shoulders. Hold 5 seconds, then lower with control.
 Tip: Drive through your heels and keep the lift moderate - avoid pushing into a deep arch or over-extending your lower back at the top.
-StartImage: images/IMG_0313.jpeg
+StartImage: images/bridge.jpeg
 FinishImage:
 
 Slug: clamshell
@@ -149,7 +149,7 @@ Description: Targets the outer hip (glute medius) to improve hip stability, done
 Setup: Lie on your side with knees bent about 45 degrees, hips stacked, spine in a straight line from head to hips, and the band looped around your thighs just above the knees.
 Movement: Keeping your feet together and your spine still, open your top knee upward like a clamshell, then lower it with control.
 Tip: Keep your hips and spine stacked and still - don't let your top hip or your trunk roll backward as you open your knee.
-StartImage: images/IMG_0312.jpeg
+StartImage: images/clamshell.jpeg
 FinishImage:
 
 Slug: abdominal-bracing-marches
@@ -164,7 +164,7 @@ Description: Trains your deep core to brace and keep your spine steady and neutr
 Setup: Lie on your back, exercise band around legs just above knees, knees bent, feet flat on the floor. Gently brace your abdominals as if about to be poked in the stomach, without flattening or arching your low back.
 Movement: Keeping the brace and your low back still and neutral, lift one foot off the floor to a tabletop position, then lower with control and switch legs.
 Tip: Keep your low back in its natural neutral position the whole time - don't flatten it hard into the floor or let your pelvis rock side to side.
-StartImage: images/IMG_0311.jpeg
+StartImage: images/abdominal-bracing-marches.jpeg
 FinishImage:
 
 Slug: sit-to-stand
@@ -179,7 +179,7 @@ Description: Builds functional leg and core strength for getting up from a chair
 Setup: Sit toward the front edge of a sturdy chair, feet flat on the floor, arms crossed over your chest, spine tall.
 Movement: Keeping your chest lifted and spine long, hinge slightly forward from your hips and push through your feet to stand up fully, then lower back down to the chair with control.
 Tip: Keep your chest up and back straight the whole time - avoid rounding your back forward or rocking to gain momentum.
-StartImage: images/IMG_0310.jpeg
+StartImage: images/sit-to-stand.jpeg
 FinishImage:
 
 Slug: no-money
@@ -194,7 +194,7 @@ Description: Strengthens the mid-back and rotator cuff muscles that support upri
 Setup: Stand or sit tall. Hold the band with both hands, shoulder-width apart. Bend your elbows 90 degrees and tuck them at your sides, forearms pointing forward, palms up.
 Movement: Keeping your elbows glued to your sides and your spine tall, rotate your forearms outward away from each other while squeezing your shoulder blades together, then return with control.
 Tip: Keep your elbows pinned to your sides and your chest lifted - the motion happens at the shoulder, not by flaring the elbows out or slumping forward.
-StartImage: images/IMG_0307.jpeg
+StartImage: images/no-money.jpeg
 FinishImage:
 
 Slug: shoulder-horizontal-abduction
@@ -209,7 +209,7 @@ Description: Strengthens the mid-back and rear shoulder muscles that pull the sh
 Setup: Stand or sit tall, holding the band in front of you in each hand with arms extended forward at shoulder height, palms down.
 Movement: Keeping your arms roughly straight, at shoulder height, and your spine tall, pull both arms out to the sides, squeezing your shoulder blades together, then return with control.
 Tip: Keep your shoulders down, away from your ears, and your chest lifted throughout the movement - don't let your upper back round forward.
-StartImage: images/IMG_0309.jpeg
+StartImage: images/shoulder-horizontal-abduction.jpeg
 FinishImage:
 
 Slug: rows
@@ -224,7 +224,7 @@ Description: Strengthens the mid-back muscles that pull your shoulder blades tog
 Setup: Anchor the band in front of you at chest height and step back for tension. Stand tall with your spine neutral, starting with arms extended forward.
 Movement: Pull your elbows straight back, squeezing your shoulder blades together and keeping your spine tall and elbows close to your body, hold momentarily, then return with control.
 Tip: Keep your chest up and spine tall - avoid shrugging your shoulders toward your ears or leaning your trunk forward as you pull.
-StartImage: images/IMG_0306.jpeg
+StartImage: images/rows.jpeg
 FinishImage:
 
 Slug: shoulder-extension
@@ -239,7 +239,7 @@ Description: Strengthens the back of the shoulder and lat muscles used to pull y
 Setup: Anchor the band in front of you at shoulder height. Stand tall with a neutral spine. Hold the band ends with your arms extended forward. Step back for tension.
 Movement: Keeping your elbow straight and your torso still, pull your arm down and back past your hip against the band, hold momentarily, then return with control.
 Tip: Keep your torso upright and still - avoid leaning back or arching your lower back to generate extra range.
-StartImage: images/IMG_0319.jpeg
+StartImage: images/shoulder-extension.jpeg
 FinishImage:
 
 Slug: scapular-retraction-prone-arms-side
