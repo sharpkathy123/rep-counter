@@ -51,6 +51,15 @@
 #                 leaving FinishImage blank - it's shown at full size
 #                 instead of being cropped in half.
 #
+# Exercise order matters: when you check off several exercises and tap
+# "Run Selected", they run in the same order their blocks appear in this
+# file - not the order you tapped them in on screen. So if you want one
+# exercise always done before another whenever both are picked (e.g. a
+# basic hold before a harder progression of it), just make sure its
+# block comes earlier in the file than the other one's. A few groups
+# below are deliberately ordered this way already - look for a short
+# comment right above those blocks.
+#
 # Note on this version: descriptions, setup, movement, and tip text
 # below have been adapted for someone with osteoporosis of the spine,
 # based on guidance from the Bone Health & Osteoporosis Foundation, the
@@ -122,6 +131,9 @@ Tip: Keep your chest lifted and spine tall throughout - don't lean back or round
 StartImage: images/bicep-curl.svg
 FinishImage:
 
+# Ordered on purpose: this plain Bridge is the base version - it comes
+# before Bridge - Single Leg and Bridge + Alternating March below, which
+# build on it, so it always runs first if you pick more than one.
 Slug: bridge
 Name: Bridge
 Category: hip
@@ -242,6 +254,9 @@ Tip: Keep your torso upright and still - avoid leaning back or arching your lowe
 StartImage: images/shoulder-extension.jpeg
 FinishImage:
 
+# Ordered on purpose: this base hold comes before its I/T/Y progressions
+# below (arms-side-lift, arms-out-t, arms-overhead-lift), and those three
+# are in turn ordered I, then T, then Y - easiest arm position first.
 Slug: scapular-retraction-prone-arms-side
 Name: Scapular Retraction - Prone
 Category: back-shoulder
@@ -362,6 +377,9 @@ Tip: Don't let your hips tilt or rotate toward the lifted leg, and avoid pushing
 StartImage: images/bridge-single-leg-start.svg
 FinishImage: images/bridge-single-leg-finish.svg
 
+# Ordered on purpose: this comes before 90/90 Lower Trunk Rotation below,
+# which is meant to be done after a round of this to engage the deep core
+# first (see that exercise's own Setup text).
 Slug: ta-activation-supine
 Name: Abdominal Bracing - Activate Transverse Abdominis
 Category: core
