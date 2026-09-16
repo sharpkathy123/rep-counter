@@ -597,6 +597,9 @@
     <button id="importExercisesBtn" onclick="document.getElementById('importExercisesInput').click()">&#128193; Import exercises.txt</button>
     <button id="useBuiltInBtn" class="hidden" onclick="useBuiltInExercises()">Use built-in list</button>
   </div>
+  <div class="selectBtnRow">
+    <button id="exportCsvBtn" onclick="exportExercisesCsv()">&#128202; Export as CSV</button>
+  </div>
   <input type="file" id="importExercisesInput" accept=".txt,text/plain" class="hidden" onchange="handleImportFile(event)">
 </div>
 <div id="appUpdated">Updated <span id="appUpdatedTime">__BUILD_TIME__</span> · <a href="https://github.com/sharpkathy123/rep-counter#readme" id="docsLink">Docs</a></div>
@@ -1301,6 +1304,41 @@ function handleImportFile(event) {
 function useBuiltInExercises() {
   localStorage.setItem(EXERCISE_SOURCE_KEY, 'built-in');
   switchExerciseSource();
+}
+
+function csvField(value) {
+  const s = String(value ?? '');
+  // Quote (and escape internal quotes) whenever the value could otherwise
+  // be misread as more than one field or run past the end of its line.
+  return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+}
+
+// Exports whichever exercise list is currently active (built-in or
+// imported) as a spreadsheet-friendly CSV with the same fields as
+// exercises.txt - handy for reviewing, printing, or editing the list in
+// Excel/Google Sheets/Numbers. This is one-way (CSV out, not back in);
+// exercises.txt's own "Field: value" format is still what Import expects.
+function exportExercisesCsv() {
+  const headers = ['Slug', 'Name', 'Category', 'Equipment', 'Sets', 'Reps', 'Seconds', 'Rest', 'Description', 'Setup', 'Movement', 'Tip', 'StartImage', 'FinishImage'];
+  const rows = EXERCISES.map(ex => [
+    ex.slug, ex.name, ex.category, ex.type,
+    ex.defaults.sets, ex.defaults.reps, ex.defaults.seconds, ex.defaults.rest,
+    ex.description, ex.setup, ex.movement, ex.tip,
+    ex.startImage, ex.finishImage
+  ]);
+  // Leading BOM so Excel (Windows in particular) reads the file as UTF-8
+  // instead of guessing a legacy encoding and mangling any special
+  // characters in exercise text.
+  const csv = '﻿' + [headers, ...rows].map(row => row.map(csvField).join(',')).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = usingCustomExercises() ? 'my-exercises.csv' : 'exercises.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 // Selections, category/equipment filters, and even sort-by-category order
