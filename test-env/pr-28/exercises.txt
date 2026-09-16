@@ -74,8 +74,8 @@ Description: Strengthens the outer hip and glute muscles that stabilize your pel
 Setup: Loop the exercise band just below knees. Stand tall next to a wall or chair and hold on for balance, keeping your spine upright rather than leaning on the support.
 Movement: Keeping your leg straight, torso tall, and toes pointing forward, lift your working leg out to the side against the band, hold momentarily, then return with control.
 Tip: Keep your spine tall and hips level throughout - don't lean your torso sideways or forward to help lift the leg.
-StartImage: images/hip-abduction-start.svg
-FinishImage: images/hip-abduction-finish.svg
+StartImage: images/hip-abduction.svg
+FinishImage:
 
 Slug: hip-extension
 Name: Hip Extension - Standing
@@ -89,8 +89,8 @@ Description: Strengthens the glutes and hamstrings used to push your leg backwar
 Setup: Loop the exercise band just below knees. Face something stable for balance, standing tall with a neutral spine.
 Movement: Keeping your knee straight, toes forward, and spine tall, extend your working leg backward and slightly outward against the band, squeeze your glute, then return with control.
 Tip: Keep your torso upright and still - avoid arching or overextending your lower back to get extra range; the motion should come from the hip, not the spine.
-StartImage: images/hip-extension-start.svg
-FinishImage: images/hip-extension-finish.svg
+StartImage: images/hip-extension.svg
+FinishImage:
 
 Slug: pnf-d2
 Name: PNF D2 - Standing
@@ -104,8 +104,8 @@ Description: A diagonal arm pattern that trains the shoulder and trunk to work t
 Setup: Stand tall with a neutral spine. Hold one end of the resistance band low, at your side opposite your working arm. Hold the other end of the band with your working hand near the other hand.
 Movement: Sweep your working arm in one smooth diagonal, up and out, finishing overhead and out to the side with your palm turning to face away from you. Keep your wrist neutral and your torso facing forward the whole time. Reverse slowly to return.
 Tip: Let the movement happen at your shoulder and arm - keep your hips and spine facing forward and still, without twisting or leaning your trunk to help the reach.
-StartImage: images/pnf-d2-start.svg
-FinishImage: images/pnf-d2-finish.svg
+StartImage: images/pnf-d2.svg
+FinishImage:
 
 Slug: bicep-curl
 Name: Bicep Curls
@@ -119,8 +119,8 @@ Description: Strengthens the biceps at the front of the upper arm, used for lift
 Setup: Stand tall with your spine in a neutral position, arms straight down at your sides, holding a dumbbell in each hand, palms facing forward.
 Movement: Curl one or both dumbbells up toward your shoulder while keeping your elbow tucked at your side and your torso upright, lower with control, then alternate arms.
 Tip: Keep your chest lifted and spine tall throughout - don't lean back or round forward to swing the weight up.
-StartImage: images/bicep-curl-start.svg
-FinishImage: images/bicep-curl-finish.svg
+StartImage: images/bicep-curl.svg
+FinishImage:
 
 Slug: bridge
 Name: Bridge
@@ -254,8 +254,8 @@ Description: Strengthens the mid-back and lower trapezius muscles that hold your
 Setup: Lie face down on a bed, table, or the floor, forehead resting down, arms resting straight alongside your body, palms facing in or up.
 Movement: Without lifting your arms, squeeze your shoulder blades down and together, hold 5 seconds, then release with control.
 Tip: Keep your neck relaxed and the effort in your shoulder blades - avoid shrugging your shoulders up toward your ears or pushing into a deep backward arch.
-StartImage: images/scapular-retraction-prone-arms-side-start.svg
-FinishImage: images/scapular-retraction-prone-arms-side-finish.svg
+StartImage: images/scapular-retraction-prone-arms-side.svg
+FinishImage:
 
 Slug: scapular-retraction-prone-arms-side-lift
 Name: Scapular Retraction - Prone, I
@@ -269,8 +269,8 @@ Description: Builds on the arms-at-side version with a small arm lift, adding ge
 Setup: Lie face down, forehead resting down, arms resting straight alongside your body, palms facing in or up.
 Movement: Squeeze your shoulder blades together and lift both arms a few inches off the surface, hold 5 seconds, then lower with control.
 Tip: Lift from your shoulder blades with a small, controlled range - avoid pushing into a deep backward arch through your lower back.
-StartImage: images/scapular-retraction-prone-arms-side-lift-start.svg
-FinishImage: images/scapular-retraction-prone-arms-side-lift-finish.svg
+StartImage: images/scapular-retraction-prone-arms-side-lift.svg
+FinishImage:
 
 Slug: scapular-retraction-prone-arms-out-t
 Name: Scapular Retraction - Prone, T
@@ -299,8 +299,8 @@ Description: The most demanding version, challenging the mid and lower trapezius
 Setup: Lie face down, forehead resting down, arms extended straight overhead in a "Y" position, thumbs pointing up.
 Movement: Squeeze your shoulder blades down and together and lift both arms a small amount off the surface, hold 5 seconds, then lower with control.
 Tip: Keep the lift small and pain-free rather than reaching for maximum height - this is meant to be a gentle extensor exercise, not a deep backbend.
-StartImage: images/scapular-retraction-prone-arms-overhead-lift-start.svg
-FinishImage: images/scapular-retraction-prone-arms-overhead-lift-finish.svg
+StartImage: images/scapular-retraction-prone-arms-overhead-lift.svg
+FinishImage:
 
 Slug: bent-over-rows-dumbbell
 Name: Supported Row - Dumbbell (Spine-Safe)
@@ -314,8 +314,8 @@ Description: Strengthens the mid-back and rear shoulder muscles used for good po
 Setup: Holding a dumbbell in one hand, support yourself firmly with your other hand on the back of a sturdy chair or a counter. Keep your spine straight and only hinge slightly forward from your hips - much less than a traditional bent-over row - so your back stays flat and close to upright.
 Movement: Pull the dumbbell straight up toward your hip, leading with your elbow and squeezing your shoulder blade back, then lower with control.
 Tip: Keep your back flat and your forward lean minimal - never round your spine forward to reach the weight, and stop if this position isn't comfortable for your spine.
-StartImage: images/bent-over-rows-dumbbell-start.svg
-FinishImage: images/bent-over-rows-dumbbell-finish.svg
+StartImage: images/bent-over-rows-dumbbell.svg
+FinishImage:
 
 Slug: sit-to-stand-lower-extremity-bias
 Name: Sit to Stand - Lower Extremity Bias
@@ -329,8 +329,8 @@ Description: A variation of Sit to Stand that puts more of the demand on the leg
 Setup: Sit toward the front edge of a sturdy chair, feet flat on the floor, with one foot further away than the other, spine tall.
 Movement: Keeping your chest lifted and spine long, push through your feet to stand up fully using your legs, then lower back down to the chair with control, keeping both feet flat on the floor.
 Tip: Move slowly on the way down and keep your back straight rather than rounding forward - control on the descent is what builds leg strength, not just standing up quickly.
-StartImage: images/sit-to-stand-lower-extremity-bias-start.svg
-FinishImage: images/sit-to-stand-lower-extremity-bias-finish.svg
+StartImage: images/sit-to-stand-lower-extremity-bias.svg
+FinishImage:
 
 Slug: heel-raise-single-leg
 Name: Heel Raise - Single Leg
@@ -344,8 +344,8 @@ Description: Strengthens the calf muscles on one leg at a time, important for pu
 Setup: Stand tall on one leg near a wall or counter for light balance support, with your other foot lifted slightly off the floor. You can tuck the lifted foot behind the standing leg.
 Movement: Keeping your spine tall, rise up onto the ball of your standing foot as high as comfortable, hold, then lower your heel back down with control.
 Tip: Rise straight up on the ball of your foot without leaning your torso forward or letting your ankle roll inward or outward.
-StartImage: images/heel-raise-single-leg-start.svg
-FinishImage: images/heel-raise-single-leg-finish.svg
+StartImage: images/heel-raise-single-leg.svg
+FinishImage:
 
 Slug: bridge-single-leg
 Name: Bridge - Single Leg
