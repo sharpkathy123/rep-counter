@@ -70,7 +70,7 @@ Sets: 4
 Reps: 10
 Seconds: 4
 Rest: 6
-Description: Strengthens the outer hip and glute muscles that stabilize your pelvis while standing and walking - safe, spine-neutral strengthening for osteoporosis.
+Description: Strengthens the outer hip and glute muscles that stabilize your pelvis while standing and walking - safe, spine-neutral strengthening for osteoporosis. Do two sets on each leg.
 Setup: Loop the exercise band just below knees. Stand tall next to a wall or chair and hold on for balance, keeping your spine upright rather than leaning on the support.
 Movement: Keeping your leg straight, torso tall, and toes pointing forward, lift your working leg out to the side against the band, hold momentarily, then return with control.
 Tip: Keep your spine tall and hips level throughout - don't lean your torso sideways or forward to help lift the leg.
@@ -85,7 +85,7 @@ Sets: 4
 Reps: 10
 Seconds: 4
 Rest: 6
-Description: Strengthens the glutes and hamstrings used to push your leg backward, important for walking and stairs, while keeping the spine in a safe, neutral position.
+Description: Strengthens the glutes and hamstrings used to push your leg backward, important for walking and stairs, while keeping the spine in a safe, neutral position. Do two sets on each leg.
 Setup: Loop the exercise band just below knees. Face something stable for balance, standing tall with a neutral spine.
 Movement: Keeping your knee straight, toes forward, and spine tall, extend your working leg backward and slightly outward against the band, squeeze your glute, then return with control.
 Tip: Keep your torso upright and still - avoid arching or overextending your lower back to get extra range; the motion should come from the hip, not the spine.
@@ -100,7 +100,7 @@ Sets: 4
 Reps: 10
 Seconds: 6
 Rest: 6
-Description: A diagonal arm pattern that trains the shoulder and trunk to work together through a full range, mimicking reaching-and-rotating movements, while keeping the spine still and supported.
+Description: A diagonal arm pattern that trains the shoulder and trunk to work together through a full range, mimicking reaching-and-rotating movements, while keeping the spine still and supported. Do two sets on each arm.
 Setup: Stand tall with a neutral spine. Hold one end of the resistance band low, at your side opposite your working arm. Hold the other end of the band with your working hand near the other hand.
 Movement: Sweep your working arm in one smooth diagonal, up and out, finishing overhead and out to the side with your palm turning to face away from you. Keep your wrist neutral and your torso facing forward the whole time. Reverse slowly to return.
 Tip: Let the movement happen at your shoulder and arm - keep your hips and spine facing forward and still, without twisting or leaning your trunk to help the reach.
@@ -116,9 +116,9 @@ Reps: 10
 Seconds: 4
 Rest: 6
 Description: Strengthens the biceps at the front of the upper arm, used for lifting and carrying, while reinforcing a tall, spine-safe standing posture.
-Setup: Stand tall with your spine in a neutral position, arms straight down at your sides, holding a dumbbell in each hand, palms facing forward.
-Movement: Curl one or both dumbbells up toward your shoulder while keeping your elbow tucked at your side and your torso upright, lower with control, then alternate arms.
-Tip: Keep your chest lifted and spine tall throughout - don't lean back or round forward to swing the weight up.
+Setup: Sit tall toward the front of a sturdy chair, feet flat on the floor, spine in a neutral position, arms straight down at your sides, holding a dumbbell in each hand, palms facing forward.
+Movement: Keeping both elbows tucked at your sides and your torso upright, curl both dumbbells up toward your shoulders together, then lower both with control.
+Tip: Keep your chest lifted and spine tall throughout - don't lean back or round forward to swing the weights up, and keep both arms moving together rather than one at a time.
 StartImage: images/bicep-curl.svg
 FinishImage:
 
@@ -145,7 +145,7 @@ Sets: 4
 Reps: 10
 Seconds: 3
 Rest: 6
-Description: Targets the outer hip (glute medius) to improve hip stability, done fully supported lying on your side so there's no bending or twisting load on the spine.
+Description: Targets the outer hip (glute medius) to improve hip stability, done fully supported lying on your side so there's no bending or twisting load on the spine. Do two sets on each side, switching which side you're lying on in between.
 Setup: Lie on your side with knees bent about 45 degrees, hips stacked, spine in a straight line from head to hips, and the band looped around your thighs just above the knees.
 Movement: Keeping your feet together and your spine still, open your top knee upward like a clamshell, then lower it with control.
 Tip: Keep your hips and spine stacked and still - don't let your top hip or your trunk roll backward as you open your knee.
@@ -310,7 +310,7 @@ Sets: 4
 Reps: 12
 Seconds: 3
 Rest: 6
-Description: Strengthens the mid-back and rear shoulder muscles used for good posture, using a supported, minimal-hinge position to avoid the forward spinal bending that a traditional bent-over row involves.
+Description: Strengthens the mid-back and rear shoulder muscles used for good posture, using a supported, minimal-hinge position to avoid the forward spinal bending that a traditional bent-over row involves. Do two sets on each arm.
 Setup: Holding a dumbbell in one hand, support yourself firmly with your other hand on the back of a sturdy chair or a counter. Keep your spine straight and only hinge slightly forward from your hips - much less than a traditional bent-over row - so your back stays flat and close to upright.
 Movement: Pull the dumbbell straight up toward your hip, leading with your elbow and squeezing your shoulder blade back, then lower with control.
 Tip: Keep your back flat and your forward lean minimal - never round your spine forward to reach the weight, and stop if this position isn't comfortable for your spine.
@@ -356,7 +356,7 @@ Reps: 10
 Seconds: 3
 Rest: 6
 Description: Builds glute and hip strength on one leg at a time while training your core to keep your pelvis level - a spine-neutral extensor exercise well suited to osteoporosis.
-Setup: Lie on your back with knees bent, feet flat on the floor, hip-width apart. Straighten one leg out or lift it toward your chest.
+Setup: Lie on your back with knees bent, feet flat on the floor, hip-width apart. Straighten one leg out or lift it toward your chest - if your hip flexor feels sore, you can instead rest that ankle across your opposite knee.
 Movement: Keeping your pelvis level and your low back neutral, drive through your grounded heel to lift your hips off the floor, hold briefly, then lower with control. Do the first three sets on one leg, then switch and do the last three sets on the other leg.
 Tip: Don't let your hips tilt or rotate toward the lifted leg, and avoid pushing into a deep arch at the top - keep both hip points facing the ceiling.
 StartImage: images/bridge-single-leg-start.svg
