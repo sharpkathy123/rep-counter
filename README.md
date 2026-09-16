@@ -46,7 +46,7 @@ Category and equipment aren't a fixed list — typing a new one into the file ge
 | `index.html` | Landing page: exercise list, category/equipment filters, multi-select, Run Selected, exercise detail view |
 | `counter.html` | Single-exercise counter, voice settings/test, and the target for Siri Shortcuts / silent-mode links |
 | `exercises.txt` | All exercise content — the file you actually edit day to day |
-| `images/` | Exercise photos referenced from `exercises.txt` |
+| `images/` | Exercise photos and hand-drawn start/finish SVG diagrams referenced from `exercises.txt` |
 | `manifest.json`, `icon-*.png` | Home Screen install metadata and icon |
 | `sw.js` | Service worker — caches everything needed for offline/Airplane Mode use |
 | `.github/workflows/deploy.yml` | Deploys `main` to the live site and posts a preview link on every PR (see below) |
