@@ -138,6 +138,10 @@
     font-size: 2.6vw;
     color: #444;
   }
+  #docsLink {
+    color: #666;
+    text-decoration: none;
+  }
   #grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -584,7 +588,7 @@
   </div>
   <input type="file" id="importExercisesInput" accept=".txt,text/plain" class="hidden" onchange="handleImportFile(event)">
 </div>
-<div id="appUpdated">Updated <span id="appUpdatedTime">__BUILD_TIME__</span></div>
+<div id="appUpdated">Updated <span id="appUpdatedTime">__BUILD_TIME__</span> · <a href="https://github.com/sharpkathy123/rep-counter#readme" id="docsLink">Docs</a></div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
