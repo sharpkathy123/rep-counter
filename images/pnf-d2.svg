@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" stroke="#eee" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+<defs><marker id="ah-pnf-d2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <circle cx="55" cy="30" r="8"/>
+      <line x1="55" y1="38" x2="55" y2="75"/>
+      <line x1="55" y1="75" x2="45" y2="110"/>
+      <line x1="55" y1="75" x2="65" y2="110"/>
+      <path d="M40 75 Q60 60 95 20" marker-end="url(#ah-pnf-d2)"/>
+      <line x1="20" y1="103" x2="20" y2="116" stroke="#ffb347"/>
+      <path d="M20 106 Q30 92 40 76" stroke="#ffb347" stroke-dasharray="4 5"/>
+</svg>
