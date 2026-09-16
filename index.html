@@ -173,6 +173,12 @@
     object-fit: contain;
     border-radius: 8px;
   }
+  /* Without an icon/photo as the first flex child, the name would start
+     flush at the card's top edge and collide with the checkbox, which is
+     positioned absolutely (so it floats over the visual rather than
+     taking up its own flex row) - this reserves that same clearance
+     directly as padding instead. */
+  .card.noVisual { padding-top: 9vw; }
   .card.band { border-color: #3d6f9e; }
   .card.bodyweight { border-color: #3d7a4a; }
   .card.dumbbell { border-color: #8a6a2f; }
@@ -501,6 +507,7 @@
     .chip { font-size: 15px; padding: 8px 18px; }
     #grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
     .card { font-size: 16px; padding: 20px 14px; gap: 8px; }
+    .card.noVisual { padding-top: 44px; }
     .card svg { width: 90px; height: 90px; }
     .card img { width: 90px; height: 90px; }
     .cardCheckWrap { top: 10px; right: 10px; gap: 6px; }
@@ -860,6 +867,13 @@ const CATEGORY_ORDER = ['hip', 'core', 'back-shoulder', 'arms', 'balance-legs'];
 const EQUIPMENT_ORDER = ['band', 'dumbbell', 'bodyweight'];
 let CATEGORIES = [];
 let EQUIPMENT = [];
+// Whether the currently active list (built-in or imported) has a photo on
+// any exercise at all - an imported list is realistically text-only (see
+// README), and every one of its exercises would otherwise fall back to the
+// exact same generic stick-figure icon with nothing to distinguish them,
+// just taking up space without adding anything. When this is false, the
+// icon/photo area is skipped entirely instead of showing that icon.
+let anyExerciseHasImage = false;
 
 function autoLabel(key) {
   return key.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
@@ -882,6 +896,7 @@ function countBy(list, keyFn) {
 }
 
 function computeFacets() {
+  anyExerciseHasImage = EXERCISES.some(ex => ex.startImage);
   const categoryCounts = countBy(EXERCISES, e => e.category);
   const equipmentCounts = countBy(EXERCISES, e => e.type);
   CATEGORIES = orderedFacet(categoryCounts, CATEGORY_ORDER, CATEGORY_LABELS);
@@ -1053,9 +1068,9 @@ function resolvedIcon(ex, suffix) {
 }
 
 function cardVisual(ex) {
-  return ex.startImage
-    ? `<img src="${ex.startImage}" alt="" loading="lazy">`
-    : buildIconSvg(resolvedIcon(ex, 'card'));
+  if (ex.startImage) return `<img src="${ex.startImage}" alt="" loading="lazy">`;
+  if (!anyExerciseHasImage) return ''; // no icon either - see anyExerciseHasImage
+  return buildIconSvg(resolvedIcon(ex, 'card'));
 }
 
 function buildIconSvg(inner) {
@@ -1143,13 +1158,14 @@ function buildGrid() {
   gridEl.innerHTML = list.map(ex => {
     const orderIndex = order.findIndex(o => o.slug === ex.slug);
     const badge = orderIndex === -1 ? '' : `<span class="orderBadge">${orderIndex + 1}</span>`;
+    const visual = cardVisual(ex);
     return `
-    <div class="card ${ex.type}" onclick="openDetail('${ex.slug}')">
+    <div class="card ${ex.type}${visual ? '' : ' noVisual'}" onclick="openDetail('${ex.slug}')">
       <div class="cardCheckWrap">
         ${badge}
         <input type="checkbox" class="cardCheck" onclick="event.stopPropagation()" onchange="toggleSelected('${ex.slug}', this.checked)" ${selectedSlugs.has(ex.slug) ? 'checked' : ''}>
       </div>
-      ${cardVisual(ex)}
+      ${visual}
       <div>${ex.name}</div>
       <div class="estTime">${formatDuration(estimateSeconds(getExerciseParams(ex)))}</div>
       <div class="lastDone ${lastDoneClass(ex.slug)}">${formatLastDone(ex.slug)}</div>
@@ -1418,10 +1434,16 @@ function openDetail(slug) {
     detailPhotoStartEl.src = ex.startImage;
     detailPhotoStartEl.alt = ex.finishImage ? 'Start position' : 'Exercise photo';
     detailPhotoFinishEl.src = ex.finishImage || '';
-  } else {
+  } else if (anyExerciseHasImage) {
     detailIconEl.style.display = '';
     detailPhotosEl.style.display = 'none';
     detailIconEl.innerHTML = resolvedIcon(ex, 'detail');
+  } else {
+    // Nothing in the current list has a photo - see anyExerciseHasImage -
+    // so skip the generic stick-figure icon entirely rather than reserving
+    // space for a placeholder that never varies or adds anything.
+    detailIconEl.style.display = 'none';
+    detailPhotosEl.style.display = 'none';
   }
   document.getElementById('detailName').textContent = ex.name;
   document.getElementById('detailDescription').textContent = ex.description;
