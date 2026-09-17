@@ -506,12 +506,12 @@ Category: core
 Equipment: band
 Sets: 2
 Reps: 12
-Seconds: 3
+Seconds: 4
 Rest: 6
-Description: A dynamic core stability exercise that challenges your trunk to resist movement as one arm circles against band resistance, while the rest of your body stays still and supported in a plank. Do half your sets on each arm.
-Setup: Anchor a resistance band at about elbow height. Get into a forearm plank facing the anchor, both forearms on the floor and your body in a straight line from head to heels, then hold the band in one hand out in front of you with the line taut.
-Movement: Keeping your spine neutral, hips level, and the band taut, slowly trace a small circle in front of you with your band hand - one circle is a rep - then reverse direction partway through your sets.
-Tip: Keep the circles small and controlled and the band taut throughout - don't let your hips sway or sag, and don't let the band go slack at any point in the circle.
+Description: A dynamic anti-rotation exercise, similar to the Pallof Press, that challenges your core to resist movement in every direction as you trace circles with the band instead of pressing straight out and back.
+Setup: Anchor the band at chest height to your side and stand tall, sideways to the anchor, holding the band with both hands at your breastbone. Keep your knees bent.
+Movement: Keeping your torso facing forward and your spine tall, slowly trace a small circle in front of your chest with both hands against the band's resistance - one circle is a rep - then reverse direction partway through your sets.
+Tip: Don't let your torso rotate toward the anchor as your hands circle - your hips, shoulders, and spine should stay square and still the whole time, just like a Pallof Press.
 StartImage: images/stir-the-pot.svg
 FinishImage:
 
