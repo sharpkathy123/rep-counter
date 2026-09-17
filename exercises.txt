@@ -511,7 +511,7 @@ Rest: 6
 Description: A dynamic anti-rotation exercise, similar to the Pallof Press, that challenges your core to resist movement in every direction as you trace circles with the band instead of pressing straight out and back.
 Setup: Anchor the band at chest height to your side and stand tall, sideways to the anchor, holding the band with both hands at your breastbone. Keep your knees bent.
 Movement: Keeping your torso facing forward and your spine tall, slowly trace a small circle in front of your chest with both hands against the band's resistance - one circle is a rep - then reverse direction partway through your sets.
-Tip: Don't let your torso rotate toward the anchor as your hands circle - your hips, shoulders, and spine should stay square and still the whole time, just like a Pallof Press.
+Tip: Don't let your torso rotate toward the anchor as your hands circle - your hips, shoulders, and spine should stay square and still the whole time, just like a Pallof Press. Start with a circle about the size of a dinner plate (roughly 6-12 inches across, the range researcher Dr. Stuart McGill uses for the original Stir the Pot) and only go bigger than that if you can keep your torso completely still while doing it.
 StartImage: images/stir-the-pot.svg
 FinishImage:
 
