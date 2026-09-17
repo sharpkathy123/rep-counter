@@ -452,6 +452,8 @@ Description: A gentler, more supported version of lower trunk rotation that keep
 Setup: Lie on your back with knees bent and feet flat on the floor, hip-width apart, arms out to the sides for stability.
 Movement: Keeping your feet flat on the floor and your shoulders down, slowly rotate both knees a small, comfortable distance to one side, then return to center and rotate gently to the other side.
 Tip: Move slowly and only as far as is pain-free - never force the rotation, and stop if it causes any spinal discomfort.
+StartImage: images/lower-trunk-rotation-feet-down-start.svg
+FinishImage: images/lower-trunk-rotation-feet-down-finish.svg
 
 Slug: 90-90-ltr
 Name: 90/90 Lower Trunk Rotation (Gentle Range)
@@ -501,15 +503,17 @@ FinishImage: images/pallof-press-standing-finish.svg
 Slug: stir-the-pot
 Name: Stir the Pot
 Category: core
-Equipment: stability-ball
+Equipment: band
 Sets: 2
 Reps: 12
 Seconds: 3
 Rest: 6
-Description: A dynamic core stability exercise that challenges your trunk to resist movement in every direction as your arms circle, while the rest of your body stays still and supported in a plank.
-Setup: Kneel behind a stability ball and rest your forearms on top of it, elbows under your shoulders, then walk your feet back into a plank position with your body in a straight line from head to heels.
-Movement: Keeping your spine neutral and hips level, slowly trace a small circle with your forearms on the ball - one circle is a rep - then reverse direction partway through your sets.
-Tip: Keep the circles small and controlled, and don't let your hips sway or sag - the effort should come from bracing your trunk, not from big arm movements.
+Description: A dynamic core stability exercise that challenges your trunk to resist movement as one arm circles against band resistance, while the rest of your body stays still and supported in a plank. Do half your sets on each arm.
+Setup: Anchor a resistance band at about elbow height. Get into a forearm plank facing the anchor, both forearms on the floor and your body in a straight line from head to heels, then hold the band in one hand out in front of you with the line taut.
+Movement: Keeping your spine neutral, hips level, and the band taut, slowly trace a small circle in front of you with your band hand - one circle is a rep - then reverse direction partway through your sets.
+Tip: Keep the circles small and controlled and the band taut throughout - don't let your hips sway or sag, and don't let the band go slack at any point in the circle.
+StartImage: images/stir-the-pot.svg
+FinishImage:
 
 Slug: squats-multidirectional
 Name: Squats - Multi-Directional Stance (No Arm Support)
