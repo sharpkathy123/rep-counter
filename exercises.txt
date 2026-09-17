@@ -278,7 +278,7 @@ Category: back-shoulder
 Equipment: bodyweight
 Sets: 1
 Reps: 10
-Seconds: 8
+Seconds: 4
 Rest: 6
 Description: Builds on the arms-at-side version with a small arm lift, adding gentle back-extensor strengthening that's beneficial for spinal support in osteoporosis.
 Setup: Lie face down, forehead resting down, arms resting straight alongside your body, palms facing in or up.
@@ -293,7 +293,7 @@ Category: back-shoulder
 Equipment: bodyweight
 Sets: 1
 Reps: 10
-Seconds: 8
+Seconds: 4
 Rest: 6
 Description: Targets the mid-trapezius through a "T" arm position, part of the I/T/Y set of gentle back-extensor exercises recommended for osteoporosis.
 Setup: Lie face down, forehead resting down, arms extended straight out to the sides at shoulder height, palms down.
@@ -308,7 +308,7 @@ Category: back-shoulder
 Equipment: bodyweight
 Sets: 1
 Reps: 10
-Seconds: 8
+Seconds: 4
 Rest: 6
 Description: The most demanding version, challenging the mid and lower trapezius through an overhead range - keep this one gentle, since deep backward bending should be avoided with osteoporosis.
 Setup: Lie face down, forehead resting down, arms extended straight overhead in a "Y" position, thumbs pointing up.
@@ -390,8 +390,8 @@ Seconds: 10
 Rest: 6
 Description: Trains the deep transversus abdominis muscle to brace and support the spine in a neutral position, without the forward bending of traditional ab exercises - one of the safest and most recommended core exercises for osteoporosis.
 Setup: Lie on your back with knees bent, feet flat on the floor, arms resting at your sides, spine in a comfortable neutral position.
-Movement: Gently draw your belly towards your spine. Hold, breathing normally, then release.
-Tip: Keep breathing throughout the hold - don't hold your breath, flatten your low back hard into the floor, or let your ribs flare up.
+Movement: Press your lower back gently into the floor while you draw your belly toward your spine. Hold, breathing normally, then release.
+Tip: Keep breathing throughout the hold - don't hold your breath or let your ribs flare up. The press into the floor should come from bracing your abs, not from pushing hard with your legs.
 StartImage: images/ta-activation-supine-start.svg
 FinishImage: images/ta-activation-supine-finish.svg
 
@@ -436,9 +436,24 @@ Rest: 6
 Description: A core stability drill that trains your midsection to keep your spine still and neutral while your arms and legs move independently - a good flexion-free alternative to crunches for osteoporosis.
 Setup: Lie on your back with arms reaching straight up toward the ceiling and hips and knees bent to 90 degrees, shins parallel to the floor.
 Movement: Keeping your low back in a neutral position against the floor, slowly lower one arm overhead and the opposite leg down toward the floor, then return and switch sides.
-Tip: Only lower as far as you can go without your low back arching up off the floor or flattening hard into it.
+Tip: Only lower as far as you can go without your low back arching up off the floor or flattening hard into it. If your hip flexor is sore, reduce to 5 reps and don't extend the leg all the way.
 StartImage: images/dead-bug-start.svg
 FinishImage: images/dead-bug-finish.svg
+
+Slug: lower-trunk-rotation-feet-down
+Name: Lower Trunk Rotation - Feet Down
+Category: core
+Equipment: bodyweight
+Sets: 3
+Reps: 10
+Seconds: 5
+Rest: 6
+Description: A gentler, more supported version of lower trunk rotation that keeps your feet on the floor, mobilizing the low back and hips with less core demand than the 90/90 version.
+Setup: Lie on your back with knees bent and feet flat on the floor, hip-width apart, arms out to the sides for stability.
+Movement: Keeping your feet flat on the floor and your shoulders down, slowly rotate both knees a small, comfortable distance to one side, then return to center and rotate gently to the other side.
+Tip: Move slowly and only as far as is pain-free - never force the rotation, and stop if it causes any spinal discomfort.
+StartImage: images/lower-trunk-rotation-feet-down-start.svg
+FinishImage: images/lower-trunk-rotation-feet-down-finish.svg
 
 Slug: 90-90-ltr
 Name: 90/90 Lower Trunk Rotation (Gentle Range)
@@ -475,7 +490,7 @@ Name: Pallof Press - Standing
 Category: core
 Equipment: band
 Sets: 2
-Reps: 15
+Reps: 12
 Seconds: 4
 Rest: 6
 Description: An anti-rotation exercise that trains your core to resist the band's pull rather than to actively bend or twist - an ideal spine-safe core exercise for osteoporosis, since it strengthens the trunk without ever flexing or rotating the spine.
@@ -484,6 +499,21 @@ Movement: Press the band straight out in front of your chest, keeping your torso
 Tip: Don't let your torso rotate toward the anchor as you press out or return - your hips, shoulders, and spine should stay square and still the whole time.
 StartImage: images/pallof-press-standing-start.svg
 FinishImage: images/pallof-press-standing-finish.svg
+
+Slug: stir-the-pot
+Name: Stir the Pot
+Category: core
+Equipment: band
+Sets: 4
+Reps: 6
+Seconds: 4
+Rest: 6
+Description: A dynamic anti-rotation exercise, similar to the Pallof Press, that challenges your core to resist movement in every direction as you trace circles with the band instead of pressing straight out and back.
+Setup: Anchor the band at chest height to your side and stand tall, sideways to the anchor, holding the band with both hands at your breastbone. Keep your knees bent.
+Movement: Keeping your torso facing forward and your spine tall, slowly trace a small circle in front of your chest with both hands against the band's resistance - one circle is a rep. Circle one direction for the first set and the other direction for the second set, then turn around to anchor the band on your other side and repeat both directions for the third and fourth sets - four sets covers both directions on both sides, one direction per set.
+Tip: Don't let your torso rotate toward the anchor as your hands circle - your hips, shoulders, and spine should stay square and still the whole time, just like a Pallof Press. Start with a circle about the size of a dinner plate (roughly 6-12 inches across, the range researcher Dr. Stuart McGill uses for the original Stir the Pot) and only go bigger than that if you can keep your torso completely still while doing it.
+StartImage: images/stir-the-pot.svg
+FinishImage:
 
 Slug: squats-multidirectional
 Name: Squats - Multi-Directional Stance (No Arm Support)
