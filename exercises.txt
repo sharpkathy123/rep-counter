@@ -386,11 +386,11 @@ Category: core
 Equipment: bodyweight
 Sets: 1
 Reps: 10
-Seconds: 10
+Seconds: 12
 Rest: 6
 Description: Trains the deep transversus abdominis muscle to brace and support the spine in a neutral position, without the forward bending of traditional ab exercises - one of the safest and most recommended core exercises for osteoporosis.
 Setup: Lie on your back with knees bent, feet flat on the floor, arms resting at your sides, spine in a comfortable neutral position.
-Movement: Press your lower back gently into the floor while you draw your belly toward your spine. Hold, breathing normally, then release.
+Movement: Press your lower back gently into the floor while you draw your belly toward your spine. Hold for 10 seconds, breathing normally, then release.
 Tip: Keep breathing throughout the hold - don't hold your breath or let your ribs flare up. The press into the floor should come from bracing your abs, not from pushing hard with your legs.
 StartImage: images/ta-activation-supine-start.svg
 FinishImage: images/ta-activation-supine-finish.svg
