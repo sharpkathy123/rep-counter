@@ -173,7 +173,7 @@ Reps: 10
 Seconds: 8
 Rest: 6
 Description: Trains your deep core to brace and keep your spine steady and neutral while your legs move - a spine-safe alternative to crunches or sit-ups for people with osteoporosis.
-Setup: Lie on your back, exercise band around legs just above knees, knees bent, feet flat on the floor. Gently brace your abdominals as if about to be poked in the stomach, without flattening or arching your low back.
+Setup: Lie on your back, exercise band around legs just above knees, knees bent, feet flat on the floor. Gently brace your abdominals as if about to be poked in the stomach - skip the band if your hip flexor is sore, marching without it still works your core.
 Movement: Keeping the brace and your low back still and neutral, lift one foot off the floor to a tabletop position, then lower with control and switch legs.
 Tip: Keep your low back in its natural neutral position the whole time - don't flatten it hard into the floor or let your pelvis rock side to side.
 StartImage: images/abdominal-bracing-marches.jpeg
