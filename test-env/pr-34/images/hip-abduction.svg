@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" stroke="#eee" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+<defs><marker id="ah-hip-abduction" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <circle cx="55" cy="20" r="8"/>
+      <line x1="55" y1="28" x2="55" y2="65"/>
+      <line x1="55" y1="65" x2="48" y2="105"/>
+      <line x1="55" y1="65" x2="90" y2="80" marker-end="url(#ah-hip-abduction)"/>
+      <line x1="55" y1="35" x2="42" y2="55"/>
+      <line x1="55" y1="35" x2="68" y2="55"/>
+      <path d="M48 105 Q70 95 90 80" stroke="#ffb347" stroke-dasharray="4 5"/>
+</svg>
