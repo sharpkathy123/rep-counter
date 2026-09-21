@@ -358,6 +358,10 @@
     color: #4da3ff;
     text-decoration: none;
   }
+  .resetParamsLink.inactive {
+    color: #666;
+    pointer-events: none;
+  }
   .chk-row {
     display: flex;
     align-items: center;
@@ -602,7 +606,7 @@
   </div>
   <input type="file" id="importExercisesInput" accept=".txt,text/plain" class="hidden" onchange="handleImportFile(event)">
 </div>
-<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-21T01:04:16Z</span> · <a href="https://github.com/sharpkathy123/rep-counter#readme" id="docsLink">Docs</a></div>
+<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-21T01:25:04Z</span> · <a href="https://github.com/sharpkathy123/rep-counter#readme" id="docsLink">Docs</a></div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
@@ -658,7 +662,7 @@
     <div class="row"><span>Estimated time</span><span id="f-estimate"></span></div>
     <div class="row"><span>With narration</span><span id="f-estimate-narrated"></span></div>
     <div class="hint">Starting numbers are placeholders - edit to match what your PT prescribed. Changes are saved on this device, including for Run All.</div>
-    <a href="#" class="resetParamsLink" onclick="resetExerciseParams(); return false;">&#8635; Reset to defaults</a>
+    <a href="#" id="resetParamsLink" class="resetParamsLink" onclick="resetExerciseParams(); return false;">&#8635; Reset to defaults</a>
   </div>
 
   <label class="chk-row"><input type="checkbox" id="f-voice"> Speak aloud during counting</label>
@@ -1422,6 +1426,7 @@ function saveCurrentExerciseParams() {
   };
   localStorage.setItem('params_' + currentExercise.slug, JSON.stringify(params));
   updateEstimateDisplay(params);
+  updateResetLinkState();
 }
 
 function updateEstimateDisplay(params) {
@@ -1429,6 +1434,20 @@ function updateEstimateDisplay(params) {
   if (currentExercise) {
     document.getElementById('f-estimate-narrated').textContent = formatDuration(estimateSecondsWithNarration(currentExercise, params));
   }
+}
+
+// Greys out "Reset to defaults" and makes it unclickable once the fields
+// already match exercises.txt's numbers, so it doesn't invite a pointless
+// tap when there's nothing to reset.
+function updateResetLinkState() {
+  if (!currentExercise) return;
+  const d = currentExercise.defaults;
+  const atDefaults =
+    parseInt(document.getElementById('f-sets').value) === d.sets &&
+    parseInt(document.getElementById('f-reps').value) === d.reps &&
+    parseInt(document.getElementById('f-seconds').value) === d.seconds &&
+    parseInt(document.getElementById('f-rest').value) === d.rest;
+  document.getElementById('resetParamsLink').classList.toggle('inactive', atDefaults);
 }
 
 // Clears whatever sets/reps/seconds/rest you've locally tweaked for this
@@ -1443,6 +1462,7 @@ function resetExerciseParams() {
   document.getElementById('f-seconds').value = defaults.seconds;
   document.getElementById('f-rest').value = defaults.rest;
   updateEstimateDisplay(defaults);
+  updateResetLinkState();
 }
 
 let currentExercise = null;
@@ -1515,6 +1535,7 @@ function openDetail(slug) {
   document.getElementById('f-seconds').value = savedParams.seconds;
   document.getElementById('f-rest').value = savedParams.rest;
   updateEstimateDisplay(savedParams);
+  updateResetLinkState();
 
   const params = new URLSearchParams(window.location.search);
   const voiceMode = params.get('voice') === '1';
