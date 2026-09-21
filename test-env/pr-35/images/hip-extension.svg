@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" stroke="#eee" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+<defs><marker id="ah-hip-extension" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <circle cx="58" cy="18" r="7"/>
+      <line x1="57" y1="25" x2="54" y2="62"/>
+      <line x1="54" y1="62" x2="50" y2="105"/>
+      <line x1="54" y1="62" x2="85" y2="95" marker-end="url(#ah-hip-extension)"/>
+      <line x1="56" y1="32" x2="42" y2="46"/>
+      <path d="M50 105 Q68 100 85 95" stroke="#ffb347" stroke-dasharray="4 5"/>
+</svg>
