@@ -401,11 +401,11 @@ Category: core
 Equipment: bodyweight
 Sets: 2
 Reps: 10
-Seconds: 3
+Seconds: 10
 Rest: 6
 Description: Challenges your deep core to keep your spine steady and neutral while your hips move through a marching pattern - a spine-safe way to build core control for osteoporosis.
 Setup: Lie on your back with hips and knees bent. Engage your deep abdominal brace as in TA Activation.
-Movement: Keeping the brace on and your low back still and neutral, raise one knee straight up with shin parallel to floor, then raise the other knee similarly, then return each in turn to the original position, and switch sides.
+Movement: Keeping the brace on and your low back still and neutral, raise one knee straight up with shin parallel to floor, then raise the other knee similarly, then return each in turn to the original position, and switch sides. Pace each rep to about 10 seconds: up by 2 seconds, up by 4 seconds, hold, hold, down by 8 seconds, down by 10 seconds.
 Tip: Keep your low back in its natural neutral curve the whole time - don't let your pelvis rock or your back arch or flatten as your leg lowers.
 StartImage: images/90-90-marching-ta-start.svg
 FinishImage: images/90-90-marching-ta-finish.svg
