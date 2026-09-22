@@ -26,19 +26,19 @@ Then launch it from the icon on your Home Screen, same as any other app.
 
 ### 2. Bring your own exercise list
 
-Scroll to the very bottom of the exercise list and you'll see **Import exercises.txt**. Tap it and pick a plain text file from your device to replace the built-in list with your own — your own exercises, your own numbers, kept completely private to your device.
+Scroll to the very bottom of the exercise list and you'll see **Import exercises.txt or .csv**. Tap it and pick a file from your device to replace the built-in list with your own — your own exercises, your own numbers, kept completely private to your device.
 
 - **Nothing is uploaded anywhere.** The file is read right there on your phone/tablet and saved in that browser's own storage, so your list keeps working offline from then on, exactly like the built-in one.
-- **The file needs a specific format.** Open **[`exercises.txt`](exercises.txt)** in this repo to see it — the format is explained in plain English right at the top of that file. The easiest way to get started: open that file, select all the text, copy it into a new document on your computer or phone, edit it to match your own exercises, save it as a `.txt` file, then import that.
+- **The file needs a specific format.** Open **[`exercises.txt`](exercises.txt)** in this repo to see it — the format is explained in plain English right at the top of that file. The easiest way to get started: open that file, select all the text, copy it into a new document on your computer or phone, edit it to match your own exercises, save it as a `.txt` file, then import that. Importing a `.csv` instead works too (see below) — matched by column name, so reordering or dropping a column in your spreadsheet app is fine, and it doesn't need to be one this app exported (a "Slug" and "Name" column header is all it looks for).
 - **Switch back anytime** with the **Use built-in list** button that appears once you've imported something — your imported file stays saved, so switching back and forth doesn't mean re-importing every time.
 - **📷 Photos won't show up in your imported list.** Two fields in the format, `StartImage` and `FinishImage`, point to photo files that live inside this app itself — there's no way to bring your own photos along through Import. Leave those two fields blank for every exercise in your file (any filename you put there just won't load a picture). With no images anywhere in your list, the app just skips the icon/photo space entirely rather than showing a placeholder — everything still works perfectly fine, your cards and exercise details just go straight to the text.
 
-### 3. Export your list as a spreadsheet
+### 3. Export your list as a spreadsheet — and bring it back in
 
-Underneath Import, at the very bottom of the exercise list, **Export as CSV** downloads whichever list is currently active (built-in or your own imported one) as a `.csv` file, with the same fields as `exercises.txt` — one exercise per row. Open it in Excel, Google Sheets, Numbers, or any spreadsheet app to review, sort, or print your list, or to make bulk edits somewhere more comfortable than a phone keyboard before copying the results back into a `.txt` file to re-import.
+Underneath Import, at the very bottom of the exercise list, **Export as CSV** downloads whichever list is currently active (built-in or your own imported one) as a `.csv` file, with the same fields as `exercises.txt` — one exercise per row. Open it in Excel, Google Sheets, Numbers, or any spreadsheet app to review, sort, or print your list, or to make bulk edits somewhere more comfortable than a phone keyboard — sorting, filling a value down a whole column, find-and-replace across many exercises at once.
 
 - **Nothing is uploaded here either** — the file is built and downloaded entirely on your device.
-- **This is one-way.** The CSV is for viewing/editing elsewhere; the app only reads the `.txt` "Field: value" format back in through Import, so save any edits as `.txt` (matching that format) before importing them again.
+- **It's a round trip.** Once you're done editing, import that same `.csv` straight back in through **Import exercises.txt or .csv** — no need to retype anything into `.txt` format by hand. A cell with a line break typed into it (e.g. Alt+Enter in Excel) gets flattened to a single space on the way back in, since the underlying format is one line per field.
 
 ## Editing exercises — no code needed
 
