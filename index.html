@@ -617,13 +617,13 @@
 <div id="exerciseSourceBar">
   <div id="exerciseSourceStatus"></div>
   <div class="selectBtnRow">
-    <button id="importExercisesBtn" onclick="document.getElementById('importExercisesInput').click()">&#128193; Import exercises.txt</button>
+    <button id="importExercisesBtn" onclick="document.getElementById('importExercisesInput').click()">&#128193; Import exercises.txt or .csv</button>
     <button id="useBuiltInBtn" class="hidden" onclick="useBuiltInExercises()">Use built-in list</button>
   </div>
   <div class="selectBtnRow">
     <button id="exportCsvBtn" onclick="exportExercisesCsv()">&#128202; Export as CSV</button>
   </div>
-  <input type="file" id="importExercisesInput" accept=".txt,text/plain" class="hidden" onchange="handleImportFile(event)">
+  <input type="file" id="importExercisesInput" accept=".txt,text/plain,.csv,text/csv" class="hidden" onchange="handleImportFile(event)">
 </div>
 <div id="appUpdated">Updated <span id="appUpdatedTime">__BUILD_TIME__</span> · <a href="https://github.com/sharpkathy123/rep-counter#readme" id="docsLink">Docs</a></div>
 
@@ -1380,15 +1380,87 @@ function updateExerciseSourceUI() {
   document.getElementById('useBuiltInBtn').classList.toggle('hidden', !custom);
 }
 
+// A small RFC4180-ish CSV parser: handles quoted fields, commas and
+// literal newlines inside a quoted field (e.g. a multi-line note typed
+// into a spreadsheet cell), "" as an escaped quote, and both \r\n and \n
+// line endings. Returns an array of rows, each an array of cell strings.
+function parseCsv(text) {
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1); // strip a leading BOM
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; } else { inQuotes = false; }
+      } else {
+        field += c;
+      }
+      continue;
+    }
+    if (c === '"') { inQuotes = true; }
+    else if (c === ',') { row.push(field); field = ''; }
+    else if (c === '\r') { /* skip - \n (bare or in \r\n) ends the row */ }
+    else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+    else { field += c; }
+  }
+  if (field !== '' || row.length > 0) { row.push(field); rows.push(row); }
+  return rows;
+}
+
+// Converts an exported (or hand-edited) exercises.csv back into
+// exercises.txt's "Field: value" text, so a spreadsheet round-trip
+// (Export as CSV -> edit in Excel/Sheets -> Import) works without
+// manually retyping anything. Columns are matched by header name, not
+// position, so reordering or dropping a column in a spreadsheet app
+// still works; an embedded newline in a cell gets flattened to a space,
+// since a single "Field: value" line can't hold a literal line break.
+const CSV_FIELD_NAMES = ['Slug', 'Name', 'Category', 'Equipment', 'Tags', 'Sets', 'Reps', 'Seconds', 'Rest', 'Description', 'Setup', 'Movement', 'Tip', 'StartImage', 'FinishImage'];
+function csvToExercisesText(csvText) {
+  const rows = parseCsv(csvText).filter(r => r.some(cell => cell.trim() !== ''));
+  if (rows.length < 2) return '';
+  const header = rows[0].map(h => h.trim().toLowerCase());
+  const colIndex = {};
+  for (const name of CSV_FIELD_NAMES) {
+    const idx = header.indexOf(name.toLowerCase());
+    if (idx !== -1) colIndex[name] = idx;
+  }
+  const blocks = [];
+  for (const row of rows.slice(1)) {
+    const lines = [];
+    for (const name of CSV_FIELD_NAMES) {
+      const idx = colIndex[name];
+      if (idx === undefined) continue;
+      const value = (row[idx] || '').replace(/\r\n|\r|\n/g, ' ').trim();
+      if (value === '') continue;
+      lines.push(`${name}: ${value}`);
+    }
+    if (lines.length > 0) blocks.push(lines.join('\n'));
+  }
+  return blocks.join('\n\n');
+}
+
+function looksLikeCsv(text) {
+  const firstLine = (text.replace(/^﻿/, '').split(/\r\n|\r|\n/)[0] || '').trim();
+  return /^"?slug"?\s*,/i.test(firstLine);
+}
+
 function handleImportFile(event) {
   const file = event.target.files[0];
   event.target.value = ''; // so importing the same filename again still fires 'change'
   if (!file) return;
   const reader = new FileReader();
   reader.onload = () => {
-    const text = String(reader.result || '');
+    let text = String(reader.result || '');
+    const isCsv = file.name.toLowerCase().endsWith('.csv') ||
+      (!file.name.toLowerCase().endsWith('.txt') && looksLikeCsv(text));
+    if (isCsv) text = csvToExercisesText(text);
     if (parseExercisesText(text).length === 0) {
-      alert('That file didn\'t have any exercises in it. Make sure it uses the same "Field: value" format as exercises.txt, then try again.');
+      alert(isCsv
+        ? 'That CSV didn\'t have any exercises in it. Make sure it still has "Slug" and "Name" column headers like an exported exercises.csv, with a Name filled in for each row, then try again.'
+        : 'That file didn\'t have any exercises in it. Make sure it uses the same "Field: value" format as exercises.txt, then try again.');
       return;
     }
     localStorage.setItem(CUSTOM_EXERCISES_KEY, text);
@@ -1414,8 +1486,10 @@ function csvField(value) {
 // Exports whichever exercise list is currently active (built-in or
 // imported) as a spreadsheet-friendly CSV with the same fields as
 // exercises.txt - handy for reviewing, printing, or editing the list in
-// Excel/Google Sheets/Numbers. This is one-way (CSV out, not back in);
-// exercises.txt's own "Field: value" format is still what Import expects.
+// Excel/Google Sheets/Numbers, then bringing back in through Import
+// (handleImportFile converts a .csv back to "Field: value" text via
+// csvToExercisesText before parsing it, so the same column headers this
+// writes are what Import expects back).
 function exportExercisesCsv() {
   const headers = ['Slug', 'Name', 'Category', 'Equipment', 'Tags', 'Sets', 'Reps', 'Seconds', 'Rest', 'Description', 'Setup', 'Movement', 'Tip', 'StartImage', 'FinishImage'];
   const rows = EXERCISES.map(ex => [
