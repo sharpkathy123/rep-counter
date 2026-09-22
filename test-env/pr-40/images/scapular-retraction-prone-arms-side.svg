@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" stroke="#eee" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+<defs><marker id="ah-scapular-retraction-prone-arms-side" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#ff5b3d"/></marker></defs>
+      <line x1="5" y1="100" x2="115" y2="100" stroke="#5a5a5a" stroke-dasharray="4 5"/>
+      <circle cx="15" cy="90" r="8"/>
+      <line x1="23" y1="91" x2="95" y2="97"/>
+      <line x1="30" y1="91" x2="26" y2="70"/>
+      <path d="M40 89 L52 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#ah-scapular-retraction-prone-arms-side)"/>
+      <path d="M64 95 L52 92" stroke="#ff5b3d" stroke-width="2.5" marker-end="url(#ah-scapular-retraction-prone-arms-side)"/>
+</svg>
