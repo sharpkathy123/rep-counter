@@ -35,6 +35,25 @@
 #   Tip         A coaching cue or common mistake to avoid.
 #
 # Optional fields:
+#   Tags        Comma-separated labels for cross-cutting things that don't
+#               fit Category or Equipment - unlike those two, an exercise
+#               can have more than one tag, and each shows up in its own
+#               row of filter chips. This file uses two: "hip-flexor"
+#               (marks exercises that involve repeated hip flexion and may
+#               aggravate a sore hip flexor) and "band-optional" (marks
+#               band exercises that still work fine as bodyweight-only,
+#               e.g. away from home with no equipment). Typing a new tag
+#               here gets it its own filter chip too, same as Category/
+#               Equipment.
+#               Give a tag an icon by adding a colon and an emoji right
+#               after it, e.g. "hip-flexor:⚠️" - that icon then shows up
+#               on the filter chip, on every card with that tag, and on
+#               the detail page. You only need to write the icon once,
+#               on any one exercise that uses the tag (every exercise
+#               below repeats it for clarity, but that's not required) -
+#               everywhere else the tag is used, just the plain tag name
+#               is enough. A tag with no icon anywhere just shows its
+#               name with no icon, same as Category/Equipment.
 #   StartImage / FinishImage
 #               Filename of a photo in the images/ folder, named after
 #               this exercise's Slug so it's easy to tell which photo
@@ -75,6 +94,7 @@ Slug: hip-abduction
 Name: Hip Abduction - Standing
 Category: hip
 Equipment: band
+Tags: band-optional:🎒
 Sets: 4
 Reps: 10
 Seconds: 4
@@ -90,6 +110,7 @@ Slug: hip-extension
 Name: Hip Extension - Standing
 Category: hip
 Equipment: band
+Tags: band-optional:🎒
 Sets: 4
 Reps: 10
 Seconds: 4
@@ -153,6 +174,7 @@ Slug: clamshell
 Name: Clamshell - Side Lying
 Category: hip
 Equipment: band
+Tags: band-optional:🎒
 Sets: 4
 Reps: 10
 Seconds: 3
@@ -168,6 +190,7 @@ Slug: abdominal-bracing-marches
 Name: Abdominal Bracing - Marches
 Category: core
 Equipment: band
+Tags: hip-flexor:⚠️, band-optional:🎒
 Sets: 2
 Reps: 10
 Seconds: 8
@@ -366,6 +389,7 @@ Slug: bridge-single-leg
 Name: Bridge - Single Leg
 Category: hip
 Equipment: bodyweight
+Tags: hip-flexor:⚠️
 Sets: 6
 Reps: 10
 Seconds: 3
@@ -399,6 +423,7 @@ Slug: 90-90-marching-ta
 Name: Abdominal Bracing - Supine Marches Up/Up Down/Down
 Category: core
 Equipment: bodyweight
+Tags: hip-flexor:⚠️
 Sets: 2
 Reps: 10
 Seconds: 10
@@ -414,6 +439,7 @@ Slug: slr-ta-activation
 Name: Straight Leg Raise with TA Activation
 Category: core
 Equipment: bodyweight
+Tags: hip-flexor:⚠️
 Sets: 2
 Reps: 10
 Seconds: 3
@@ -429,6 +455,7 @@ Slug: dead-bug
 Name: Dead Bug
 Category: core
 Equipment: bodyweight
+Tags: hip-flexor:⚠️
 Sets: 1
 Reps: 10
 Seconds: 8
@@ -534,6 +561,7 @@ Slug: bridge-alternating-march
 Name: Bridge + Alternating March
 Category: hip
 Equipment: bodyweight
+Tags: hip-flexor:⚠️
 Sets: 1
 Reps: 10
 Seconds: 3
