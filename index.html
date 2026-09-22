@@ -196,6 +196,7 @@
   .card.band { border-color: #3d6f9e; }
   .card.bodyweight { border-color: #3d7a4a; }
   .card.dumbbell { border-color: #8a6a2f; }
+  .cardTagIcons { margin-left: 1vw; font-size: 3.4vw; }
   .cardCheckWrap {
     position: absolute;
     top: 2vw;
@@ -295,6 +296,18 @@
     font-weight: 700;
     text-align: center;
     margin-bottom: 3vh;
+  }
+  .detail-tags { text-align: center; }
+  .detail-tags:not(:empty) { margin-bottom: 3vh; margin-top: -2vh; }
+  .detailTag {
+    display: inline-block;
+    font-size: 3.4vw;
+    color: #ccc;
+    background: #262626;
+    border: 1px solid #3a3a3a;
+    border-radius: 999px;
+    padding: 1vw 2.8vw;
+    margin: 0 1vw;
   }
   .detail-section {
     margin-bottom: 3vh;
@@ -545,6 +558,8 @@
     .detail-photos.pair img { width: 220px; height: 220px; max-width: none; max-height: none; }
     .detail-photos.single img { max-width: 500px; max-height: 380px; }
     .detail-name { font-size: 30px; }
+    .detailTag { font-size: 14px; padding: 4px 14px; }
+    .cardTagIcons { font-size: 14px; }
     .detail-section h2 { font-size: 15px; }
     .detail-section p { font-size: 18px; }
     .my-notes { font-size: 17px; }
@@ -580,6 +595,10 @@
     <div class="chips" id="equipmentChips"></div>
   </div>
   <div class="filterGroup">
+    <div class="filterLabel">Tags</div>
+    <div class="chips" id="tagChips"></div>
+  </div>
+  <div class="filterGroup">
     <div class="filterLabel">Sort by</div>
     <div class="chips" id="sortChips"></div>
   </div>
@@ -606,7 +625,7 @@
   </div>
   <input type="file" id="importExercisesInput" accept=".txt,text/plain" class="hidden" onchange="handleImportFile(event)">
 </div>
-<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-21T01:25:10Z</span> · <a href="https://github.com/sharpkathy123/rep-counter#readme" id="docsLink">Docs</a></div>
+<div id="appUpdated">Updated <span id="appUpdatedTime">2026-09-22T05:40:31Z</span> · <a href="https://github.com/sharpkathy123/rep-counter#readme" id="docsLink">Docs</a></div>
 
 <div id="cFlash"></div>
 <div id="countWrap">
@@ -632,6 +651,7 @@
     <img id="detailPhotoFinish" alt="Finish position">
   </div>
   <div class="detail-name" id="detailName"></div>
+  <div class="detail-tags" id="detailTags"></div>
 
   <div class="detail-section">
     <h2>Description</h2>
@@ -873,6 +893,7 @@ const titleEl = document.getElementById('pageTitle');
 const filterBarEl = document.getElementById('filterBar');
 const categoryChipsEl = document.getElementById('categoryChips');
 const equipmentChipsEl = document.getElementById('equipmentChips');
+const tagChipsEl = document.getElementById('tagChips');
 const sortChipsEl = document.getElementById('sortChips');
 const selectBarEl = document.getElementById('selectBar');
 const selectCountEl = document.getElementById('selectCount');
@@ -885,10 +906,21 @@ const runAllBtnEl = document.getElementById('runAllBtn');
 // anything else falls back to an auto-formatted label, appended after.
 const CATEGORY_LABELS = { hip: 'Hip & Glute', core: 'Core', 'back-shoulder': 'Back & Shoulder', arms: 'Arms', 'balance-legs': 'Balance & Legs' };
 const EQUIPMENT_LABELS = { band: 'Band', dumbbell: 'Dumbbell', bodyweight: 'Bodyweight' };
+const TAG_LABELS = { 'hip-flexor': 'Hip Flexor Caution', 'band-optional': 'Band Optional' };
 const CATEGORY_ORDER = ['hip', 'core', 'back-shoulder', 'arms', 'balance-legs'];
 const EQUIPMENT_ORDER = ['band', 'dumbbell', 'bodyweight'];
+const TAG_ORDER = ['hip-flexor', 'band-optional'];
+// A tag with no icon here just doesn't get a badge - same graceful-
+// degradation as an unrecognized Category/Equipment value, so a freeform
+// tag someone invents in exercises.txt never renders as a broken icon.
+// Populated by parseExercisesText from each tag's own "key:icon" syntax in
+// exercises.txt, not hardcoded here - so a custom or imported list can
+// define its own tag icons without touching this file. A tag written
+// without an icon just doesn't get one.
+let TAG_ICONS = {};
 let CATEGORIES = [];
 let EQUIPMENT = [];
+let TAGS = [];
 // Whether the currently active list (built-in or imported) has a photo on
 // any exercise at all - an imported list is realistically text-only (see
 // README), and every one of its exercises would otherwise fall back to the
@@ -917,18 +949,36 @@ function countBy(list, keyFn) {
   return counts;
 }
 
+// Like countBy, but for a field that can hold several values per exercise
+// (Tags) rather than exactly one (Category/Equipment) - each of an
+// exercise's tags gets counted, so an exercise with two tags shows up in
+// both tags' counts.
+function countByMulti(list, keysFn) {
+  const counts = new Map();
+  for (const item of list) {
+    for (const key of keysFn(item)) {
+      counts.set(key, (counts.get(key) || 0) + 1);
+    }
+  }
+  return counts;
+}
+
 function computeFacets() {
   anyExerciseHasImage = EXERCISES.some(ex => ex.startImage);
   const categoryCounts = countBy(EXERCISES, e => e.category);
   const equipmentCounts = countBy(EXERCISES, e => e.type);
+  const tagCounts = countByMulti(EXERCISES, e => e.tags);
   CATEGORIES = orderedFacet(categoryCounts, CATEGORY_ORDER, CATEGORY_LABELS);
   EQUIPMENT = orderedFacet(equipmentCounts, EQUIPMENT_ORDER, EQUIPMENT_LABELS);
+  TAGS = orderedFacet(tagCounts, TAG_ORDER, TAG_LABELS);
   const presentCategories = new Set(categoryCounts.keys());
   const presentEquipment = new Set(equipmentCounts.keys());
+  const presentTags = new Set(tagCounts.keys());
   // Drop any saved filter selection that no longer matches a real category/
-  // equipment (e.g. it was renamed or removed in exercises.txt).
+  // equipment/tag (e.g. it was renamed or removed in exercises.txt).
   activeCategories = new Set([...activeCategories].filter(k => presentCategories.has(k)));
   activeEquipment = new Set([...activeEquipment].filter(k => presentEquipment.has(k)));
+  activeTags = new Set([...activeTags].filter(k => presentTags.has(k)));
 }
 
 // exercises.txt is a plain "Field: value" block-per-exercise text file (see
@@ -940,7 +990,29 @@ function slugify(text) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'exercise';
 }
 
+// A Tags value like "hip-flexor:⚠️, band-optional" gives band-optional
+// no icon of its own but still registers it as a tag - the icon after a
+// colon is optional per occurrence. The first icon seen for a given tag
+// key wins; later occurrences of the same key don't need to repeat it,
+// though repeating the same icon every time is harmless and often clearer
+// to a reader who's only looking at one exercise's block.
+function parseTagsField(raw) {
+  const tags = [];
+  for (const chunk of (raw || '').split(',')) {
+    const trimmed = chunk.trim();
+    if (!trimmed) continue;
+    const colonIdx = trimmed.indexOf(':');
+    const key = (colonIdx === -1 ? trimmed : trimmed.slice(0, colonIdx)).trim().toLowerCase();
+    const icon = colonIdx === -1 ? '' : trimmed.slice(colonIdx + 1).trim();
+    if (!key) continue;
+    tags.push(key);
+    if (icon && !TAG_ICONS[key]) TAG_ICONS[key] = icon;
+  }
+  return tags;
+}
+
 function parseExercisesText(text) {
+  TAG_ICONS = {};
   const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
   const usedSlugs = new Set();
   const exercises = [];
@@ -964,6 +1036,7 @@ function parseExercisesText(text) {
       name: fields.name,
       category: (fields.category || 'other').toLowerCase(),
       type: (fields.equipment || 'bodyweight').toLowerCase(),
+      tags: parseTagsField(fields.tags),
       description: fields.description || '',
       setup: fields.setup || '',
       movement: fields.movement || '',
@@ -991,6 +1064,7 @@ function saveStringSet(key, set) {
 
 let activeCategories = loadStringSet('repcounter_categories');
 let activeEquipment = loadStringSet('repcounter_equipment');
+let activeTags = loadStringSet('repcounter_tags');
 let selectedSlugs = loadStringSet('repcounter_selected');
 
 // "Default" leaves the list in exercises.txt order (whatever the file's
@@ -1095,6 +1169,22 @@ function cardVisual(ex) {
   return buildIconSvg(resolvedIcon(ex, 'card'));
 }
 
+// Small per-tag icon so a caution like "hip-flexor" is visible while
+// scanning the grid or a Pick 6 selection, without opening the exercise
+// or toggling the Tags filter to find out. A tag with no TAG_ICONS entry
+// just renders nothing here.
+function cardTagIconsHtml(ex) {
+  const known = ex.tags.filter(t => TAG_ICONS[t]);
+  if (known.length === 0) return '';
+  return `<span class="cardTagIcons">${known.map(t => `<span title="${TAG_LABELS[t] || t}">${TAG_ICONS[t]}</span>`).join('')}</span>`;
+}
+
+function detailTagsHtml(ex) {
+  const known = ex.tags.filter(t => TAG_ICONS[t]);
+  if (known.length === 0) return '';
+  return known.map(t => `<span class="detailTag">${TAG_ICONS[t]} ${TAG_LABELS[t] || t}</span>`).join('');
+}
+
 function buildIconSvg(inner) {
   return `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
 }
@@ -1102,7 +1192,8 @@ function buildIconSvg(inner) {
 function filteredExercises() {
   return EXERCISES.filter(ex =>
     (activeCategories.size === 0 || activeCategories.has(ex.category)) &&
-    (activeEquipment.size === 0 || activeEquipment.has(ex.type))
+    (activeEquipment.size === 0 || activeEquipment.has(ex.type)) &&
+    (activeTags.size === 0 || ex.tags.some(t => activeTags.has(t)))
   );
 }
 
@@ -1125,6 +1216,9 @@ function buildChips() {
   `).join('');
   equipmentChipsEl.innerHTML = EQUIPMENT.map(c => `
     <button class="chip ${activeEquipment.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeEquipment, '${c.key}', 'repcounter_equipment')">${EQUIPMENT_COLORS[c.key] ? `<span class="chipDot" style="background:${EQUIPMENT_COLORS[c.key]}"></span>` : ''}${c.label} <span class="chipCount">${c.count}</span></button>
+  `).join('');
+  tagChipsEl.innerHTML = TAGS.map(c => `
+    <button class="chip ${activeTags.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeTags, '${c.key}', 'repcounter_tags')">${TAG_ICONS[c.key] ? `<span class="chipIcon">${TAG_ICONS[c.key]}</span> ` : ''}${c.label} <span class="chipCount">${c.count}</span></button>
   `).join('');
 }
 
@@ -1193,7 +1287,7 @@ function buildGrid() {
         <input type="checkbox" class="cardCheck" onclick="event.stopPropagation()" onchange="toggleSelected('${ex.slug}', this.checked)" ${selectedSlugs.has(ex.slug) ? 'checked' : ''}>
       </div>
       ${visual}
-      <div>${ex.name}</div>
+      <div>${ex.name}${cardTagIconsHtml(ex)}</div>
       <div class="estTime">${formatDuration(estimateSeconds(getExerciseParams(ex)))}</div>
       <div class="lastDone ${lastDoneClass(ex.slug)}">${formatLastDone(ex.slug)}</div>
     </div>
@@ -1323,9 +1417,9 @@ function csvField(value) {
 // Excel/Google Sheets/Numbers. This is one-way (CSV out, not back in);
 // exercises.txt's own "Field: value" format is still what Import expects.
 function exportExercisesCsv() {
-  const headers = ['Slug', 'Name', 'Category', 'Equipment', 'Sets', 'Reps', 'Seconds', 'Rest', 'Description', 'Setup', 'Movement', 'Tip', 'StartImage', 'FinishImage'];
+  const headers = ['Slug', 'Name', 'Category', 'Equipment', 'Tags', 'Sets', 'Reps', 'Seconds', 'Rest', 'Description', 'Setup', 'Movement', 'Tip', 'StartImage', 'FinishImage'];
   const rows = EXERCISES.map(ex => [
-    ex.slug, ex.name, ex.category, ex.type,
+    ex.slug, ex.name, ex.category, ex.type, ex.tags.join(', '),
     ex.defaults.sets, ex.defaults.reps, ex.defaults.seconds, ex.defaults.rest,
     ex.description, ex.setup, ex.movement, ex.tip,
     ex.startImage, ex.finishImage
@@ -1345,11 +1439,11 @@ function exportExercisesCsv() {
   URL.revokeObjectURL(url);
 }
 
-// Selections, category/equipment filters, and even sort-by-category order
-// are all specific to whichever list is active - a slug from the old list
-// selected/filtered doesn't mean anything once the exercises themselves
-// have changed, so this starts that state fresh rather than leaving stale
-// selections lying around.
+// Selections, category/equipment/tag filters, and even sort-by-category
+// order are all specific to whichever list is active - a slug from the old
+// list selected/filtered doesn't mean anything once the exercises
+// themselves have changed, so this starts that state fresh rather than
+// leaving stale selections lying around.
 async function switchExerciseSource() {
   selectedSlugs = new Set();
   saveStringSet('repcounter_selected', selectedSlugs);
@@ -1357,6 +1451,8 @@ async function switchExerciseSource() {
   saveStringSet('repcounter_categories', activeCategories);
   activeEquipment = new Set();
   saveStringSet('repcounter_equipment', activeEquipment);
+  activeTags = new Set();
+  saveStringSet('repcounter_tags', activeTags);
   gridEl.innerHTML = '<div style="text-align:center;color:#888;padding:6vh 2vw;">Loading exercises…</div>';
   if (!(await loadExercises())) { updateExerciseSourceUI(); return; }
   computeFacets();
@@ -1524,6 +1620,7 @@ function openDetail(slug) {
     detailPhotosEl.style.display = 'none';
   }
   document.getElementById('detailName').textContent = ex.name;
+  document.getElementById('detailTags').innerHTML = detailTagsHtml(ex);
   document.getElementById('detailDescription').textContent = ex.description;
   document.getElementById('detailSetup').textContent = ex.setup;
   document.getElementById('detailMovement').textContent = ex.movement;
