@@ -196,6 +196,7 @@
   .card.band { border-color: #3d6f9e; }
   .card.bodyweight { border-color: #3d7a4a; }
   .card.dumbbell { border-color: #8a6a2f; }
+  .cardTagIcons { margin-left: 1vw; font-size: 3.4vw; }
   .cardCheckWrap {
     position: absolute;
     top: 2vw;
@@ -295,6 +296,18 @@
     font-weight: 700;
     text-align: center;
     margin-bottom: 3vh;
+  }
+  .detail-tags { text-align: center; }
+  .detail-tags:not(:empty) { margin-bottom: 3vh; margin-top: -2vh; }
+  .detailTag {
+    display: inline-block;
+    font-size: 3.4vw;
+    color: #ccc;
+    background: #262626;
+    border: 1px solid #3a3a3a;
+    border-radius: 999px;
+    padding: 1vw 2.8vw;
+    margin: 0 1vw;
   }
   .detail-section {
     margin-bottom: 3vh;
@@ -545,6 +558,8 @@
     .detail-photos.pair img { width: 220px; height: 220px; max-width: none; max-height: none; }
     .detail-photos.single img { max-width: 500px; max-height: 380px; }
     .detail-name { font-size: 30px; }
+    .detailTag { font-size: 14px; padding: 4px 14px; }
+    .cardTagIcons { font-size: 14px; }
     .detail-section h2 { font-size: 15px; }
     .detail-section p { font-size: 18px; }
     .my-notes { font-size: 17px; }
@@ -636,6 +651,7 @@
     <img id="detailPhotoFinish" alt="Finish position">
   </div>
   <div class="detail-name" id="detailName"></div>
+  <div class="detail-tags" id="detailTags"></div>
 
   <div class="detail-section">
     <h2>Description</h2>
@@ -894,6 +910,10 @@ const TAG_LABELS = { 'hip-flexor': 'Hip Flexor Caution', 'band-optional': 'Band 
 const CATEGORY_ORDER = ['hip', 'core', 'back-shoulder', 'arms', 'balance-legs'];
 const EQUIPMENT_ORDER = ['band', 'dumbbell', 'bodyweight'];
 const TAG_ORDER = ['hip-flexor', 'band-optional'];
+// A tag with no icon here just doesn't get a badge - same graceful-
+// degradation as an unrecognized Category/Equipment value, so a freeform
+// tag someone invents in exercises.txt never renders as a broken icon.
+const TAG_ICONS = { 'hip-flexor': '⚠️', 'band-optional': '🎒' };
 let CATEGORIES = [];
 let EQUIPMENT = [];
 let TAGS = [];
@@ -1123,6 +1143,22 @@ function cardVisual(ex) {
   return buildIconSvg(resolvedIcon(ex, 'card'));
 }
 
+// Small per-tag icon so a caution like "hip-flexor" is visible while
+// scanning the grid or a Pick 6 selection, without opening the exercise
+// or toggling the Tags filter to find out. A tag with no TAG_ICONS entry
+// just renders nothing here.
+function cardTagIconsHtml(ex) {
+  const known = ex.tags.filter(t => TAG_ICONS[t]);
+  if (known.length === 0) return '';
+  return `<span class="cardTagIcons">${known.map(t => `<span title="${TAG_LABELS[t] || t}">${TAG_ICONS[t]}</span>`).join('')}</span>`;
+}
+
+function detailTagsHtml(ex) {
+  const known = ex.tags.filter(t => TAG_ICONS[t]);
+  if (known.length === 0) return '';
+  return known.map(t => `<span class="detailTag">${TAG_ICONS[t]} ${TAG_LABELS[t] || t}</span>`).join('');
+}
+
 function buildIconSvg(inner) {
   return `<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
 }
@@ -1225,7 +1261,7 @@ function buildGrid() {
         <input type="checkbox" class="cardCheck" onclick="event.stopPropagation()" onchange="toggleSelected('${ex.slug}', this.checked)" ${selectedSlugs.has(ex.slug) ? 'checked' : ''}>
       </div>
       ${visual}
-      <div>${ex.name}</div>
+      <div>${ex.name}${cardTagIconsHtml(ex)}</div>
       <div class="estTime">${formatDuration(estimateSeconds(getExerciseParams(ex)))}</div>
       <div class="lastDone ${lastDoneClass(ex.slug)}">${formatLastDone(ex.slug)}</div>
     </div>
@@ -1558,6 +1594,7 @@ function openDetail(slug) {
     detailPhotosEl.style.display = 'none';
   }
   document.getElementById('detailName').textContent = ex.name;
+  document.getElementById('detailTags').innerHTML = detailTagsHtml(ex);
   document.getElementById('detailDescription').textContent = ex.description;
   document.getElementById('detailSetup').textContent = ex.setup;
   document.getElementById('detailMovement').textContent = ex.movement;
