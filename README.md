@@ -46,7 +46,7 @@ If you're working directly in this repo (rather than importing your own file as 
 
 Category and equipment aren't a fixed list — typing a new one into the file gets it its own filter chip automatically.
 
-**Tags** work the same way, but an exercise can have more than one (comma-separated in the `Tags` field) — useful for anything that cuts across categories, like "band-optional" (exercises that still work with no band, e.g. away from home) or "hip-flexor" (exercises that may aggravate a sore hip flexor). Each tag gets its own filter chip, same as Category/Equipment.
+**Tags** work the same way, but an exercise can have more than one (comma-separated in the `Tags` field) — useful for anything that cuts across categories, like "band-optional" (exercises that still work with no band, e.g. away from home) or "hip-flexor" (exercises that may aggravate a sore hip flexor). Each tag gets its own filter chip, same as Category/Equipment. Give a tag an icon by adding a colon and an emoji right after it (e.g. `hip-flexor:⚠️`) — that icon then shows up on the filter chip, on every card with that tag, and on the detail page; you only need to write it once, on any single exercise that uses the tag.
 
 **Setting a run order:** when you check off several exercises and tap **Run Selected**, they run in the same order their blocks appear in `exercises.txt` — not the order you tapped them in. So if one exercise should always happen before another whenever both are picked (a basic version before a harder progression, say), just put its block earlier in the file. `exercises.txt` already does this for a few groups (the Bridge variants, the Scapular Retraction I/T/Y progression, and TA Activation before 90/90 Lower Trunk Rotation) — look for a comment above those blocks.
 

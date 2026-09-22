@@ -913,7 +913,11 @@ const TAG_ORDER = ['hip-flexor', 'band-optional'];
 // A tag with no icon here just doesn't get a badge - same graceful-
 // degradation as an unrecognized Category/Equipment value, so a freeform
 // tag someone invents in exercises.txt never renders as a broken icon.
-const TAG_ICONS = { 'hip-flexor': '⚠️', 'band-optional': '🎒' };
+// Populated by parseExercisesText from each tag's own "key:icon" syntax in
+// exercises.txt, not hardcoded here - so a custom or imported list can
+// define its own tag icons without touching this file. A tag written
+// without an icon just doesn't get one.
+let TAG_ICONS = {};
 let CATEGORIES = [];
 let EQUIPMENT = [];
 let TAGS = [];
@@ -986,7 +990,29 @@ function slugify(text) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'exercise';
 }
 
+// A Tags value like "hip-flexor:⚠️, band-optional" gives band-optional
+// no icon of its own but still registers it as a tag - the icon after a
+// colon is optional per occurrence. The first icon seen for a given tag
+// key wins; later occurrences of the same key don't need to repeat it,
+// though repeating the same icon every time is harmless and often clearer
+// to a reader who's only looking at one exercise's block.
+function parseTagsField(raw) {
+  const tags = [];
+  for (const chunk of (raw || '').split(',')) {
+    const trimmed = chunk.trim();
+    if (!trimmed) continue;
+    const colonIdx = trimmed.indexOf(':');
+    const key = (colonIdx === -1 ? trimmed : trimmed.slice(0, colonIdx)).trim().toLowerCase();
+    const icon = colonIdx === -1 ? '' : trimmed.slice(colonIdx + 1).trim();
+    if (!key) continue;
+    tags.push(key);
+    if (icon && !TAG_ICONS[key]) TAG_ICONS[key] = icon;
+  }
+  return tags;
+}
+
 function parseExercisesText(text) {
+  TAG_ICONS = {};
   const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
   const usedSlugs = new Set();
   const exercises = [];
@@ -1010,7 +1036,7 @@ function parseExercisesText(text) {
       name: fields.name,
       category: (fields.category || 'other').toLowerCase(),
       type: (fields.equipment || 'bodyweight').toLowerCase(),
-      tags: (fields.tags || '').split(',').map(t => t.trim().toLowerCase()).filter(Boolean),
+      tags: parseTagsField(fields.tags),
       description: fields.description || '',
       setup: fields.setup || '',
       movement: fields.movement || '',
@@ -1192,7 +1218,7 @@ function buildChips() {
     <button class="chip ${activeEquipment.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeEquipment, '${c.key}', 'repcounter_equipment')">${EQUIPMENT_COLORS[c.key] ? `<span class="chipDot" style="background:${EQUIPMENT_COLORS[c.key]}"></span>` : ''}${c.label} <span class="chipCount">${c.count}</span></button>
   `).join('');
   tagChipsEl.innerHTML = TAGS.map(c => `
-    <button class="chip ${activeTags.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeTags, '${c.key}', 'repcounter_tags')">${c.label} <span class="chipCount">${c.count}</span></button>
+    <button class="chip ${activeTags.has(c.key) ? 'active' : ''}" onclick="toggleChip(activeTags, '${c.key}', 'repcounter_tags')">${TAG_ICONS[c.key] ? `<span class="chipIcon">${TAG_ICONS[c.key]}</span> ` : ''}${c.label} <span class="chipCount">${c.count}</span></button>
   `).join('');
 }
 
