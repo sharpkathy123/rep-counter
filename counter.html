@@ -67,6 +67,18 @@
     margin-top: 3vh;
     font-weight: 500;
   }
+  #logHealthBtn {
+    display: inline-block;
+    font-size: 4.5vw;
+    font-weight: 700;
+    color: #fff;
+    background: #ff2d55;
+    border-radius: 10px;
+    padding: 0.6em 1.2em;
+    margin-top: 4vh;
+    text-decoration: none;
+  }
+  #logHealthBtn.hidden { display: none; }
   #setup {
     font-size: 7vw;
     display: none;
@@ -238,6 +250,7 @@
     #label { font-size: 40px; }
     #big { font-size: min(260px, 42vh); }
     #sub { font-size: 36px; }
+    #logHealthBtn { font-size: 18px; }
     #setup { font-size: 22px; max-width: 480px; margin: 0 auto; }
     #setupBackLink { font-size: 20px; }
     #setup input { font-size: 20px; }
@@ -266,6 +279,7 @@
   <div id="label"></div>
   <div id="big"></div>
   <div id="sub"></div>
+  <a id="logHealthBtn" class="hidden" href="#" onclick="logToHealth(); return false;">&#10084;&#65039; Log to Health</a>
   <div id="setup">
     <a id="setupBackLink" href="index.html">&larr; All exercises</a><br>
     Sets <input type="number" id="s" value="2"><br>
@@ -319,6 +333,7 @@ function markDone() {
 const label = document.getElementById('label');
 const big = document.getElementById('big');
 const sub = document.getElementById('sub');
+const logHealthBtnEl = document.getElementById('logHealthBtn');
 const wrap = document.getElementById('wrap');
 const flashEl = document.getElementById('flash');
 const countControlsEl = document.getElementById('countControls');
@@ -387,6 +402,28 @@ function updateSessionTimerDisplay() {
   sessionTimerEl.textContent = '⏱ ' + formatElapsed(elapsedMs);
 }
 
+// Same math the display timer uses, but callable on demand - e.g. to log
+// the final total right before stopSessionTimer() clears sessionStartTime.
+function getElapsedMs() {
+  if (!sessionStartTime) return 0;
+  const pausedNow = sessionPauseStartedAt ? Date.now() - sessionPauseStartedAt : 0;
+  return Date.now() - sessionStartTime - sessionPausedAccum - pausedNow;
+}
+
+// "Log to Health" - there's no way for a web app to write to HealthKit
+// directly (Apple doesn't expose it outside native apps), so this hands off
+// to a Shortcut instead: shortcuts://run-shortcut can launch a Shortcut by
+// name and pass it text input, which a "Log Workout" action inside that
+// Shortcut turns into a Health entry. See README for the one-time Shortcut
+// setup - it must be named exactly this to be found by name.
+const HEALTH_SHORTCUT_NAME = 'Log Rep Counter Workout';
+let lastWorkoutSeconds = null;
+function logToHealth() {
+  if (lastWorkoutSeconds == null) return;
+  const url = `shortcuts://run-shortcut?name=${encodeURIComponent(HEALTH_SHORTCUT_NAME)}&input=text&text=${encodeURIComponent(String(lastWorkoutSeconds))}`;
+  window.location.href = url;
+}
+
 async function pausableWait(ms, token) {
   let remaining = ms;
   while (remaining > 0 && !aborted(token)) {
@@ -433,6 +470,8 @@ function exitCounting() {
   big.style.color = '';
   sub.textContent = '';
   sub.className = '';
+  logHealthBtnEl.classList.add('hidden');
+  lastWorkoutSeconds = null;
   if (startedFromForm) {
     showSetupForm();
   } else {
@@ -591,6 +630,7 @@ function beginRun(runSets, runReps, runSeconds, runRest, runVoice) {
   pauseBtnEl.textContent = '❙❙ Pause';
   pauseBtnEl.classList.remove('paused');
   showCountControls(true);
+  logHealthBtnEl.classList.add('hidden');
   startSessionTimer();
   run(myToken);
 }
@@ -690,6 +730,8 @@ async function run(token) {
   }
   if (aborted(token)) return;
   markDone();
+  lastWorkoutSeconds = Math.round(getElapsedMs() / 1000);
+  logHealthBtnEl.classList.remove('hidden');
   stopSessionTimer();
   label.textContent = '';
   big.textContent = 'Done';
