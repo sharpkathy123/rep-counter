@@ -55,7 +55,7 @@ A web app has no way to write to Health directly — Apple only allows that from
 1. Open the **Shortcuts** app, tap **+** to create a new shortcut.
 2. Add the **Get Numbers from Input** action (search for it). Leave its input as **Shortcut Input** — that's the duration Rep Counter passes it.
 3. Add the **Log Workout** action underneath it.
-4. In Log Workout, set **Activity Type** to whatever fits best — **Other** is a fine, simple default.
+4. In Log Workout, set **Activity Type** to whatever fits best — **Functional Strength Training** is a reasonable default for a PT-style session.
 5. Tap the **Duration** field, tap the variable-insert icon in the keyboard toolbar (a small purple pill), and choose the **Numbers** value from step 2. Set its unit to **sec**.
 6. Fill in **Calories** and **Distance** with **0** each rather than leaving them blank — leaving them empty makes the action fail.
 7. Rename the shortcut (tap its name, or the settings/info button) to exactly: **Log Rep Counter Workout** — the button looks it up by this exact name, so it has to match.
