@@ -45,18 +45,27 @@ Underneath Import, at the very bottom of the exercise list, **Export as CSV** do
 
 A web app has no way to write to Health directly — Apple only allows that from a native app. The **❤️ Log to Health** button that appears when a run finishes works around that by handing off to a Shortcut, which *can* write to Health. This needs a one-time setup:
 
-1. Open the **Shortcuts** app.
-2. Tap **+** (top right) to create a new shortcut.
-3. Add the **Get Numbers from Input** action (search for it). Leave its input as **Shortcut Input** — that's the duration Rep Counter passes it.
-4. Add the **Log Workout** action underneath it.
-5. In Log Workout, set **Activity Type** to whatever fits best — Functional Strength Training is a reasonable default for a PT-style session.
-6. Tap the **Duration** field, tap the variable-insert icon in the keyboard toolbar (a small purple pill), and choose the **Numbers** value from step 3. Set its unit to **sec**.
+**Grant Health permissions first**, or the next part fails with a confusing error (or silently doesn't save anything):
+
+1. Open **Settings** → **Health** → **Data Access & Devices** → **Shortcuts**.
+2. Turn on all three toggles offered there: **Workouts**, **Walking + Running Distance**, and **Active Energy**. Rep Counter only ever sends a duration, but the Log Workout action still needs all three switched on before it'll even show its options, and it errors out otherwise.
+
+**Then build the shortcut:**
+
+1. Open the **Shortcuts** app, tap **+** to create a new shortcut.
+2. Add the **Get Numbers from Input** action (search for it). Leave its input as **Shortcut Input** — that's the duration Rep Counter passes it.
+3. Add the **Log Workout** action underneath it.
+4. In Log Workout, set **Activity Type** to whatever fits best — **Other** is a fine, simple default.
+5. Tap the **Duration** field, tap the variable-insert icon in the keyboard toolbar (a small purple pill), and choose the **Numbers** value from step 2. Set its unit to **sec**.
+6. Fill in **Calories** and **Distance** with **0** each rather than leaving them blank — leaving them empty makes the action fail.
 7. Rename the shortcut (tap its name, or the settings/info button) to exactly: **Log Rep Counter Workout** — the button looks it up by this exact name, so it has to match.
 8. Tap **Done**.
 
-The first time you tap **Log to Health** after a run, Shortcuts will ask permission to write to Health — allow it, and every run after that logs in one tap. The workout is logged as ending right when you tap the button, starting however many seconds earlier the session actually took — real elapsed time, pauses excluded, not the estimate shown before you start.
+The workout is logged as ending right when you tap the button, starting however many seconds earlier the session actually took — real elapsed time, pauses excluded, not the estimate shown before you start.
 
 If you'd rather name your shortcut something else, look for `HEALTH_SHORTCUT_NAME` near the top of the script in `index.html` and `counter.html` and change both to match.
+
+The button stays active (and visible) after you tap it, rather than disabling itself — on purpose, since this app has no way to know whether the Shortcut actually finished writing to Health (opening `shortcuts://` is fire-and-forget), so treating one tap as "done" could block a legitimate retry after a permission hiccup or a cancelled run. It goes back to hidden the next time you start a run, or if you tap Exit.
 
 ## Editing exercises — no code needed
 
