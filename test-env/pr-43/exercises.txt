@@ -1,0 +1,565 @@
+# Rep Counter -- Exercise Data
+#
+# Edit this file to add, remove, or change exercises. No coding needed --
+# just keep the "Field: value" shape below. Lines starting with # are
+# comments and are ignored. Save the file and refresh the app to see your
+# changes (the app also picks this up automatically the next time you're
+# online, even after Add to Home Screen).
+#
+# One exercise per block, separated by a blank line. Fields can be in any
+# order; you can leave optional fields blank.
+#
+# Required fields:
+#   Slug        A short unique id: lowercase letters, numbers, and
+#               hyphens only, no spaces (e.g. hip-abduction). The app
+#               uses this to remember your sets/reps and "last done"
+#               history for this exercise -- once you've used an
+#               exercise, try not to change its Slug, or that history
+#               starts over. If you leave Slug blank, the app makes one
+#               up from Name, which is fine for a brand new exercise.
+#   Name        The exercise name shown in the app.
+#   Category    A short label to group exercises for filtering, e.g.
+#               hip, core, back-shoulder, arms, balance-legs. You can
+#               invent a new one just by typing it here -- a filter chip
+#               for it appears automatically.
+#   Equipment   band, dumbbell, or bodyweight (also just a label -- a
+#               new one you invent gets its own filter chip too).
+#   Sets / Reps / Seconds / Rest
+#               Starting numbers (Seconds = per rep, Rest = seconds
+#               between sets). These are just the defaults shown when
+#               you first open the exercise -- you can always change
+#               them per-exercise right in the app too.
+#   Description One sentence: what this exercise is for.
+#   Setup       How to get into position.
+#   Movement    How to do one rep.
+#   Tip         A coaching cue or common mistake to avoid.
+#
+# Optional fields:
+#   Tags        Comma-separated labels for cross-cutting things that don't
+#               fit Category or Equipment - unlike those two, an exercise
+#               can have more than one tag, and each shows up in its own
+#               row of filter chips. This file uses two: "hip-flexor"
+#               (marks exercises that involve active hip flexion - if a
+#               flare-up is present, skip an exercise that actually
+#               aggravates it rather than pushing through the pain; these
+#               exercises aren't automatically off-limits when the hip
+#               flexor is well) and "band-optional" (marks band exercises
+#               that still work fine as bodyweight-only, e.g. away from
+#               home with no equipment). Typing a new tag here gets it
+#               its own filter chip too, same as Category/Equipment.
+#               Give a tag an icon by adding a colon and an emoji right
+#               after it, e.g. "hip-flexor:⚠️" - that icon then shows up
+#               on the filter chip, on every card with that tag, and on
+#               the detail page. You only need to write the icon once,
+#               on any one exercise that uses the tag (every exercise
+#               below repeats it for clarity, but that's not required) -
+#               everywhere else the tag is used, just the plain tag name
+#               is enough. A tag with no icon anywhere just shows its
+#               name with no icon, same as Category/Equipment.
+#   StartImage / FinishImage
+#               Filename of a photo in the images/ folder, named after
+#               this exercise's Slug so it's easy to tell which photo
+#               belongs to which exercise - e.g. for Slug: bridge,
+#               images/bridge.jpeg. Leave both blank to use a built-in
+#               line-drawing icon instead. Two common ways to fill
+#               these in:
+#               - One photo per position: name them images/<slug>-start.jpeg
+#                 and images/<slug>-finish.jpeg - they're shown side by side.
+#               - One combined photo: if you already have a single
+#                 photo showing both the start and finish position
+#                 (e.g. a "before/after" side-by-side shot), just name
+#                 it images/<slug>.jpeg and put that in StartImage,
+#                 leaving FinishImage blank - it's shown at full size
+#                 instead of being cropped in half.
+#
+# Exercise order matters: when you check off several exercises and tap
+# "Run Selected", they run in the same order their blocks appear in this
+# file - not the order you tapped them in on screen. So if you want one
+# exercise always done before another whenever both are picked (e.g. a
+# basic hold before a harder progression of it), just make sure its
+# block comes earlier in the file than the other one's. A few groups
+# below are deliberately ordered this way already - look for a short
+# comment right above those blocks.
+#
+# Note on this version: descriptions, setup, movement, and tip text below
+# reflect a review by physical therapy professionals, building on an
+# individually developed program. A few general osteoporosis exercise
+# principles run throughout: progressive resistance and balance/functional
+# training matter; movement should stay controlled, avoiding rapid,
+# repetitive, loaded, or end-range spinal flexion or rotation; a hip hinge
+# is the go-to way to bend while keeping the spine relatively stable;
+# gentle, controlled, non-end-range trunk rotation is fine when it's
+# comfortable; and "neutral" spine means a comfortable, controlled
+# position, not a forced one - there's no need to deliberately flatten the
+# low back against the floor unless an exercise specifically calls for it.
+# Wording throughout avoids labeling positions as unconditionally "safe"
+# or treating ordinary spinal movement as automatically dangerous.
+#
+# Resistance bands: progress to a stronger band once an exercise becomes
+# comfortably manageable with good control. Band colors aren't specified
+# here since color-to-resistance varies by manufacturer.
+
+Slug: hip-abduction
+Name: Hip Abduction - Standing
+Category: hip
+Equipment: band
+Tags: band-optional:🎒
+Sets: 4
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: Strengthens the outer hip and glute muscles that help stabilize the pelvis during standing and walking. Do half your sets on each leg.
+Setup: Loop the exercise band just below the knees. Stand beside a wall or sturdy chair and use it for balance as needed.
+Movement: Keeping your working leg straight or slightly soft at the knee and your toes facing forward, move the leg out to the side against the band, pause briefly, then return with control.
+Tip: Keep your toes facing forward throughout - turning them out lets the hip flexor assist, which works against isolating the glute. Keep your pelvis level and avoid leaning your torso to the side to create extra range.
+StartImage: images/hip-abduction.svg
+FinishImage:
+
+Slug: hip-extension
+Name: Hip Extension - Standing
+Category: hip
+Equipment: band
+Tags: band-optional:🎒
+Sets: 4
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: Strengthens the glutes and hamstrings used to move the leg backward and assist with walking and stairs. Do half your sets on each leg.
+Setup: Loop the exercise band just below the knees. Face something stable for balance and stand comfortably upright.
+Movement: Keeping your toes facing forward, move the working leg backward against the band, keeping the movement at the hip, squeeze the glute, then return with control.
+Tip: Keep your toes facing forward throughout - turning them out lets the hip flexor assist, which works against isolating the glute. Keep the pelvis steady and do not use a large backward leg swing or an exaggerated low-back arch to get more range.
+StartImage: images/hip-extension.svg
+FinishImage:
+
+Slug: pnf-d2
+Name: PNF D2 - Standing
+Category: back-shoulder
+Equipment: band
+Sets: 4
+Reps: 10
+Seconds: 6
+Rest: 6
+Description: Trains the shoulder and upper-body muscles through a controlled diagonal reaching pattern.
+Setup: Stand comfortably upright. Hold one end of the resistance band low at the side opposite the working arm and the other end in the working hand.
+Movement: Sweep the working arm up and out along the diagonal pattern like pulling a sword from its sheath - keep your wrist neutral as it rotates through the sweep, finishing with your wrist and palm facing forward once the arm is raised. Reverse the movement slowly to return.
+Tip: Keep your wrist neutral through the turn and let the shoulder and arm do the work; avoid using trunk leaning or twisting to create extra range.
+StartImage: images/pnf-d2.svg
+FinishImage:
+
+Slug: bicep-curl
+Name: Bicep Curls
+Category: arms
+Equipment: dumbbell
+Sets: 2
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: Strengthens the biceps for lifting and carrying.
+Setup: Sit tall toward the front of a sturdy chair, feet flat, holding a dumbbell in each hand with palms facing forward.
+Movement: Keeping the elbows close to your sides, curl both dumbbells toward your shoulders, then lower them with control.
+Tip: Avoid swinging the weights or using your trunk to create momentum.
+StartImage: images/bicep-curl.svg
+FinishImage:
+
+# Ordered on purpose: this plain Bridge is the base version - it comes
+# before Bridge - Single Leg and Bridge + Alternating March below, which
+# build on it, so it always runs first if you pick more than one.
+Slug: bridge
+Name: Bridge
+Category: hip
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Strengthens the glutes and hip extensors while training controlled pelvic stability.
+Setup: Lie on your back with knees bent and feet flat on the floor, about hip-width apart.
+Movement: Squeeze your glutes and lift your hips until your trunk and thighs form a comfortable straight line. Hold for 5 seconds, then lower with control.
+Tip: Lift only as high as you can without an exaggerated low-back arch. The hold stays at 5 seconds - increase reps rather than hold time for more difficulty.
+StartImage: images/bridge.jpeg
+FinishImage:
+
+Slug: clamshell
+Name: Clamshell - Side Lying
+Category: hip
+Equipment: band
+Tags: band-optional:🎒
+Sets: 4
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Strengthens the outer hip muscles that help stabilize the pelvis.
+Setup: Lie on your side with knees comfortably bent, hips stacked, and the band around your thighs just above the knees.
+Movement: Keeping your feet together, lift the top knee against the band, then lower it with control.
+Tip: Keep the pelvis stacked; do not roll your top hip backward as the knee opens.
+StartImage: images/clamshell.jpeg
+FinishImage:
+
+Slug: abdominal-bracing-marches
+Name: Abdominal Bracing - Marches
+Category: core
+Equipment: band
+Tags: hip-flexor:⚠️, band-optional:🎒
+Sets: 2
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Trains abdominal bracing while the legs move one at a time.
+Setup: Lie on your back with knees bent and feet flat. Use the band around the legs just above the knees if that is part of your progression.
+Movement: Brace gently while keeping the pelvis controlled. Lift one foot off the floor, lower it, then switch sides.
+Tip: Keep the movement small enough that the pelvis stays controlled. If it provokes the hip flexor, stop this exercise and use a non-provocative exercise instead.
+StartImage: images/abdominal-bracing-marches.jpeg
+FinishImage:
+
+Slug: sit-to-stand
+Name: Sit to Stand
+Category: balance-legs
+Equipment: bodyweight
+Sets: 2
+Reps: 12
+Seconds: 4
+Rest: 6
+Description: Builds functional leg strength for rising from a chair and provides a useful balance and control exercise.
+Setup: Sit toward the front of a sturdy chair with feet flat. Use the arm position taught for your progression.
+Movement: Hinge at the hips and bend the knees as needed to stand, then lower back to the chair with control.
+Tip: Keep the spine controlled rather than letting your back round forward. Progression: use arms crossed or another arm position as appropriate; a staggered stance can increase the demand on the legs. Do not use momentum to compensate for insufficient strength.
+StartImage: images/sit-to-stand.jpeg
+FinishImage:
+
+Slug: no-money
+Name: No Money - Scapular Retraction
+Category: back-shoulder
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Strengthens the external rotators and muscles around the shoulder blades.
+Setup: Stand or sit comfortably upright. Hold the band with both hands, elbows bent about 90 degrees and close to your sides.
+Movement: Rotate the forearms outward against the band, squeezing your shoulder blades together and keeping the elbows near your sides, then return with control.
+Tip: Keep your shoulders down and chest up throughout, and avoid using trunk movement to create extra range.
+StartImage: images/no-money.jpeg
+FinishImage:
+
+Slug: shoulder-horizontal-abduction
+Name: Shoulder Horizontal Abduction
+Category: back-shoulder
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Strengthens the rear shoulder and upper-back muscles.
+Setup: Stand or sit comfortably upright with the band held in front of you at about shoulder height.
+Movement: Pull the hands apart against the band, squeezing your shoulder blades together, then return with control.
+Tip: Keep your shoulders down and chest up, and avoid shrugging or using a rounded upper back to create momentum.
+StartImage: images/shoulder-horizontal-abduction.jpeg
+FinishImage:
+
+Slug: rows
+Name: Rows with Resistance Bands
+Category: back-shoulder
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 5
+Rest: 6
+Description: Strengthens the upper- and mid-back muscles used for pulling and upright posture.
+Setup: Anchor the band in front of you at about chest height and step back enough to create appropriate tension.
+Movement: Pull the elbows backward while drawing the shoulder blades together, then return with control.
+Tip: Keep your shoulders down and chest up, and keep the trunk controlled rather than leaning or jerking to move the band. Progress to a stronger band as appropriate.
+StartImage: images/rows.jpeg
+FinishImage:
+
+Slug: shoulder-extension
+Name: Shoulder Extension
+Category: back-shoulder
+Equipment: band
+Sets: 2
+Reps: 10
+Seconds: 5
+Rest: 6
+Description: Strengthens the muscles that pull the arm down and backward.
+Setup: Anchor the band in front of you around shoulder height. Hold the band with the arm straight and step back for appropriate tension.
+Movement: Pull the arm down and backward toward the hip, then return with control.
+Tip: Keep the trunk controlled and avoid leaning backward or using a large low-back arch to increase the range.
+StartImage: images/shoulder-extension.jpeg
+FinishImage:
+
+# Ordered on purpose: this base hold comes before its I/T/Y progressions
+# below (arms-side-lift, arms-out-t, arms-overhead-lift), and those three
+# are in turn ordered I, then T, then Y - easiest arm position first.
+Slug: scapular-retraction-prone-arms-side
+Name: Scapular Retraction - Prone
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Strengthens muscles around the shoulder blades and upper back while lying supported.
+Setup: Lie face down on a comfortable firm surface with your forehead supported and arms alongside your body.
+Movement: Gently draw the shoulder blades down and together, hold for 5 seconds, then release.
+Tip: Keep the neck relaxed and use a small, comfortable movement.
+StartImage: images/scapular-retraction-prone-arms-side.svg
+FinishImage:
+
+Slug: scapular-retraction-prone-arms-side-lift
+Name: Scapular Retraction - Prone, I
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: Progresses the prone shoulder-blade exercise by adding a small arm lift with the arms alongside the body.
+Setup: Lie face down with forehead supported and arms alongside the body.
+Movement: Gently draw the shoulder blades together and lift the arms a small amount, hold briefly, then lower with control.
+Tip: Keep the lift small and do not turn it into a large back extension.
+StartImage: images/scapular-retraction-prone-arms-side-lift.svg
+FinishImage:
+
+Slug: scapular-retraction-prone-arms-out-t
+Name: Scapular Retraction - Prone, T
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: Strengthens the upper-back and shoulder-blade muscles with the arms in a T position.
+Setup: Lie face down with forehead supported and arms extended out to the sides.
+Movement: Draw the shoulder blades together and lift the arms a small amount, hold briefly, then lower with control.
+Tip: Keep the lift small and the neck relaxed; do not use a large spinal extension to raise the arms.
+StartImage: images/scapular-retraction-prone-arms-out-t-start.svg
+FinishImage: images/scapular-retraction-prone-arms-out-t-finish.svg
+
+Slug: scapular-retraction-prone-arms-overhead-lift
+Name: Scapular Retraction - Prone, Y
+Category: back-shoulder
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: The most demanding version of the prone shoulder-blade series, with the arms in a Y position.
+Setup: Lie face down with forehead supported and arms extended overhead in a comfortable Y position.
+Movement: Draw the shoulder blades gently down and together and lift the arms a small amount, hold briefly, then lower with control.
+Tip: Keep the range small and comfortable. The exercise is an arm-and-shoulder movement, not a deep backbend.
+StartImage: images/scapular-retraction-prone-arms-overhead-lift.svg
+FinishImage:
+
+Slug: bent-over-rows-dumbbell
+Name: Supported Row - Dumbbell
+Category: back-shoulder
+Equipment: dumbbell
+Sets: 4
+Reps: 12
+Seconds: 3
+Rest: 6
+Description: Strengthens the mid-back and rear shoulder muscles using a supported hip-hinge position.
+Setup: Hold a dumbbell in one hand and support yourself firmly with the other hand on a sturdy chair or counter. Hinge forward from the hips only as much as needed for the exercise.
+Movement: Pull the dumbbell toward your hip, leading with the elbow and squeezing your shoulder blade back, then lower with control.
+Tip: Keep your shoulder down away from your ear and your chest lifted, and avoid rounding or twisting to reach the weight. Use the hip-hinge technique for the forward lean.
+StartImage: images/bent-over-rows-dumbbell.svg
+FinishImage:
+
+Slug: heel-raise-single-leg
+Name: Heel Raise - Single Leg
+Category: balance-legs
+Equipment: bodyweight
+Sets: 4
+Reps: 12
+Seconds: 3
+Rest: 6
+Description: Strengthens the calf on one leg at a time and challenges balance.
+Setup: Stand near a wall or counter for support as needed, with one foot bearing your weight and the other slightly off the floor.
+Movement: Rise onto the ball of the standing foot, pause, then lower with control.
+Tip: Keep the movement vertical and controlled and avoid letting the ankle roll inward or outward.
+StartImage: images/heel-raise-single-leg.svg
+FinishImage:
+
+Slug: bridge-single-leg
+Name: Bridge - Single Leg
+Category: hip
+Equipment: bodyweight
+Tags: hip-flexor:⚠️
+Sets: 6
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: A harder bridge progression that increases the demand on the working leg, done one of two ways depending on where you are in the progression.
+Setup: Lie on your back with knees bent and feet flat, hip-width apart. For the easier version, rest one ankle across the opposite knee; for the harder version, extend that leg out in a comfortable position instead.
+Movement: Keep the pelvis level, press through the foot on the floor, lift the hips, then lower with control. Do the first half of your sets on one leg, then switch to the other leg for the second half.
+Tip: Start with the ankle-over-knee version, and move to the leg-extended version once that's comfortable. This uses reps rather than a long hold for difficulty, unlike the basic Bridge. If either version bothers the hip flexor, return to the basic Bridge.
+StartImage: images/bridge-single-leg-start.svg
+FinishImage: images/bridge-single-leg-finish.svg
+
+Slug: ta-activation-supine
+Name: Abdominal Bracing
+Category: core
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 12
+Rest: 6
+Description: Trains controlled abdominal bracing without requiring repeated spinal flexion.
+Setup: Lie on your back with knees bent and feet flat. Let your lower back rest in its comfortable natural position.
+Movement: Gently tighten your abdominal muscles as if preparing for a light poke to the stomach, while breathing normally. Hold for 10 seconds, then relax.
+Tip: Do not hold your breath and do not deliberately flatten or arch your low back; use a comfortable, controlled position.
+StartImage: images/ta-activation-supine-start.svg
+FinishImage: images/ta-activation-supine-finish.svg
+
+Slug: 90-90-marching-ta
+Name: Abdominal Bracing - Supine Marches Up/Up Down/Down
+Category: core
+Equipment: bodyweight
+Tags: hip-flexor:⚠️
+Sets: 2
+Reps: 10
+Seconds: 10
+Rest: 6
+Description: A more demanding marching variation in which both legs move through a 90/90 position while the trunk remains controlled.
+Setup: Lie on your back with hips and knees bent to about 90 degrees. Engage the abdominal brace.
+Movement: Slowly raise one knee to the 90/90 position, then the other; lower them one at a time and repeat.
+Tip: Keep the pelvis controlled and use a range you can perform without provoking the hip flexor. Stop rather than pushing through hip-flexor pain.
+StartImage: images/90-90-marching-ta-start.svg
+FinishImage: images/90-90-marching-ta-finish.svg
+
+Slug: slr-ta-activation
+Name: Straight Leg Raise with Abdominal Bracing
+Category: core
+Equipment: bodyweight
+Tags: hip-flexor:⚠️
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Combines abdominal bracing with a controlled straight-leg raise.
+Setup: Lie on your back with one knee bent and foot flat and the other leg straight. Brace gently.
+Movement: Keeping the working knee straight, raise the leg through a comfortable range, then lower it slowly.
+Tip: Use only the range that keeps the pelvis controlled. Stop if the movement aggravates the hip flexor.
+StartImage: images/slr-ta-activation-start.svg
+FinishImage: images/slr-ta-activation-finish.svg
+
+Slug: dead-bug
+Name: Dead Bug
+Category: core
+Equipment: bodyweight
+Tags: hip-flexor:⚠️
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Trains trunk control while the arms and legs move independently, without requiring a crunch or sit-up.
+Setup: Lie on your back with arms toward the ceiling and hips and knees bent to about 90 degrees.
+Movement: Slowly lower one arm and the opposite leg through a comfortable range, return to the starting position, and switch sides.
+Tip: Keep the trunk controlled without forcing the low back flat or letting it arch excessively. If it provokes the hip flexor, stop the exercise rather than simply pushing through with fewer repetitions.
+StartImage: images/dead-bug-start.svg
+FinishImage: images/dead-bug-finish.svg
+
+Slug: lower-trunk-rotation-feet-down
+Name: Lower Trunk Rotation - Feet Down
+Category: core
+Equipment: bodyweight
+Sets: 3
+Reps: 10
+Seconds: 10
+Rest: 6
+Description: Provides gentle trunk and hip rotation through a small, controlled range.
+Setup: Lie on your back with knees bent and feet flat, with knees and feet together and arms out for stability.
+Movement: Slowly let both knees move a small distance to one side, return to center, then move them gently to the other side.
+Tip: Keep the range small and controlled; do not force an end-range twist or turn it into a vigorous stretching exercise.
+StartImage: images/lower-trunk-rotation-feet-down-start.svg
+FinishImage: images/lower-trunk-rotation-feet-down-finish.svg
+
+Slug: 90-90-ltr
+Name: 90/90 Lower Trunk Rotation - Gentle Range
+Category: core
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 10
+Rest: 6
+Description: Provides gentle trunk and hip rotation with the legs supported in a 90/90 position.
+Setup: Lie on your back with hips and knees bent to about 90 degrees, knees together, and arms out for stability.
+Movement: Slowly move both knees a small distance to one side, return to center, then move them gently to the other side.
+Tip: Keep the movement slow and small. Do not force the rotation to end range or make it a strong twisting stretch.
+StartImage: images/90-90-ltr-start.svg
+FinishImage: images/90-90-ltr-finish.svg
+
+Slug: bird-dog
+Name: Bird Dog - Quadruped
+Category: core
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 10
+Rest: 6
+Description: Trains trunk and hip stability while the opposite arm and leg move.
+Setup: Start on hands and knees with hands under shoulders and knees under hips.
+Movement: Extend one arm forward and the opposite leg backward through a comfortable range, pause, then return and switch sides.
+Tip: Keep the trunk controlled and the pelvis level; avoid sagging, excessive arching, or rotating the hips.
+StartImage: images/bird-dog-start.svg
+FinishImage: images/bird-dog-finish.svg
+
+Slug: pallof-press-standing
+Name: Pallof Press - Standing
+Category: core
+Equipment: band
+Sets: 2
+Reps: 12
+Seconds: 4
+Rest: 6
+Description: Trains the core to resist rotation while the arms press against the band.
+Setup: Anchor the band at chest height to your side. Stand sideways to the anchor and hold the band with both hands at your breastbone.
+Movement: Press the band straight forward, pause briefly, then return with control.
+Tip: Resist the band's pull without rotating your torso. Progress by using a stronger band when the current resistance becomes comfortably manageable with good control.
+StartImage: images/pallof-press-standing-start.svg
+FinishImage: images/pallof-press-standing-finish.svg
+
+Slug: stir-the-pot
+Name: Stir the Pot
+Category: core
+Equipment: band
+Sets: 4
+Reps: 6
+Seconds: 4
+Rest: 6
+Description: A dynamic anti-rotation exercise that challenges the core while the hands trace small circles against band resistance.
+Setup: Anchor the band at chest height to your side. Stand sideways to the anchor and hold the band with both hands at your breastbone.
+Movement: Keeping the trunk as still as possible, slowly trace a small circle with both hands; change direction and side as programmed.
+Tip: Keep the circles small enough that the trunk does not twist or lean. Start with approximately a dinner-plate-sized circle and increase only if control remains easy and comfortable.
+StartImage: images/stir-the-pot.svg
+FinishImage:
+
+Slug: squats-multidirectional
+Name: Squats - Multi-Directional Stance
+Category: balance-legs
+Equipment: bodyweight
+Sets: 3
+Reps: 10
+Seconds: 4
+Rest: 6
+Description: Builds leg strength and balance with three controlled squat stances.
+Setup: Stand with feet in the selected stance, using a stable support nearby if needed.
+Movement: Bend at the hips and knees to lower into a comfortable squat, then stand back up with control.
+Tip: Allow a natural amount of forward trunk inclination as needed for the squat, while avoiding collapsing into a rounded spine. Keep the knees tracking comfortably over the feet. The three stances can be performed as one set each: feet together/parallel, one foot staggered forward, then the other.
+StartImage: images/squats-multidirectional-start.svg
+FinishImage: images/squats-multidirectional-finish.svg
+
+Slug: bridge-alternating-march
+Name: Bridge + Alternating March
+Category: hip
+Equipment: bodyweight
+Tags: hip-flexor:⚠️
+Sets: 1
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Builds on the basic bridge by adding an alternating single-leg march at the top, challenging hip and core stability.
+Setup: Lie on your back with your knees bent and feet flat on the floor, about hip-width apart.
+Movement: Squeeze your glutes and lift your hips into a bridge, then, keeping your hips level, lift one knee toward your chest and lower it back down, then alternate to the other side without dropping your hips.
+Tip: Keep both hip points level and facing the ceiling throughout - don't let your hips dip or rotate toward the lifted leg.
+StartImage: images/bridge-alternating-march-start.svg
+FinishImage: images/bridge-alternating-march-finish.svg
