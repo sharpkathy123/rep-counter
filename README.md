@@ -67,6 +67,23 @@ If you'd rather name your shortcut something else, look for `HEALTH_SHORTCUT_NAM
 
 The button stays active (and visible) after you tap it, rather than disabling itself — on purpose, since this app has no way to know whether the Shortcut actually finished writing to Health (opening `shortcuts://` is fire-and-forget), so treating one tap as "done" could block a legitimate retry after a permission hiccup or a cancelled run. It goes back to hidden the next time you start a run, or if you tap Exit.
 
+### What doesn't survive an export or import
+
+Export and Import round-trip the exercise *content* faithfully, but a few things either never make the trip or get quietly changed along the way:
+
+- **Comments are dropped from any CSV.** The `#` header notes at the top of `exercises.txt` (or any comment you add yourself) have nowhere to go in a `.csv` — **Export as CSV** never writes them, so exporting and re-importing loses them for good. A comment inside a `.txt` file you import does stick around in storage (the raw text is saved as-is), but it's inert either way — it doesn't do anything, and won't survive if you later export that list to CSV.
+- **Your personalized Sets/Reps/Seconds/Rest don't export.** If you've tweaked an exercise's numbers to match what your PT prescribed, **Export as CSV** still writes the original starting numbers from the active list's own text, not your saved changes. Those personal numbers live separately on this device and aren't part of the exercise list itself.
+- **"Your notes"** (the free-text box on each exercise's detail page) isn't part of the export either — same reason, it's saved separately per device, not part of the list.
+- **Tag icons never export.** `Tags` exports as plain tag names (`hip-flexor`, not `hip-flexor:⚠️`) — the `:icon` part is never written back out, so a CSV round trip silently drops every tag icon. Re-add `:icon` to at least one row by hand before importing again if you want it back.
+- **"Last done" history never travels.** It's tracked per device, independent of whichever list is active, and isn't written to or read from either file format.
+- **Only the filename travels, never the photo itself.** `StartImage`/`FinishImage` export and import as plain text (e.g. `images/bridge.jpeg`) — the actual image file only shows up if something at that path already exists (this repo's own `images/` folder, when you're round-tripping the built-in list). See [Bring your own exercise list](#2-bring-your-own-exercise-list) above for more on this.
+- **Category, Equipment, and Tags are always lowercased on import**, however you typed them — `Category: Hip` becomes `hip`.
+- **A Slug with spaces, punctuation, or capital letters gets simplified** to lowercase-with-hyphens.
+- **Two exercises that would end up with the same Slug** — including two with the same Name and no Slug of their own — aren't merged; the second one silently gets `-2` appended to keep it unique.
+- **A block with no `Name` is dropped without any warning**, as long as at least one other block in the file is valid — this is how a comment-only paragraph is meant to be skipped, but it'll just as quietly skip a real exercise block you mistyped.
+- **A field's value can only be one line, in `.txt`.** Unlike a spreadsheet cell (where a typed line break gets flattened to a single space on import, per above), a manual line break inside a `.txt` field cuts the value off entirely — anything after that line break is ignored rather than kept or flattened.
+- **A column you add yourself to a `.csv`** (anything beyond `Slug`/`Name`/`Category`/`Equipment`/`Tags`/`Sets`/`Reps`/`Seconds`/`Rest`/`Description`/`Setup`/`Movement`/`Tip`/`StartImage`/`FinishImage`) is ignored on import — only those fifteen are read.
+
 ## Editing exercises — no code needed
 
 If you're working directly in this repo (rather than importing your own file as above): all exercise content lives in **[`exercises.txt`](exercises.txt)**: one exercise per block, plain `Field: value` lines, with the format documented in a comment header at the top of that file itself. Edit it directly on GitHub (or any text editor) — no need to touch any `.html` file. Covers name, category, equipment, sets/reps/seconds/rest, description/setup/movement/tip text, and optional `StartImage`/`FinishImage` photo filenames — drop a `.jpeg`/`.png` in **[`images/`](images/)** named after that exercise's `Slug` (e.g. `images/bridge.jpeg` for `Slug: bridge`) so it's easy to tell which photo belongs to which exercise; a single photo already showing both positions works too, just leave `FinishImage` blank.
