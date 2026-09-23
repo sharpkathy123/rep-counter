@@ -170,7 +170,7 @@ Category: hip
 Equipment: bodyweight
 Sets: 2
 Reps: 10
-Seconds: 5
+Seconds: 8
 Rest: 6
 Description: Strengthens the glutes and hip extensors while training controlled pelvic stability.
 Setup: Lie on your back with knees bent and feet flat on the floor, about hip-width apart.
@@ -299,7 +299,7 @@ Seconds: 8
 Rest: 6
 Description: Strengthens muscles around the shoulder blades and upper back while lying supported.
 Setup: Lie face down on a comfortable firm surface with your forehead supported and arms alongside your body.
-Movement: Gently draw the shoulder blades down and together, hold for 8 seconds, then release.
+Movement: Gently draw the shoulder blades down and together, hold for 5 seconds, then release.
 Tip: Keep the neck relaxed and use a small, comfortable movement.
 StartImage: images/scapular-retraction-prone-arms-side.svg
 FinishImage:
@@ -405,7 +405,7 @@ Seconds: 12
 Rest: 6
 Description: Trains controlled abdominal bracing without requiring repeated spinal flexion.
 Setup: Lie on your back with knees bent and feet flat. Let your lower back rest in its comfortable natural position.
-Movement: Gently tighten your abdominal muscles as if preparing for a light poke to the stomach, while breathing normally. Hold for 12 seconds, then relax.
+Movement: Gently tighten your abdominal muscles as if preparing for a light poke to the stomach, while breathing normally. Hold for 10 seconds, then relax.
 Tip: Do not hold your breath and do not deliberately flatten or arch your low back; use a comfortable, controlled position.
 StartImage: images/ta-activation-supine-start.svg
 FinishImage: images/ta-activation-supine-finish.svg
