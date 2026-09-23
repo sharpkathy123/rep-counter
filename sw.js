@@ -60,7 +60,6 @@ const APP_SHELL = [
   './images/scapular-retraction-prone-arms-side-lift.svg',
   './images/scapular-retraction-prone-arms-overhead-lift.svg',
   './images/bent-over-rows-dumbbell.svg',
-  './images/sit-to-stand-lower-extremity-bias.svg',
   './images/heel-raise-single-leg.svg',
   './images/lower-trunk-rotation-feet-down-start.svg',
   './images/lower-trunk-rotation-feet-down-finish.svg',
