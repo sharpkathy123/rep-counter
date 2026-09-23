@@ -506,6 +506,18 @@
     font-weight: 500;
     max-width: 92vw;
   }
+  #logHealthBtn {
+    display: inline-block;
+    font-size: 4.5vw;
+    font-weight: 700;
+    color: #fff;
+    background: #ff2d55;
+    border-radius: 10px;
+    padding: 0.6em 1.2em;
+    margin-top: 4vh;
+    text-decoration: none;
+  }
+  #logHealthBtn.hidden { display: none; }
   .c-rest { color: #4da3ff; }
   .c-go { color: #fff; }
   .c-done { color: #2fa84f; }
@@ -574,6 +586,7 @@
     #cPhoto { max-width: 420px; max-height: 320px; }
     #cBig { font-size: min(260px, 42vh); }
     #cSub { font-size: 34px; }
+    #logHealthBtn { font-size: 18px; }
     #pauseBtn, #resetBtn, #repeatBtn, #skipBtn { font-size: 16px; }
     #sessionTimer { font-size: 16px; }
   }
@@ -641,6 +654,7 @@
   <img id="cPhoto" alt="">
   <div id="cBig"></div>
   <div id="cSub"></div>
+  <a id="logHealthBtn" class="hidden" href="#" onclick="logToHealth(); return false;">&#10084;&#65039; Log to Health</a>
 </div>
 
 <div id="detail">
@@ -1742,6 +1756,7 @@ const cLabelEl = document.getElementById('cLabel');
 const cPhotoEl = document.getElementById('cPhoto');
 const cBigEl = document.getElementById('cBig');
 const cSubEl = document.getElementById('cSub');
+const logHealthBtnEl = document.getElementById('logHealthBtn');
 const sessionTimerEl = document.getElementById('sessionTimer');
 
 function showExercisePhoto(ex) {
@@ -1867,6 +1882,20 @@ function formatDurationSpoken(totalSeconds) {
   return `${minutePart} and ${rem} second${rem === 1 ? '' : 's'}`;
 }
 
+// "Log to Health" - there's no way for a web app to write to HealthKit
+// directly (Apple doesn't expose it outside native apps), so this hands off
+// to a Shortcut instead: shortcuts://run-shortcut can launch a Shortcut by
+// name and pass it text input, which a "Log Workout" action inside that
+// Shortcut turns into a Health entry. See README for the one-time Shortcut
+// setup - it must be named exactly this to be found by name.
+const HEALTH_SHORTCUT_NAME = 'Log Rep Counter Workout';
+let lastWorkoutSeconds = null;
+function logToHealth() {
+  if (lastWorkoutSeconds == null) return;
+  const url = `shortcuts://run-shortcut?name=${encodeURIComponent(HEALTH_SHORTCUT_NAME)}&input=text&text=${encodeURIComponent(String(lastWorkoutSeconds))}`;
+  window.location.href = url;
+}
+
 // Skip/Repeat only make sense mid-sequence (Run All), so they're a separate
 // signal from runToken: bumping runToken would also invalidate the outer
 // runAllExercises loop and end the whole workout, not just the current
@@ -1968,6 +1997,8 @@ function cancelCount() {
   window.speechSynthesis.cancel();
   hideExercisePhoto();
   stopSessionTimer();
+  logHealthBtnEl.classList.add('hidden');
+  lastWorkoutSeconds = null;
   countWrapEl.classList.remove('active');
   gridEl.classList.remove('hidden');
   titleEl.classList.remove('hidden');
@@ -2112,6 +2143,7 @@ function startCounting() {
   cLabelEl.textContent = 'Get ready...';
   cBigEl.textContent = '';
   cSubEl.textContent = '';
+  logHealthBtnEl.classList.add('hidden');
   showExercisePhoto(currentExercise);
   startSessionTimer();
   requestWakeLock();
@@ -2131,7 +2163,12 @@ function startCounting() {
     if (introHandled) return;
     introHandled = true;
     hideExercisePhoto(); // #cBig needs that space back once counting starts
-    return runCount(sets, reps, seconds, rest, true, myToken, currentExercise.slug).then(stopSessionTimer);
+    return runCount(sets, reps, seconds, rest, true, myToken, currentExercise.slug).then(() => {
+      if (myToken !== runToken) return;
+      lastWorkoutSeconds = Math.round(getElapsedMs() / 1000);
+      logHealthBtnEl.classList.remove('hidden');
+      stopSessionTimer();
+    });
   };
 
   if (!('speechSynthesis' in window)) {
@@ -2205,6 +2242,8 @@ async function runAllExercises(list, voiceOn, token) {
   cBigEl.className = 'c-done';
   cBigEl.style.color = '';
   cSubEl.textContent = '';
+  lastWorkoutSeconds = Math.round(elapsedMs / 1000);
+  logHealthBtnEl.classList.remove('hidden');
   cFlash('set');
   if (voiceOn) speakCount(`Workout complete. That took ${formatDurationSpoken(elapsedMs / 1000)}.`);
   vibrate([100, 50, 100, 50, 100, 50, 200]);
@@ -2232,6 +2271,7 @@ function startRunAll() {
   cLabelEl.textContent = 'Get ready...';
   cBigEl.textContent = '';
   cSubEl.textContent = '';
+  logHealthBtnEl.classList.add('hidden');
   startSessionTimer();
   requestWakeLock();
 

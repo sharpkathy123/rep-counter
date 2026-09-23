@@ -10,10 +10,11 @@ A voice-guided rep/set counter and exercise library for phone or iPad, built as 
 - **Speak aloud** turns on voice cues: "Starting set N in" plus a 3-2-1-Go countdown before every set, "Rep N"/"Last rep!" cues, per-second counting, and a single "Rest N seconds" announcement (no per-second ticking during rest). Finishing a multi-exercise run also speaks how long the whole thing took.
 - During a run: **Pause**, **Reset** (single exercise) or **Restart All** (start the whole sequence over) and, mid-sequence, **Repeat Exercise** (redo just the current exercise — handy for a one-sided exercise) and **Skip**.
 - The **Voice settings & test** page (linked at the bottom of the exercise list) is also where a single exercise runs if reached from a Siri Shortcut or a bookmark with `?sets=&reps=&seconds=&rest=&voice=` in the URL.
+- When a run finishes, a **❤️ Log to Health** button appears — tap it to add that session to Apple Health as a workout, with its real duration. See [Log your workouts to Apple Health](#4-log-your-workouts-to-apple-health) below for the (one-time) setup this needs.
 
 ## Making it your own — no coding, no account needed
 
-Three things anyone can do right from their phone, no GitHub account or coding involved:
+Four things anyone can do right from their phone, no GitHub account or coding involved:
 
 ### 1. Install it to your Home Screen
 
@@ -39,6 +40,23 @@ Underneath Import, at the very bottom of the exercise list, **Export as CSV** do
 
 - **Nothing is uploaded here either** — the file is built and downloaded entirely on your device.
 - **It's a round trip.** Once you're done editing, import that same `.csv` straight back in through **Import exercises.txt or .csv** — no need to retype anything into `.txt` format by hand. A cell with a line break typed into it (e.g. Alt+Enter in Excel) gets flattened to a single space on the way back in, since the underlying format is one line per field.
+
+### 4. Log your workouts to Apple Health
+
+A web app has no way to write to Health directly — Apple only allows that from a native app. The **❤️ Log to Health** button that appears when a run finishes works around that by handing off to a Shortcut, which *can* write to Health. This needs a one-time setup:
+
+1. Open the **Shortcuts** app.
+2. Tap **+** (top right) to create a new shortcut.
+3. Add the **Get Numbers from Input** action (search for it). Leave its input as **Shortcut Input** — that's the duration Rep Counter passes it.
+4. Add the **Log Workout** action underneath it.
+5. In Log Workout, set **Activity Type** to whatever fits best — Functional Strength Training is a reasonable default for a PT-style session.
+6. Tap the **Duration** field, tap the variable-insert icon in the keyboard toolbar (a small purple pill), and choose the **Numbers** value from step 3. Set its unit to **sec**.
+7. Rename the shortcut (tap its name, or the settings/info button) to exactly: **Log Rep Counter Workout** — the button looks it up by this exact name, so it has to match.
+8. Tap **Done**.
+
+The first time you tap **Log to Health** after a run, Shortcuts will ask permission to write to Health — allow it, and every run after that logs in one tap. The workout is logged as ending right when you tap the button, starting however many seconds earlier the session actually took — real elapsed time, pauses excluded, not the estimate shown before you start.
+
+If you'd rather name your shortcut something else, look for `HEALTH_SHORTCUT_NAME` near the top of the script in `index.html` and `counter.html` and change both to match.
 
 ## Editing exercises — no code needed
 
