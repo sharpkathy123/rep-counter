@@ -267,7 +267,7 @@ Rest: 6
 Description: Strengthens the upper- and mid-back muscles used for pulling and upright posture.
 Setup: Anchor the band in front of you at about chest height and step back enough to create appropriate tension.
 Movement: Pull the elbows backward while drawing the shoulder blades together, then return with control.
-Tip: Keep the trunk controlled rather than leaning or jerking to move the band. Progress to a stronger band as appropriate.
+Tip: Keep your shoulders down and chest up, and keep the trunk controlled rather than leaning or jerking to move the band. Progress to a stronger band as appropriate.
 StartImage: images/rows.jpeg
 FinishImage:
 
@@ -299,7 +299,7 @@ Seconds: 8
 Rest: 6
 Description: Strengthens muscles around the shoulder blades and upper back while lying supported.
 Setup: Lie face down on a comfortable firm surface with your forehead supported and arms alongside your body.
-Movement: Gently draw the shoulder blades down and together, hold briefly, then release.
+Movement: Gently draw the shoulder blades down and together, hold for 8 seconds, then release.
 Tip: Keep the neck relaxed and use a small, comfortable movement.
 StartImage: images/scapular-retraction-prone-arms-side.svg
 FinishImage:
@@ -314,7 +314,7 @@ Seconds: 4
 Rest: 6
 Description: Progresses the prone shoulder-blade exercise by adding a small arm lift with the arms alongside the body.
 Setup: Lie face down with forehead supported and arms alongside the body.
-Movement: Gently draw the shoulder blades together and lift the arms a small amount, then lower with control.
+Movement: Gently draw the shoulder blades together and lift the arms a small amount, hold briefly, then lower with control.
 Tip: Keep the lift small and do not turn it into a large back extension.
 StartImage: images/scapular-retraction-prone-arms-side-lift.svg
 FinishImage:
@@ -329,7 +329,7 @@ Seconds: 4
 Rest: 6
 Description: Strengthens the upper-back and shoulder-blade muscles with the arms in a T position.
 Setup: Lie face down with forehead supported and arms extended out to the sides.
-Movement: Draw the shoulder blades together and lift the arms a small amount, then lower with control.
+Movement: Draw the shoulder blades together and lift the arms a small amount, hold briefly, then lower with control.
 Tip: Keep the lift small and the neck relaxed; do not use a large spinal extension to raise the arms.
 StartImage: images/scapular-retraction-prone-arms-out-t-start.svg
 FinishImage: images/scapular-retraction-prone-arms-out-t-finish.svg
@@ -344,7 +344,7 @@ Seconds: 4
 Rest: 6
 Description: The most demanding version of the prone shoulder-blade series, with the arms in a Y position.
 Setup: Lie face down with forehead supported and arms extended overhead in a comfortable Y position.
-Movement: Draw the shoulder blades gently down and together and lift the arms a small amount, then lower with control.
+Movement: Draw the shoulder blades gently down and together and lift the arms a small amount, hold briefly, then lower with control.
 Tip: Keep the range small and comfortable. The exercise is an arm-and-shoulder movement, not a deep backbend.
 StartImage: images/scapular-retraction-prone-arms-overhead-lift.svg
 FinishImage:
@@ -359,8 +359,8 @@ Seconds: 3
 Rest: 6
 Description: Strengthens the mid-back and rear shoulder muscles using a supported hip-hinge position.
 Setup: Hold a dumbbell in one hand and support yourself firmly with the other hand on a sturdy chair or counter. Hinge forward from the hips only as much as needed for the exercise.
-Movement: Pull the dumbbell toward your hip, leading with the elbow, then lower with control.
-Tip: Keep the spine in a controlled position and avoid rounding or twisting to reach the weight. Use the hip-hinge technique for the forward lean.
+Movement: Pull the dumbbell toward your hip, leading with the elbow and squeezing your shoulder blade back, then lower with control.
+Tip: Keep your shoulder down away from your ear and your chest lifted, and avoid rounding or twisting to reach the weight. Use the hip-hinge technique for the forward lean.
 StartImage: images/bent-over-rows-dumbbell.svg
 FinishImage:
 
@@ -405,7 +405,7 @@ Seconds: 12
 Rest: 6
 Description: Trains controlled abdominal bracing without requiring repeated spinal flexion.
 Setup: Lie on your back with knees bent and feet flat. Let your lower back rest in its comfortable natural position.
-Movement: Gently tighten your abdominal muscles as if preparing for a light poke to the stomach, while breathing normally. Hold, then relax.
+Movement: Gently tighten your abdominal muscles as if preparing for a light poke to the stomach, while breathing normally. Hold for 12 seconds, then relax.
 Tip: Do not hold your breath and do not deliberately flatten or arch your low back; use a comfortable, controlled position.
 StartImage: images/ta-activation-supine-start.svg
 FinishImage: images/ta-activation-supine-finish.svg
