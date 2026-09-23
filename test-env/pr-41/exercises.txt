@@ -141,7 +141,7 @@ Seconds: 6
 Rest: 6
 Description: Trains the shoulder and upper-body muscles through a controlled diagonal reaching pattern.
 Setup: Stand comfortably upright. Hold one end of the resistance band low at the side opposite the working arm and the other end in the working hand.
-Movement: Sweep the working arm up and out along the diagonal pattern like pulling a sword from its sheath - start with your wrist neutral and let it rotate through the sweep, finishing with your wrist and palm facing forward once the arm is raised. Reverse the movement slowly to return.
+Movement: Sweep the working arm up and out along the diagonal pattern like pulling a sword from its sheath - keep your wrist neutral as it rotates through the sweep, finishing with your wrist and palm facing forward once the arm is raised. Reverse the movement slowly to return.
 Tip: Keep your wrist neutral through the turn and let the shoulder and arm do the work; avoid using trunk leaning or twisting to create extra range.
 StartImage: images/pnf-d2.svg
 FinishImage:
@@ -236,8 +236,8 @@ Seconds: 3
 Rest: 6
 Description: Strengthens the external rotators and muscles around the shoulder blades.
 Setup: Stand or sit comfortably upright. Hold the band with both hands, elbows bent about 90 degrees and close to your sides.
-Movement: Rotate the forearms outward against the band while keeping the elbows near your sides, then return with control.
-Tip: Keep the shoulders relaxed and avoid using trunk movement to create extra range.
+Movement: Rotate the forearms outward against the band, squeezing your shoulder blades together and keeping the elbows near your sides, then return with control.
+Tip: Keep your shoulders down and chest up throughout, and avoid using trunk movement to create extra range.
 StartImage: images/no-money.jpeg
 FinishImage:
 
@@ -251,8 +251,8 @@ Seconds: 3
 Rest: 6
 Description: Strengthens the rear shoulder and upper-back muscles.
 Setup: Stand or sit comfortably upright with the band held in front of you at about shoulder height.
-Movement: Pull the hands apart against the band, then return with control.
-Tip: Keep the movement controlled and avoid shrugging or using a rounded upper back to create momentum.
+Movement: Pull the hands apart against the band, squeezing your shoulder blades together, then return with control.
+Tip: Keep your shoulders down and chest up, and avoid shrugging or using a rounded upper back to create momentum.
 StartImage: images/shoulder-horizontal-abduction.jpeg
 FinishImage:
 
