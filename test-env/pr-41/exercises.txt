@@ -111,7 +111,7 @@ Rest: 6
 Description: Strengthens the outer hip and glute muscles that help stabilize the pelvis during standing and walking. Do half your sets on each leg.
 Setup: Loop the exercise band just below the knees. Stand beside a wall or sturdy chair and use it for balance as needed.
 Movement: Keeping your working leg straight or slightly soft at the knee and your toes facing forward, move the leg out to the side against the band, pause briefly, then return with control.
-Tip: Keep your pelvis level and avoid leaning your torso to the side to create extra range.
+Tip: Keep your toes facing forward throughout - turning them out lets the hip flexor assist, which works against isolating the glute. Keep your pelvis level and avoid leaning your torso to the side to create extra range.
 StartImage: images/hip-abduction.svg
 FinishImage:
 
@@ -126,8 +126,8 @@ Seconds: 4
 Rest: 6
 Description: Strengthens the glutes and hamstrings used to move the leg backward and assist with walking and stairs. Do half your sets on each leg.
 Setup: Loop the exercise band just below the knees. Face something stable for balance and stand comfortably upright.
-Movement: Move the working leg backward against the band, keeping the movement at the hip, squeeze the glute, then return with control.
-Tip: Keep the pelvis steady and do not use a large backward leg swing or an exaggerated low-back arch to get more range.
+Movement: Keeping your toes facing forward, move the working leg backward against the band, keeping the movement at the hip, squeeze the glute, then return with control.
+Tip: Keep your toes facing forward throughout - turning them out lets the hip flexor assist, which works against isolating the glute. Keep the pelvis steady and do not use a large backward leg swing or an exaggerated low-back arch to get more range.
 StartImage: images/hip-extension.svg
 FinishImage:
 
@@ -141,8 +141,8 @@ Seconds: 6
 Rest: 6
 Description: Trains the shoulder and upper-body muscles through a controlled diagonal reaching pattern.
 Setup: Stand comfortably upright. Hold one end of the resistance band low at the side opposite the working arm and the other end in the working hand.
-Movement: Sweep the working arm smoothly up and out along the diagonal pattern, then reverse the movement slowly.
-Tip: Let the shoulder and arm do the work; avoid using trunk leaning or twisting to create extra range.
+Movement: Sweep the working arm up and out along the diagonal pattern like pulling a sword from its sheath - start with your wrist neutral and let it rotate through the sweep, finishing with your wrist and palm facing forward once the arm is raised. Reverse the movement slowly to return.
+Tip: Keep your wrist neutral through the turn and let the shoulder and arm do the work; avoid using trunk leaning or twisting to create extra range.
 StartImage: images/pnf-d2.svg
 FinishImage:
 
@@ -161,54 +161,22 @@ Tip: Avoid swinging the weights or using your trunk to create momentum.
 StartImage: images/bicep-curl.svg
 FinishImage:
 
-# Ordered on purpose: this plain Bridge comes before Bridge - Ankle Over
-# Opposite Knee and Bridge - Leg Extended below, which are progressions
-# that build on it, so it always runs first if you pick more than one.
+# Ordered on purpose: this plain Bridge is the base version - it comes
+# before Bridge - Single Leg and Bridge + Alternating March below, which
+# build on it, so it always runs first if you pick more than one.
 Slug: bridge
 Name: Bridge
 Category: hip
 Equipment: bodyweight
 Sets: 2
 Reps: 10
-Seconds: 8
+Seconds: 5
 Rest: 6
 Description: Strengthens the glutes and hip extensors while training controlled pelvic stability.
 Setup: Lie on your back with knees bent and feet flat on the floor, about hip-width apart.
-Movement: Squeeze your glutes and lift your hips until your trunk and thighs form a comfortable straight line. Hold for the programmed time, then lower with control.
-Tip: Lift only as high as you can without an exaggerated low-back arch.
+Movement: Squeeze your glutes and lift your hips until your trunk and thighs form a comfortable straight line. Hold for 5 seconds, then lower with control.
+Tip: Lift only as high as you can without an exaggerated low-back arch. The hold stays at 5 seconds - increase reps rather than hold time for more difficulty.
 StartImage: images/bridge.jpeg
-FinishImage:
-
-Slug: bridge-ankle-over-knee
-Name: Bridge - Ankle Over Opposite Knee
-Category: hip
-Equipment: bodyweight
-Tags: hip-flexor:⚠️
-Sets: 2
-Reps: 10
-Seconds: 3
-Rest: 6
-Description: A harder bridge variation that increases the demand on the working leg.
-Setup: Lie on your back with knees bent and feet flat. Rest one ankle across the opposite knee.
-Movement: Keep the pelvis level, press through the foot on the floor, lift the hips, then lower with control. Switch sides as programmed.
-Tip: Use this progression when the basic bridge is comfortable. Do not use the long hold from the basic bridge. If it bothers the hip flexor, return to the basic bridge.
-StartImage:
-FinishImage:
-
-Slug: bridge-leg-extended
-Name: Bridge - Leg Extended
-Category: hip
-Equipment: bodyweight
-Tags: hip-flexor:⚠️
-Sets: 2
-Reps: 10
-Seconds: 3
-Rest: 6
-Description: A later bridge progression that increases the demand on the working leg.
-Setup: Lie on your back with knees bent and feet flat. Extend one leg in a comfortable position as your progression allows.
-Movement: Keep the pelvis level, press through the foot on the floor, lift the hips, then lower with control. Switch sides as programmed.
-Tip: Use this progression when the hip is calm and the movement is comfortable. Do not use the long hold from the basic bridge. If it bothers the hip flexor, return to an easier bridge version.
-StartImage:
 FinishImage:
 
 Slug: clamshell
@@ -227,21 +195,6 @@ Tip: Keep the pelvis stacked; do not roll your top hip backward as the knee open
 StartImage: images/clamshell.jpeg
 FinishImage:
 
-Slug: ta-activation-supine
-Name: Abdominal Bracing
-Category: core
-Equipment: bodyweight
-Sets: 1
-Reps: 10
-Seconds: 12
-Rest: 6
-Description: Trains controlled abdominal bracing without requiring repeated spinal flexion.
-Setup: Lie on your back with knees bent and feet flat. Let your lower back rest in its comfortable natural position.
-Movement: Gently tighten your abdominal muscles as if preparing for a light poke to the stomach, while breathing normally. Hold, then relax.
-Tip: Do not hold your breath and do not deliberately flatten or arch your low back; use a comfortable, controlled position.
-StartImage: images/ta-activation-supine-start.svg
-FinishImage: images/ta-activation-supine-finish.svg
-
 Slug: abdominal-bracing-marches
 Name: Abdominal Bracing - Marches
 Category: core
@@ -256,129 +209,6 @@ Setup: Lie on your back with knees bent and feet flat. Use the band around the l
 Movement: Brace gently while keeping the pelvis controlled. Lift one foot off the floor, lower it, then switch sides.
 Tip: Keep the movement small enough that the pelvis stays controlled. If it provokes the hip flexor, stop this exercise and use a non-provocative exercise instead.
 StartImage: images/abdominal-bracing-marches.jpeg
-FinishImage:
-
-Slug: 90-90-marching-ta
-Name: Abdominal Bracing - Supine Marches Up/Up Down/Down
-Category: core
-Equipment: bodyweight
-Tags: hip-flexor:⚠️
-Sets: 2
-Reps: 10
-Seconds: 10
-Rest: 6
-Description: A more demanding marching variation in which both legs move through a 90/90 position while the trunk remains controlled.
-Setup: Lie on your back with hips and knees bent to about 90 degrees. Engage the abdominal brace.
-Movement: Slowly raise one knee to the 90/90 position, then the other; lower them one at a time and repeat.
-Tip: Keep the pelvis controlled and use a range you can perform without provoking the hip flexor. Stop rather than pushing through hip-flexor pain.
-StartImage: images/90-90-marching-ta-start.svg
-FinishImage: images/90-90-marching-ta-finish.svg
-
-Slug: slr-ta-activation
-Name: Straight Leg Raise with Abdominal Bracing
-Category: core
-Equipment: bodyweight
-Tags: hip-flexor:⚠️
-Sets: 2
-Reps: 10
-Seconds: 3
-Rest: 6
-Description: Combines abdominal bracing with a controlled straight-leg raise.
-Setup: Lie on your back with one knee bent and foot flat and the other leg straight. Brace gently.
-Movement: Keeping the working knee straight, raise the leg through a comfortable range, then lower it slowly.
-Tip: Use only the range that keeps the pelvis controlled. Stop if the movement aggravates the hip flexor.
-StartImage: images/slr-ta-activation-start.svg
-FinishImage: images/slr-ta-activation-finish.svg
-
-Slug: dead-bug
-Name: Dead Bug
-Category: core
-Equipment: bodyweight
-Tags: hip-flexor:⚠️
-Sets: 1
-Reps: 10
-Seconds: 8
-Rest: 6
-Description: Trains trunk control while the arms and legs move independently, without requiring a crunch or sit-up.
-Setup: Lie on your back with arms toward the ceiling and hips and knees bent to about 90 degrees.
-Movement: Slowly lower one arm and the opposite leg through a comfortable range, return to the starting position, and switch sides.
-Tip: Keep the trunk controlled without forcing the low back flat or letting it arch excessively. If it provokes the hip flexor, stop the exercise rather than simply pushing through with fewer repetitions.
-StartImage: images/dead-bug-start.svg
-FinishImage: images/dead-bug-finish.svg
-
-Slug: lower-trunk-rotation-feet-down
-Name: Lower Trunk Rotation - Feet Down
-Category: core
-Equipment: bodyweight
-Sets: 3
-Reps: 10
-Seconds: 10
-Rest: 6
-Description: Provides gentle trunk and hip rotation through a small, controlled range.
-Setup: Lie on your back with knees bent and feet flat, with knees and feet together and arms out for stability.
-Movement: Slowly let both knees move a small distance to one side, return to center, then move them gently to the other side.
-Tip: Keep the range small and controlled; do not force an end-range twist or turn it into a vigorous stretching exercise.
-StartImage: images/lower-trunk-rotation-feet-down-start.svg
-FinishImage: images/lower-trunk-rotation-feet-down-finish.svg
-
-Slug: 90-90-ltr
-Name: 90/90 Lower Trunk Rotation - Gentle Range
-Category: core
-Equipment: bodyweight
-Sets: 2
-Reps: 10
-Seconds: 10
-Rest: 6
-Description: Provides gentle trunk and hip rotation with the legs supported in a 90/90 position.
-Setup: Lie on your back with hips and knees bent to about 90 degrees, knees together, and arms out for stability.
-Movement: Slowly move both knees a small distance to one side, return to center, then move them gently to the other side.
-Tip: Keep the movement slow and small. Do not force the rotation to end range or make it a strong twisting stretch.
-StartImage: images/90-90-ltr-start.svg
-FinishImage: images/90-90-ltr-finish.svg
-
-Slug: bird-dog
-Name: Bird Dog - Quadruped
-Category: core
-Equipment: bodyweight
-Sets: 1
-Reps: 10
-Seconds: 10
-Rest: 6
-Description: Trains trunk and hip stability while the opposite arm and leg move.
-Setup: Start on hands and knees with hands under shoulders and knees under hips.
-Movement: Extend one arm forward and the opposite leg backward through a comfortable range, pause, then return and switch sides.
-Tip: Keep the trunk controlled and the pelvis level; avoid sagging, excessive arching, or rotating the hips.
-StartImage: images/bird-dog-start.svg
-FinishImage: images/bird-dog-finish.svg
-
-Slug: pallof-press-standing
-Name: Pallof Press - Standing
-Category: core
-Equipment: band
-Sets: 2
-Reps: 12
-Seconds: 4
-Rest: 6
-Description: Trains the core to resist rotation while the arms press against the band.
-Setup: Anchor the band at chest height to your side. Stand sideways to the anchor and hold the band with both hands at your breastbone.
-Movement: Press the band straight forward, pause briefly, then return with control.
-Tip: Resist the band's pull without rotating your torso. Progress by using a stronger band when the current resistance becomes comfortably manageable with good control.
-StartImage: images/pallof-press-standing-start.svg
-FinishImage: images/pallof-press-standing-finish.svg
-
-Slug: stir-the-pot
-Name: Stir the Pot
-Category: core
-Equipment: band
-Sets: 4
-Reps: 6
-Seconds: 4
-Rest: 6
-Description: A dynamic anti-rotation exercise that challenges the core while the hands trace small circles against band resistance.
-Setup: Anchor the band at chest height to your side. Stand sideways to the anchor and hold the band with both hands at your breastbone.
-Movement: Keeping the trunk as still as possible, slowly trace a small circle with both hands; change direction and side as programmed.
-Tip: Keep the circles small enough that the trunk does not twist or lean. Start with approximately a dinner-plate-sized circle and increase only if control remains easy and comfortable.
-StartImage: images/stir-the-pot.svg
 FinishImage:
 
 Slug: sit-to-stand
@@ -549,6 +379,160 @@ Tip: Keep the movement vertical and controlled and avoid letting the ankle roll 
 StartImage: images/heel-raise-single-leg.svg
 FinishImage:
 
+Slug: bridge-single-leg
+Name: Bridge - Single Leg
+Category: hip
+Equipment: bodyweight
+Tags: hip-flexor:⚠️
+Sets: 6
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: A harder bridge progression that increases the demand on the working leg, done one of two ways depending on where you are in the progression.
+Setup: Lie on your back with knees bent and feet flat, hip-width apart. For the easier version, rest one ankle across the opposite knee; for the harder version, extend that leg out in a comfortable position instead.
+Movement: Keep the pelvis level, press through the foot on the floor, lift the hips, then lower with control. Do the first half of your sets on one leg, then switch to the other leg for the second half.
+Tip: Start with the ankle-over-knee version, and move to the leg-extended version once that's comfortable. This uses reps rather than a long hold for difficulty, unlike the basic Bridge. If either version bothers the hip flexor, return to the basic Bridge.
+StartImage: images/bridge-single-leg-start.svg
+FinishImage: images/bridge-single-leg-finish.svg
+
+Slug: ta-activation-supine
+Name: Abdominal Bracing
+Category: core
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 12
+Rest: 6
+Description: Trains controlled abdominal bracing without requiring repeated spinal flexion.
+Setup: Lie on your back with knees bent and feet flat. Let your lower back rest in its comfortable natural position.
+Movement: Gently tighten your abdominal muscles as if preparing for a light poke to the stomach, while breathing normally. Hold, then relax.
+Tip: Do not hold your breath and do not deliberately flatten or arch your low back; use a comfortable, controlled position.
+StartImage: images/ta-activation-supine-start.svg
+FinishImage: images/ta-activation-supine-finish.svg
+
+Slug: 90-90-marching-ta
+Name: Abdominal Bracing - Supine Marches Up/Up Down/Down
+Category: core
+Equipment: bodyweight
+Tags: hip-flexor:⚠️
+Sets: 2
+Reps: 10
+Seconds: 10
+Rest: 6
+Description: A more demanding marching variation in which both legs move through a 90/90 position while the trunk remains controlled.
+Setup: Lie on your back with hips and knees bent to about 90 degrees. Engage the abdominal brace.
+Movement: Slowly raise one knee to the 90/90 position, then the other; lower them one at a time and repeat.
+Tip: Keep the pelvis controlled and use a range you can perform without provoking the hip flexor. Stop rather than pushing through hip-flexor pain.
+StartImage: images/90-90-marching-ta-start.svg
+FinishImage: images/90-90-marching-ta-finish.svg
+
+Slug: slr-ta-activation
+Name: Straight Leg Raise with Abdominal Bracing
+Category: core
+Equipment: bodyweight
+Tags: hip-flexor:⚠️
+Sets: 2
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Combines abdominal bracing with a controlled straight-leg raise.
+Setup: Lie on your back with one knee bent and foot flat and the other leg straight. Brace gently.
+Movement: Keeping the working knee straight, raise the leg through a comfortable range, then lower it slowly.
+Tip: Use only the range that keeps the pelvis controlled. Stop if the movement aggravates the hip flexor.
+StartImage: images/slr-ta-activation-start.svg
+FinishImage: images/slr-ta-activation-finish.svg
+
+Slug: dead-bug
+Name: Dead Bug
+Category: core
+Equipment: bodyweight
+Tags: hip-flexor:⚠️
+Sets: 1
+Reps: 10
+Seconds: 8
+Rest: 6
+Description: Trains trunk control while the arms and legs move independently, without requiring a crunch or sit-up.
+Setup: Lie on your back with arms toward the ceiling and hips and knees bent to about 90 degrees.
+Movement: Slowly lower one arm and the opposite leg through a comfortable range, return to the starting position, and switch sides.
+Tip: Keep the trunk controlled without forcing the low back flat or letting it arch excessively. If it provokes the hip flexor, stop the exercise rather than simply pushing through with fewer repetitions.
+StartImage: images/dead-bug-start.svg
+FinishImage: images/dead-bug-finish.svg
+
+Slug: lower-trunk-rotation-feet-down
+Name: Lower Trunk Rotation - Feet Down
+Category: core
+Equipment: bodyweight
+Sets: 3
+Reps: 10
+Seconds: 10
+Rest: 6
+Description: Provides gentle trunk and hip rotation through a small, controlled range.
+Setup: Lie on your back with knees bent and feet flat, with knees and feet together and arms out for stability.
+Movement: Slowly let both knees move a small distance to one side, return to center, then move them gently to the other side.
+Tip: Keep the range small and controlled; do not force an end-range twist or turn it into a vigorous stretching exercise.
+StartImage: images/lower-trunk-rotation-feet-down-start.svg
+FinishImage: images/lower-trunk-rotation-feet-down-finish.svg
+
+Slug: 90-90-ltr
+Name: 90/90 Lower Trunk Rotation - Gentle Range
+Category: core
+Equipment: bodyweight
+Sets: 2
+Reps: 10
+Seconds: 10
+Rest: 6
+Description: Provides gentle trunk and hip rotation with the legs supported in a 90/90 position.
+Setup: Lie on your back with hips and knees bent to about 90 degrees, knees together, and arms out for stability.
+Movement: Slowly move both knees a small distance to one side, return to center, then move them gently to the other side.
+Tip: Keep the movement slow and small. Do not force the rotation to end range or make it a strong twisting stretch.
+StartImage: images/90-90-ltr-start.svg
+FinishImage: images/90-90-ltr-finish.svg
+
+Slug: bird-dog
+Name: Bird Dog - Quadruped
+Category: core
+Equipment: bodyweight
+Sets: 1
+Reps: 10
+Seconds: 10
+Rest: 6
+Description: Trains trunk and hip stability while the opposite arm and leg move.
+Setup: Start on hands and knees with hands under shoulders and knees under hips.
+Movement: Extend one arm forward and the opposite leg backward through a comfortable range, pause, then return and switch sides.
+Tip: Keep the trunk controlled and the pelvis level; avoid sagging, excessive arching, or rotating the hips.
+StartImage: images/bird-dog-start.svg
+FinishImage: images/bird-dog-finish.svg
+
+Slug: pallof-press-standing
+Name: Pallof Press - Standing
+Category: core
+Equipment: band
+Sets: 2
+Reps: 12
+Seconds: 4
+Rest: 6
+Description: Trains the core to resist rotation while the arms press against the band.
+Setup: Anchor the band at chest height to your side. Stand sideways to the anchor and hold the band with both hands at your breastbone.
+Movement: Press the band straight forward, pause briefly, then return with control.
+Tip: Resist the band's pull without rotating your torso. Progress by using a stronger band when the current resistance becomes comfortably manageable with good control.
+StartImage: images/pallof-press-standing-start.svg
+FinishImage: images/pallof-press-standing-finish.svg
+
+Slug: stir-the-pot
+Name: Stir the Pot
+Category: core
+Equipment: band
+Sets: 4
+Reps: 6
+Seconds: 4
+Rest: 6
+Description: A dynamic anti-rotation exercise that challenges the core while the hands trace small circles against band resistance.
+Setup: Anchor the band at chest height to your side. Stand sideways to the anchor and hold the band with both hands at your breastbone.
+Movement: Keeping the trunk as still as possible, slowly trace a small circle with both hands; change direction and side as programmed.
+Tip: Keep the circles small enough that the trunk does not twist or lean. Start with approximately a dinner-plate-sized circle and increase only if control remains easy and comfortable.
+StartImage: images/stir-the-pot.svg
+FinishImage:
+
 Slug: squats-multidirectional
 Name: Squats - Multi-Directional Stance
 Category: balance-legs
@@ -563,3 +547,19 @@ Movement: Bend at the hips and knees to lower into a comfortable squat, then sta
 Tip: Allow a natural amount of forward trunk inclination as needed for the squat, while avoiding collapsing into a rounded spine. Keep the knees tracking comfortably over the feet. The three stances can be performed as one set each: feet together/parallel, one foot staggered forward, then the other.
 StartImage: images/squats-multidirectional-start.svg
 FinishImage: images/squats-multidirectional-finish.svg
+
+Slug: bridge-alternating-march
+Name: Bridge + Alternating March
+Category: hip
+Equipment: bodyweight
+Tags: hip-flexor:⚠️
+Sets: 1
+Reps: 10
+Seconds: 3
+Rest: 6
+Description: Builds on the basic bridge by adding an alternating single-leg march at the top, challenging hip and core stability.
+Setup: Lie on your back with your knees bent and feet flat on the floor, about hip-width apart.
+Movement: Squeeze your glutes and lift your hips into a bridge, then, keeping your hips level, lift one knee toward your chest and lower it back down, then alternate to the other side without dropping your hips.
+Tip: Keep both hip points level and facing the ceiling throughout - don't let your hips dip or rotate toward the lifted leg.
+StartImage: images/bridge-alternating-march-start.svg
+FinishImage: images/bridge-alternating-march-finish.svg
